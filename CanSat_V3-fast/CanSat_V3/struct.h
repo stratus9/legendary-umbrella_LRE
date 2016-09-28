@@ -20,8 +20,10 @@ typedef struct stan_s{
 	bool telemetry_trigger;
 	bool flash_trigger;
 	bool armed_trigger;
-	uint8_t flightState;
-	uint8_t softwareState;
+	bool run_trigger;
+	bool Abort;
+	uint8_t State;
+	uint32_t TestConfig;
 } stan_t;
 
 typedef struct Output_s{

@@ -33,7 +33,6 @@ static frame_t frame_d;
 static frame_t frame_b;
 static buzzer_t buzzer_d;
 static uint32_t SPIaddress = 0;
-static float timer_buffer = 0;
 uint32_t mission_time = 0;
 uint32_t frame_count = 0;
 
@@ -80,31 +79,78 @@ ISR(USARTD0_RXC_vect) {
         buzzer_d.mode = 1;								//3 sygna³y ci¹g³e
         buzzer_d.trigger = true;						//odblokowanie buzzera
 		_delay_ms(1000);
-    } else if((tmp == 'X') && stan_d.cmd_mode) {
-        stan_d.flash_trigger = true;					//start zapisu do pamiêci FLASH
+	//-----Test MOV------
+    } else if((tmp == '1') && stan_d.cmd_mode) {
+        stan_d.flash_trigger = true;					
         stan_d.cmd_mode = false;
-    } else if((tmp == 'K') && stan_d.cmd_mode) {
-        stan_d.flash_trigger = false;					//koniec zapisu do pamiêci FLASH
+		
+	//-----Test MFV------
+    } else if((tmp == '2') && stan_d.cmd_mode) {
+        stan_d.flash_trigger = false;					
         stan_d.cmd_mode = false;
-    } else if((tmp == 'S') && stan_d.cmd_mode) {
-        stan_d.telemetry_trigger = true;			//rozpoczêcie telemetrii
+		
+	//-----Test MPV------
+    } else if((tmp == '3') && stan_d.cmd_mode) {
+        stan_d.telemetry_trigger = true;			
         stan_d.cmd_mode = false;
-    } else if((tmp == 'F') && stan_d.cmd_mode) {
-        stan_d.telemetry_trigger = false;			//koniec telemetrii
+		
+	//-----Test FPV------
+    } else if((tmp == '4') && stan_d.cmd_mode) {
+        stan_d.telemetry_trigger = false;			
         stan_d.cmd_mode = false;
+		
+	//-----Otwarcie zaworu doprê¿ania----
+    } else if((tmp == '5') && stan_d.cmd_mode) {
+		stan_d.telemetry_trigger = false;		
+		stan_d.cmd_mode = false;
+		
+	//------Konfiguracja sekwencji 1------
+    } else if((tmp == '6') && stan_d.cmd_mode) {
+		stan_d.TestConfig = 150;		
+		stan_d.cmd_mode = false;
+		
+	//------Konfiguracja sekwencji 2--------
+    } else if((tmp == '7') && stan_d.cmd_mode) {
+		stan_d.TestConfig = 200;		
+		stan_d.cmd_mode = false;
+		
+	//------Konfiguracja sekwencji 3---------
+    } else if((tmp == '8') && stan_d.cmd_mode) {
+		stan_d.TestConfig = 350;		
+		stan_d.cmd_mode = false;
+		
+	//------Konfiguracja sekwencji 4---------
+    } else if((tmp == '9') && stan_d.cmd_mode) {
+		stan_d.TestConfig = 650;		
+		stan_d.cmd_mode = false;
+		
+	//------Przerwanie testu-----------------
     } else if((tmp == 'A') && stan_d.cmd_mode) {
-        stan_d.armed_trigger = true;				//uzbrojony
+        stan_d.Abort = true;						//ABORT!!!! ABORT!!! ABORT!!!
+		stan_d.run_trigger = false;
+		stan_d.armed_trigger = false;
         stan_d.cmd_mode = false;
-    } else if((tmp == 'D') && stan_d.cmd_mode) {
-        stan_d.armed_trigger = false;				//rozbrojony
+		
+	//------Rozpoczêcie testu----------------
+    } else if((tmp == 'P') && stan_d.cmd_mode) {
+        stan_d.run_trigger = true;				
         stan_d.cmd_mode = false;
+		RTC_d.time = 0;
+		
     } else stan_d.cmd_mode = false;
 }
 
 //----------------------Sensors update-------------------------------
 ISR(TCC0_OVF_vect) {
-    allData_d.stan->new_data = true;
-    allData_d.RTC->time++;
+     SensorUpdate(&allData_d);
+     //============================================================================
+     //                        Prepare frame & store
+     //============================================================================
+     prepareFrame(&allData_d);
+     if(stan_d.flash_trigger) SPI_StoreFrame(&SPIaddress, 400, &frame_b,&RTC_d);
+     if(!(frame_d.mutex)) frame_d = frame_b;	//jeœli frame_d nie zablokowane -> przepisz z bufora
+     LED_PORT.OUTTGL = LED1;
+     allData_d.RTC->time++;
 }
 
 //----------------------Buzzer---------------------------------------
@@ -144,6 +190,7 @@ ISR(TCE0_OVF_vect) {
     //-------------Blokada komend zdalnych----------------------------
     LED_PORT.OUTCLR = LED3;
     stan_d.cmd_mode = false;
+	RTC_d.time++;
 }
 
 //----------------------Frame send-------------------------------------
@@ -198,65 +245,6 @@ void SensorUpdate(allData_t * allData) {
     AnalogUpdate(allData->Analog);
 }
 
-void StateUpdate(void) {
-    if(!(stan_d.armed_trigger)) {
-        stan_d.flightState = 0;
-        buzzer_d.mode = 0;
-		//stan_d.flash_trigger = false;
-        PORTD_OUTCLR = PIN1_bm;
-    } else {
-        switch(stan_d.flightState) {
-        //--------case 0 preflight-----------------
-        case 0:
-            //if((SensorData_d.accel_x > 3) || (LPS25H_d.velocity > 10)) stan_d.flightState = 1;	//wykrycie startu
-            buzzer_d.mode = 0;
-			//LPS25H_d.max_altitude = LPS25H_d.altitude;
-            break;
-        //--------case 1 flight wait for apogee----
-        case 1:
-			stan_d.flash_trigger = true;
-            //if((LPS25H_d.max_altitude - LPS25H_d.altitude) > 10.0) stan_d.flightState = 2;	//wykrycie pu³apu
-            break;
-        //-------case 2 delay + sound signal + deployment------------------
-        case 2:
-            buzzer_d.mode = 1;																//3 sygna³y ci¹g³e
-            buzzer_d.trigger = true;														//odblokowanie buzzera
-            timer_buffer = RTC_d.time;														//buforowanie czasu
-            stan_d.flightState = 3;
-            break;
-        //--------case 3 parachute delay--------------
-        case 3:
-            if(RTC_d.time > (timer_buffer + 5)) stan_d.flightState = 4;						//odczekanie po separacji
-            break;
-        //--------case 4 separation wait-----------
-        case 4:
-            //if(((LPS25H_d.velocity) > 40) || (LPS25H_d.altitude < 250)) stan_d.flightState = 5;						//odczekanie do separacji
-            break;
-        //-------case 5 separation------------------
-        case 5:
-            buzzer_d.mode = 1;																//3 sygna³y ci¹g³e
-            buzzer_d.trigger = true;														//odblokowanie buzzera
-            timer_buffer = RTC_d.time;														//buforowanie czasu
-            stan_d.flightState = 6;
-            break;
-        //-------case 6 after separation delay------
-        case 6:
-            if(RTC_d.time > (timer_buffer + 10)) stan_d.flightState = 7;						//odczekanie po separacji
-            break;
-        //---------case 7 wait for landing----------
-        case 7:
-            //if((LPS25H_d.altitude < 100) && (LPS25H_d.velocity < 1) && (LPS25H_d.velocity > -1)) stan_d.flightState = 8;
-            break;
-        //---------case 8 END----------------
-        case 8:
-            buzzer_d.mode = 2;																//sygna³ 2Hz
-            buzzer_d.trigger = true;														//odblokowanie buzzera
-			stan_d.flash_trigger = false;
-            break;
-        }
-    }
-}
-
 void Initialization(void) {
 	CPU_clk(CPU_clock);	//zegar CPU
     OscRTC();			//zegar RTC
@@ -266,7 +254,7 @@ void Initialization(void) {
     IO_Init();
     TimerCInit(sampling_time);	//sensor update
     TimerDInit(250);			//buzzer handling
-    TimerEInit(50);				//obs³uga IO
+    TimerEInit(10);				//Obs³uga RTC
     TimerFInit(telemetry_time);	//frame send
     structInit();
     I2C_Init();
@@ -308,7 +296,7 @@ void InitMemoryRead() {
     _delay_ms(200);
     buzzer_d.trigger = false;
     while(!(PORTE.IN & PIN1_bm)) {}
-    const char buf1[] = "\n\rTeam,TeleCnt,FlightState,SoftState,Altitude,Velocity,Accel,Gyro,Lat,Long,AltiGPS,Fix,Check,,Cnt,VoltageBat,VoltageVCC,Temp,Press,AccY,AccY2,GyroX,GyroZ,GyroY,\n\r\n\r\0";
+    const char buf1[] = "\n\rTeam,TeleCnt,State,SoftState,Altitude,Velocity,Accel,Gyro,Lat,Long,AltiGPS,Fix,Check,,Cnt,VoltageBat,VoltageVCC,Temp,Press,AccY,AccY2,GyroX,GyroZ,GyroY,\n\r\n\r\0";
     const char buf2[] = "\n\rReading done\n\r\n\r\0";
     //------Hello message----------
     while(buf1[i]) {
@@ -371,26 +359,59 @@ int main(void) {
     sei();
     WarmUp();					//inicjalizacja BT i odmiganie startu
     WarmUpMemoryOperations();	//odczyt lub kasowanie pamiêci
-	
-    while(1) {
-        _delay_us(1);
-        if(stan_d.new_data == true) {
-            //============================================================================
-            //								Sensors update
-            //============================================================================
-            stan_d.new_data = false;	//DRY flag clear
-            SensorUpdate(&allData_d);
-			//============================================================================
-			//						       State update
-			//============================================================================
-            StateUpdate();
-			//============================================================================
-            //                        Prepare frame & store
-			//============================================================================
-            prepareFrame(&allData_d);
-            if(stan_d.flash_trigger) SPI_StoreFrame(&SPIaddress, 400, &frame_b,&RTC_d);
-            if(!(frame_d.mutex)) frame_d = frame_b;	//jeœli frame_d nie zablokowane -> przepisz z bufora
-            LED_PORT.OUTTGL = LED1;
+	uint32_t timer_buffer = 0;
+    while(1){
+        _delay_us(10);
+		if(stan_d.Abort == true){
+			SERVO_close();
+			FPV_valve_close();
+			MFV_valve_close();
+			MOV_valve_close();
+			MPV_valve_open();
+			Buzzer_active();
+			Light_Red();
+		}
+		else if(stan_d.armed_trigger == true) FPV_valve_open();	//w³¹czenie doprê¿ania
+        else if(stan_d.run_trigger == true) {
+			if(timer_buffer <= RTC_d.time) stan_d.State++;
+			switch(stan_d.State){
+				//----- Step 1----------------
+				case 1:
+				Buzzer_active();
+				Light_Red();
+				timer_buffer = RTC_d.time+1000;
+				break;
+				//----- Step 2----------------
+				case 2:
+				Buzzer_inactive();
+				Ignition_active();
+				timer_buffer = RTC_d.time+200;
+				break;
+				//-----Step 3-----------------
+				case 3:
+				Ignition_inactive();
+				MFV_valve_open();
+				MOV_valve_open();
+				SERVO_open();
+				timer_buffer = RTC_d.time+stan_d.TestConfig;
+				break;
+				//-----Step 4a----------------
+				case 4:
+				MOV_valve_close();
+				timer_buffer = RTC_d.time+10;
+				break;
+				//-----Step 4b----------------
+				case 5:
+				MFV_valve_close();
+				SERVO_close();
+				MPV_valve_open();
+				timer_buffer = RTC_d.time+1000;
+				break;
+				//-----Step 5------------------
+				MPV_valve_close();
+				Light_Green();
+				stan_d.armed_trigger = false;
+			}
         }
     }
 }

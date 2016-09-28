@@ -20,12 +20,12 @@ void MPV_valve_open(void);
 void MPV_valve_close(void);
 void FPV_valve_open(void);
 void FPV_valve_close(void);
-void SERVO1_open(void);
-void SERVO1_close(void);
-void SERVO2_open(void);
-void SERVO2_close(void);
+void SERVO_open(void);
+void SERVO_close(void);
 void Buzzer_active(void);
 void Buzzer_inactive(void);
+void Light_Green(void);
+void Light_Red(void);
 void ADC_sync(void);
 void BL_onoff(bool state);
 #endif /* UTIL_H_ */

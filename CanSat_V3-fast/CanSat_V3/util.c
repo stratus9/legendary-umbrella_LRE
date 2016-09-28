@@ -80,9 +80,9 @@ void prepareFrame(allData_t * allData){
 //	MFV - RELAY2 - PE1
 //	MOV - RELAY3 - PE0
 //	MPV - RELAY4 - PR0
-//	FPV	- RELAY5 - PR1
+//	WPV	- RELAY5 - PR1
 //	??? - RELAY6 - PA6
-//	??? - RELAY7 - PA7
+//	LGH - RELAY7 - PA7
 
 //============== Zapalnik ==========================
 void Ignition_active(void){
@@ -124,20 +124,14 @@ void FPV_valve_close(void){
 	PORTR.OUTCLR = PIN1_bm;
 }
 
-//==================== SERVO 1 =====================
-void SERVO1_open(void){
+//==================== SERVO =======================
+void SERVO_open(void){
 	PORTD.OUTSET = PIN4_bm;
-}
-void SERVO1_close(void){
-	PORTD.OUTCLR = PIN4_bm;
-}
-
-//==================== SERVO 2 =====================
-void SERVO2_open(void){
-	PORTD.OUTSET = PIN5_bm;
-}
-void SERVO2_close(void){
 	PORTD.OUTCLR = PIN5_bm;
+}
+void SERVO_close(void){
+	PORTD.OUTCLR = PIN4_bm;
+	PORTD.OUTSET = PIN5_bm;
 }
 
 //==================== Buzzer =======================
@@ -146,6 +140,14 @@ void Buzzer_active(void){
 }
 void Buzzer_inactive(void){
 	PORTR.OUTCLR = PIN1_bm;
+}
+
+//==================== LIGHT =======================
+void Light_Green(void){
+	PORTA.OUTSET = PIN7_bm;
+}
+void Light_Red(void){
+	PORTA.OUTCLR = PIN7_bm;
 }
 
 void ADC_sync(void){

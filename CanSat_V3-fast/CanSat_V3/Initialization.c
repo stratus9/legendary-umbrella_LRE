@@ -100,35 +100,6 @@ void ADC_Init(void){
 	ADCA.CH0.CTRL = ADC_CH_INPUTMODE_SINGLEENDED_gc;
 }
 
-void GPS_Init(void){
-	GPS_UART_PORT.OUTCLR = PIN2_bm;					//konfiguracja pinów Rx i Tx
-	GPS_UART_PORT.OUTSET = PIN3_bm;
-	GPS_UART_PORT.DIRSET = PIN3_bm;
-	
-	GPS_UART.CTRLC = USART_CHSIZE_8BIT_gc;			//ramka: 8bitów, 1 bit stopu, brak bitu parzystoœci
-	int16_t BSEL = GPS_BSEL;							//konfiguracja prêdkoœci transmisji 115200
-	int8_t BSCALE = GPS_BSCALE;					//-6
-	GPS_UART.BAUDCTRLA = (uint8_t)(BSEL&0x00FF);
-	GPS_UART.BAUDCTRLB = (uint8_t)(((BSEL >> 8) & 0x000F) | BSCALE) ;
-	GPS_UART.CTRLA |= USART_RXCINTLVL_LO_gc;								//odblokowanie przerwañ odbiornika, niski priorytet
-	GPS_UART.CTRLB |= USART_TXEN_bm | USART_RXEN_bm;						//w³¹czenie nadajnika i odbiornika USART
-}
-
-void GPS_Conf(void){
-	/*
-	uint8_t i=0;
-	char buf[54] = "$PMTK314,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0*29\r\n\0\0";
-	while(buf[i]){
-		GPS_UART.DATA = buf[i];
-		while(!(GPS_UART.STATUS & USART_TXCIF_bm)){
-			asm volatile("nop");
-		}
-		GPS_UART.STATUS |= USART_TXCIF_bm;
-		i++;
-	}
-	*/
-}
-
 void USART_Init(void){
 	XBEE_UART_PORT.OUTCLR = PIN2_bm;					//konfiguracja pinów Rx i Tx
 	XBEE_UART_PORT.OUTSET = PIN3_bm;
