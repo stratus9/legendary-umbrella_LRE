@@ -145,22 +145,26 @@ void USART_Init(void){
 
 void IO_Init(void){
 	//konfiguracja przycisków
-	PORTE_PIN0CTRL = PORT_OPC_PULLUP_gc;		//w³¹czenie Pull-up przycisku 1
-	PORTE_PIN1CTRL = PORT_OPC_PULLUP_gc;		//w³¹czenie Pull-up przycisku 2
-	//konfiguracja pinów kontroli GPS
-	PORTA_DIR |= PIN0_bm;
-	PORTA_OUTCLR = PIN0_bm;
+	PORTB.DIRCLR = PIN4_bm | PIN5_bm | PIN6_bm | PIN7_bm;
+	PORTB.PIN4CTRL = PORT_OPC_PULLUP_gc;		//w³¹czenie Pull-up przycisku UP
+	PORTB.PIN5CTRL = PORT_OPC_PULLUP_gc;		//w³¹czenie Pull-up przycisku DOWN
+	PORTB.PIN6CTRL = PORT_OPC_PULLUP_gc;		//w³¹czenie Pull-up przycisku LEFT
+	PORTB.PIN7CTRL = PORT_OPC_PULLUP_gc;		//w³¹czenie Pull-up przycisku RIGHT
 	//konfiguracja LED
-	PORTA_DIR |= PIN2_bm | PIN3_bm | PIN4_bm | PIN5_bm | PIN6_bm;	//konfiguracja kierunku pinów LED
-	PORTA_OUTCLR = PIN2_bm | PIN3_bm | PIN4_bm | PIN5_bm | PIN6_bm;	//konfiguracja stanu pinów LED
+	PORTF.DIRSET = PIN0_bm | PIN1_bm | PIN2_bm | PIN3_bm | PIN4_bm | PIN5_bm;	//konfiguracja kierunku pinów LED
+	PORTF.OUTCLR = PIN0_bm | PIN1_bm | PIN2_bm | PIN3_bm | PIN4_bm | PIN5_bm;	//konfiguracja stanu pinów LED
 	//konfiguracja buzzera
-	PORTF_DIR |= PIN6_bm;						//konfiguracja kierunku pinu buzzera
-	PORTF_OUTCLR = PIN6_bm;						//konfiguracja stanu pinu buzzer
-	//konfiguracja wyjœæ POWER
-	PORTC_DIRSET = PIN2_bm;			//konfiguracja kierunku pinów POWER
-	PORTC_OUTCLR = PIN2_bm;			//konfiguracja stanu pinów POWER
-	PORTD_DIRSET = PIN1_bm;			//konfiguracja kierunku pinów POWER
-	PORTD_OUTCLR = PIN1_bm;			//konfiguracja stanu pinów POWER
+	PORTF.DIRSET = PIN6_bm;						//konfiguracja kierunku pinu buzzera
+	PORTF.OUTCLR = PIN6_bm;						//konfiguracja stanu pinu buzzer
+	PORTD.DIRSET = PIN0_bm;						//konfiguracja kierunku pinu buzzera
+	PORTD.OUTCLR = PIN0_bm;						//konfiguracja stanu pinu buzzer
+	//konfiguracja wyjœæ RELAY
+	PORTE.DIRSET = PIN0_bm | PIN1_bm | PIN2_bm;			//konfiguracja kierunku pinów RELAY
+	PORTE.OUTCLR = PIN0_bm | PIN1_bm | PIN2_bm;			//konfiguracja stanu pinów RELAY
+	PORTR.DIRSET = PIN0_bm | PIN1_bm;					//konfiguracja kierunku pinów RELAY
+	PORTR.OUTCLR = PIN0_bm | PIN1_bm;					//konfiguracja stanu pinów RELAY
+	PORTA.DIRSET = PIN6_bm | PIN7_bm;					//konfiguracja kierunku pinów RELAY
+	PORTA.OUTCLR = PIN6_bm | PIN7_bm;					//konfiguracja stanu pinów RELAY
 	//konfiguracja interfejsu XBEE
 	PORTD_OUTCLR = PIN2_bm;		//RX
 	PORTD_DIRSET = PIN3_bm;		//TX
@@ -173,22 +177,18 @@ void IO_Init(void){
 	//konfiguracja pinów I2C
 	PORTC_DIR = PIN0_bm | PIN1_bm;
 	PORTC_OUT = PIN0_bm | PIN1_bm;
-	//konfiguracja wejœæ data ready
-	PORTR_DIRCLR = PIN0_bm;		//LPS
-	PORTR_DIRCLR = PIN1_bm;		//LIS
-	PORTE_DIRCLR = PIN4_bm;		//MPU
-	PORTE_DIRCLR = PIN5_bm;		//LSM
-	PORTF_DIRCLR = PIN0_bm;		//LSM
-	PORTF_DIRCLR = PIN1_bm;		//HMC
-	PORTF_DIRCLR = PIN4_bm;		//LIS2
-	PORTD_DIRCLR = PIN4_bm;		//HP
 	//konfiguracja wejœæ ADC
-	PORTA_OUTCLR = PIN1_bm;		//Vsense2
-	PORTA_OUTCLR = PIN7_bm;		//Vsense
-	PORTB_OUTCLR = PIN0_bm;		//Vusb
-	PORTB_OUTCLR = PIN5_bm;		//light1
-	PORTB_OUTCLR = PIN6_bm;		//light2
-	PORTB_OUTCLR = PIN7_bm;		//light3
+	PORTA.OUTCLR = PIN0_bm | PIN1_bm;							//Vsense
+	PORTB.OUTCLR = PIN0_bm | PIN1_bm | PIN2_bm | PIN3_bm;		//Temperature
+	//wyjœcia servo
+	PORTD.DIRSET = PIN4_bm | PIN5_bm;					//konfiguracja kierunku pinów SERVO
+	PORTD.OUTCLR = PIN4_bm | PIN5_bm;					//konfiguracja stanu pinów SERVO
+	//ADC sync
+	PORTD.DIRSET = PIN1_bm;						//konfiguracja kierunku pinu synchronizacja ADC
+	PORTD.OUTCLR = PIN1_bm;						//konfiguracja stanu pinu synchronizacji ADC
+	//podœwietlenie LCD
+	PORTC.DIRSET = PIN2_bm;						
+	PORTC.OUTCLR = PIN2_bm;						
 }
 
 void I2C_Init(void){

@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <math.h>
+#include <util/delay.h>
 #include "struct.h"
 #include "util.h"
 #include "CanSat.h"
@@ -73,4 +74,87 @@ void prepareFrame(allData_t * allData){
 	allData->frame_b->frameASCII[i++] = '\n';		//248 bajtów
 	allData->frame_b->frameASCII[i++] = 0;
 	allData->frame_b->frameASCII[i++] = 'X';
+}
+
+//	IGN - RELAY1 - PE2
+//	MFV - RELAY2 - PE1
+//	MOV - RELAY3 - PE0
+//	MPV - RELAY4 - PR0
+//	FPV	- RELAY5 - PR1
+//	??? - RELAY6 - PA6
+//	??? - RELAY7 - PA7
+
+//============== Zapalnik ==========================
+void Ignition_active(void){
+	PORTE.OUTSET = PIN2_bm;
+}
+void Ignition_inactive(void){
+	PORTE.OUTCLR = PIN2_bm;
+}
+
+//========== G³ówny zawór paliwa ===================
+void MFV_valve_open(void){
+	PORTE.OUTSET = PIN1_bm;
+}
+void MFV_valve_close(void){
+	PORTE.OUTCLR = PIN1_bm;
+}
+
+//========== G³ówny zawór utleniacza ===============
+void MOV_valve_open(void){
+	PORTE.OUTSET = PIN0_bm;
+}
+void MOV_valve_close(void){
+	PORTE.OUTCLR = PIN0_bm;
+}
+
+//========== G³ówny zawór wody =====================
+void MPV_valve_open(void){
+	PORTR.OUTSET = PIN0_bm;
+}
+void MPV_valve_close(void){
+	PORTR.OUTCLR = PIN0_bm;
+}
+
+//========== G³ówny zawór doprê¿ania ===============
+void FPV_valve_open(void){
+	PORTR.OUTSET = PIN1_bm;
+}
+void FPV_valve_close(void){
+	PORTR.OUTCLR = PIN1_bm;
+}
+
+//==================== SERVO 1 =====================
+void SERVO1_open(void){
+	PORTD.OUTSET = PIN4_bm;
+}
+void SERVO1_close(void){
+	PORTD.OUTCLR = PIN4_bm;
+}
+
+//==================== SERVO 2 =====================
+void SERVO2_open(void){
+	PORTD.OUTSET = PIN5_bm;
+}
+void SERVO2_close(void){
+	PORTD.OUTCLR = PIN5_bm;
+}
+
+//==================== Buzzer =======================
+void Buzzer_active(void){
+	PORTR.OUTSET = PIN1_bm;
+}
+void Buzzer_inactive(void){
+	PORTR.OUTCLR = PIN1_bm;
+}
+
+void ADC_sync(void){
+	PORTD.OUTCLR = PIN1_bm;						//konfiguracja stanu pinu buzzer
+	_delay_ms(100);
+	PORTD.OUTSET = PIN1_bm;						//konfiguracja stanu pinu buzzer
+}
+
+void BL_onoff(bool state){
+	if(state) PORTC.OUTSET = PIN2_bm;						
+	else PORTC.OUTCLR = PIN2_bm;						
 }
