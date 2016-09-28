@@ -226,3 +226,9 @@ void SPI_WriteFrame(uint32_t * adres, uint16_t frame_length, frame_t * frame){
 		PORTA_OUTCLR = PIN2_bm;
 	}
 }
+
+void SPI_StoreFrame(uint32_t * adres, uint16_t frame_length, frame_t * frame, RTC_t * RTC){
+	SPI_WriteFrame(adres, frame_length, frame);
+	if(RTC->frameFlashCount < 999999UL) RTC->frameFlashCount++;
+	else RTC->frameFlashCount = 0;
+}

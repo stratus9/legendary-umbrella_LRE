@@ -25,6 +25,7 @@ void SPI_AAI_Mode_Stop(void);
 void SPI_WriteFin(void);
 char SPI_ReadByte(uint32_t address);
 uint32_t SPI_FindEnd(void);
-void SPI_WriteFrame(uint32_t * adres, uint16_t frame_length, frame_t * frame);
+void SPI_WriteFrame(uint32_t *, uint16_t, frame_t *);
+void SPI_StoreFrame(uint32_t *, uint16_t, frame_t *, RTC_t *);
 //void SPI_PageWrite(uint16_t page, uint16_t page_length, frame_t * frame);
 #endif /* SPI_H_ */
