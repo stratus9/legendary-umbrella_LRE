@@ -167,30 +167,6 @@
     <Compile Include="Initialization.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="LIS331HH.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="LIS331HH.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="LPS25H.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="LPS25H.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="LSM9DS0.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="LSM9DS0.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="MPU9150.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="MPU9150.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="SPI.h">
       <SubType>compile</SubType>
     </Compile>

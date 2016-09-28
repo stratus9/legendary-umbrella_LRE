@@ -15,7 +15,7 @@
 #include "CanSat.h"
 
 void AnalogUpdate(Analog_t * Analog){
-	float Analog1, Analog2, Analog3, Vcc, Vbat, Vext, Vusb;
+	float Analog1, Analog2, Analog3, Analog4, Analog5, Analog6, Analog7, Analog8;
 	
 	ADCA.CH0.CTRL |= ADC_CH_INPUTMODE_SINGLEENDED_gc;	//singleended
 	//sensor 1
@@ -47,7 +47,7 @@ void AnalogUpdate(Analog_t * Analog){
 	ADCA.CH0.CTRL |= ADC_CH_START_bm;				//rozpocznij pomiar CH0
 	while(!(ADCA.INTFLAGS & ADC_CH0IF_bm));
 	ADCA.CH0.INTFLAGS = ADC_CH0IF_bm;
-	Vbat = (ADCA.CH0RES/4096.0-0.05)*10.3;
+	Analog4 = (ADCA.CH0RES/4096.0-0.05)*10.3;
 	
 	//Vex
 	//ADCA_CH0_CTRL = ADC_CH_INPUTMODE_DIFFWGAIN_gc | ADC_CH_GAIN_1X_gc;
@@ -55,7 +55,7 @@ void AnalogUpdate(Analog_t * Analog){
 	ADCA.CH0.CTRL |= ADC_CH_START_bm;				//rozpocznij pomiar CH0
 	while(!(ADCA.INTFLAGS & ADC_CH0IF_bm));
 	ADCA.CH0.INTFLAGS = ADC_CH0IF_bm;
-	Vext = (ADCA.CH0RES/4096.0-0.05)*10.3;
+	Analog5 = (ADCA.CH0RES/4096.0-0.05)*10.3;
 	
 	//Vusb
 	//ADCA_CH0_CTRL = ADC_CH_INPUTMODE_DIFFWGAIN_gc | ADC_CH_GAIN_1X_gc;
@@ -63,7 +63,7 @@ void AnalogUpdate(Analog_t * Analog){
 	ADCA.CH0.CTRL |= ADC_CH_START_bm;				//rozpocznij pomiar CH0
 	while(!(ADCA.INTFLAGS & ADC_CH0IF_bm));
 	ADCA.CH0.INTFLAGS = ADC_CH0IF_bm;
-	Vusb = (ADCA.CH0RES/4096.0-0.05)*10.3;
+	Analog6 = (ADCA.CH0RES/4096.0-0.05)*10.3;
 	
 	//Vcc
 	ADCA.CH0.CTRL = ADC_CH_INPUTMODE_INTERNAL_gc;	//internal
@@ -71,14 +71,17 @@ void AnalogUpdate(Analog_t * Analog){
 	ADCA.CH0.CTRL |= ADC_CH_START_bm;				//rozpocznij pomiar 1/10 VCC
 	while(!(ADCA.INTFLAGS & ADC_CH0IF_bm));
 	ADCA.CH0.INTFLAGS = ADC_CH0IF_bm;
-	Vcc = ((ADCA.CH0RES/4096.0)-0.05)*10.35;
+	Analog7 = ((ADCA.CH0RES/4096.0)-0.05)*10.35;
+	
+	Analog8 = 0;
 	
 	//-----Analog to percent-----------------------
 	Analog->AnalogIn1 = ((Analog1 * 100) / 255);
 	Analog->AnalogIn2 = ((Analog2 * 100) / 255);
 	Analog->AnalogIn3 = ((Analog3 * 100) / 255);
-	
-	//-----Exponenetal filtering-------------------
-	Analog->Vbat = Analog->Vbat*(1.0-BAT_voltage_alpha) + Vbat*BAT_voltage_alpha;
-	Analog->Vcc = Analog->Vcc*(1.0-BAT_voltage_alpha) + Vcc*BAT_voltage_alpha;
+	Analog->AnalogIn4 = ((Analog4 * 100) / 255);
+	Analog->AnalogIn5 = ((Analog5 * 100) / 255);
+	Analog->AnalogIn6 = ((Analog6 * 100) / 255);
+	Analog->AnalogIn7 = ((Analog7 * 100) / 255);
+	Analog->AnalogIn8 = ((Analog8 * 100) / 255);
 }

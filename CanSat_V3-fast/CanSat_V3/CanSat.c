@@ -24,12 +24,11 @@
 
 
 //-----------------------------------Struktury globalne---------------------------------------------
-static SensorsData_t SensorData_d;
-static SensorsData_t SensorData_b;
+static Output_t Output_d;
 static allData_t allData_d;
 static RTC_t RTC_d;
 static stan_t stan_d;
-Analog_t ADC_d;
+Analog_t Analog_d;
 static frame_t frame_d;
 static frame_t frame_b;
 static buzzer_t buzzer_d;
@@ -182,12 +181,12 @@ void structInit(void) {
     stan_d.new_frame = false;
 	
 	//----------------------Initialize allData_d--------------------
-	allData_d.Analog = &ADC_d;
+	allData_d.Analog = &Analog_d;
 	allData_d.stan = &stan_d;
-	allData_d.SensorsData = &SensorData_d;
 	allData_d.frame = &frame_d;
 	allData_d.frame_b = &frame_b;
 	allData_d.RTC = &RTC_d;
+	allData_d.Output = &Output_d;
 }
 
 void SensorUpdate(allData_t * allData) {

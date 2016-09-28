@@ -12,13 +12,5 @@ SPI.c
 
 Initialization.c
 
-LIS331HH.c
-
-LPS25H.c
-
-LSM9DS0.c
-
-MPU9150.c
-
 util.c
 

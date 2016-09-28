@@ -42,10 +42,6 @@ C_SRCS +=  \
 ../I2C.c \
 ../SPI.c \
 ../Initialization.c \
-../LIS331HH.c \
-../LPS25H.c \
-../LSM9DS0.c \
-../MPU9150.c \
 ../util.c
 
 
@@ -61,10 +57,6 @@ CanSat.o \
 I2C.o \
 SPI.o \
 Initialization.o \
-LIS331HH.o \
-LPS25H.o \
-LSM9DS0.o \
-MPU9150.o \
 util.o
 
 OBJS_AS_ARGS +=  \
@@ -73,10 +65,6 @@ CanSat.o \
 I2C.o \
 SPI.o \
 Initialization.o \
-LIS331HH.o \
-LPS25H.o \
-LSM9DS0.o \
-MPU9150.o \
 util.o
 
 C_DEPS +=  \
@@ -85,10 +73,6 @@ CanSat.d \
 I2C.d \
 SPI.d \
 Initialization.d \
-LIS331HH.d \
-LPS25H.d \
-LSM9DS0.d \
-MPU9150.d \
 util.d
 
 C_DEPS_AS_ARGS +=  \
@@ -97,10 +81,6 @@ CanSat.d \
 I2C.d \
 SPI.d \
 Initialization.d \
-LIS331HH.d \
-LPS25H.d \
-LSM9DS0.d \
-MPU9150.d \
 util.d
 
 OUTPUT_FILE_PATH +=CanSat_V3\ -\ 1kHz.elf
@@ -146,34 +126,6 @@ LINKER_SCRIPT_DEP+=
 	
 
 ./Initialization.o: .././Initialization.c
-	@echo Building file: $<
-	@echo Invoking: AVR/GNU C Compiler : 4.9.2
-	$(QUOTE)E:\Atmel\AS7\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=32000000  -I"E:\Atmel\AS7\7.0\Packs\atmel\XMEGAA_DFP\1.0.36\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega256a3bu -B "E:\Atmel\AS7\7.0\Packs\atmel\XMEGAA_DFP\1.0.36\gcc\dev\atxmega256a3bu" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
-	@echo Finished building: $<
-	
-
-./LIS331HH.o: .././LIS331HH.c
-	@echo Building file: $<
-	@echo Invoking: AVR/GNU C Compiler : 4.9.2
-	$(QUOTE)E:\Atmel\AS7\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=32000000  -I"E:\Atmel\AS7\7.0\Packs\atmel\XMEGAA_DFP\1.0.36\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega256a3bu -B "E:\Atmel\AS7\7.0\Packs\atmel\XMEGAA_DFP\1.0.36\gcc\dev\atxmega256a3bu" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
-	@echo Finished building: $<
-	
-
-./LPS25H.o: .././LPS25H.c
-	@echo Building file: $<
-	@echo Invoking: AVR/GNU C Compiler : 4.9.2
-	$(QUOTE)E:\Atmel\AS7\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=32000000  -I"E:\Atmel\AS7\7.0\Packs\atmel\XMEGAA_DFP\1.0.36\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega256a3bu -B "E:\Atmel\AS7\7.0\Packs\atmel\XMEGAA_DFP\1.0.36\gcc\dev\atxmega256a3bu" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
-	@echo Finished building: $<
-	
-
-./LSM9DS0.o: .././LSM9DS0.c
-	@echo Building file: $<
-	@echo Invoking: AVR/GNU C Compiler : 4.9.2
-	$(QUOTE)E:\Atmel\AS7\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=32000000  -I"E:\Atmel\AS7\7.0\Packs\atmel\XMEGAA_DFP\1.0.36\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega256a3bu -B "E:\Atmel\AS7\7.0\Packs\atmel\XMEGAA_DFP\1.0.36\gcc\dev\atxmega256a3bu" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
-	@echo Finished building: $<
-	
-
-./MPU9150.o: .././MPU9150.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 4.9.2
 	$(QUOTE)E:\Atmel\AS7\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=32000000  -I"E:\Atmel\AS7\7.0\Packs\atmel\XMEGAA_DFP\1.0.36\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega256a3bu -B "E:\Atmel\AS7\7.0\Packs\atmel\XMEGAA_DFP\1.0.36\gcc\dev\atxmega256a3bu" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
