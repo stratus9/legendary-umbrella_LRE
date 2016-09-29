@@ -24,6 +24,13 @@ typedef struct stan_s{
 	bool Abort;
 	uint8_t State;
 	uint32_t TestConfig;
+	bool MFV;
+	bool MOV;
+	bool FPV;
+	bool MPV;
+	bool IGN;
+	bool SERVO1;
+	bool SERVO2;
 } stan_t;
 
 typedef struct Output_s{

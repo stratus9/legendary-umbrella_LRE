@@ -362,6 +362,7 @@ int main(void) {
 	uint32_t timer_buffer = 0;
     while(1){
         _delay_us(10);
+		CheckOutputState(&stan_d);
 		if(stan_d.Abort == true){
 			SERVO_close();
 			FPV_valve_close();

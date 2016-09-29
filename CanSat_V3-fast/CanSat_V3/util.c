@@ -35,20 +35,20 @@ void float2char(float number,char * tablica){
 void prepareFrame(allData_t * allData){
 	volatile int16_t i,tmp,tmpf;
 	i=0;
-	//----------------packet count-----------------------
-	tmp = allData->RTC->frameTeleCount;
-	allData->frame_b->frameASCII[i++] = (tmp/10000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
-	allData->frame_b->frameASCII[i++] = ',';
 	//------------ state-------------------------
 	allData->frame_b->frameASCII[i++] = 'S';
-	allData->frame_b->frameASCII[i++] = allData->stan->armed_trigger+48;
-	allData->frame_b->frameASCII[i++] = allData->stan->telemetry_trigger+48;
-	allData->frame_b->frameASCII[i++] = allData->stan->flash_trigger+48;
+	allData->frame_b->frameASCII[i++] = allData->stan->run_trigger+48;	//1
+	allData->frame_b->frameASCII[i++] = allData->stan->FPV+48;			//2
+	allData->frame_b->frameASCII[i++] = allData->stan->MFV+48;			//3
+	allData->frame_b->frameASCII[i++] = allData->stan->MOV+48;			//4
+	allData->frame_b->frameASCII[i++] = allData->stan->MPV+48;			//5
+	allData->frame_b->frameASCII[i++] = 0;		
+	allData->frame_b->frameASCII[i++] = 0;
+	allData->frame_b->frameASCII[i++] = allData->stan->IGN+48;			//8
+	allData->frame_b->frameASCII[i++] = allData->stan->SERVO1+48;		//9
+	allData->frame_b->frameASCII[i++] = allData->stan->SERVO2+48;		//10
 	allData->frame_b->frameASCII[i++] = ',';
+	allData->frame_b->frameASCII[i++] = allData->stan->TestConfig+48;
 	
 	//===============Pressure & altitude===================
 	//--------------LPS25H Altitude----------------------------
@@ -70,8 +70,17 @@ void prepareFrame(allData_t * allData){
 	allData->frame_b->frameASCII[i++] = (tmpf/1)%10 + 48;
 	allData->frame_b->frameASCII[i++] = ',';
 	
+	allData->frame_b->frameASCII[i++] = '\n';		
+	//----------------packet count-----------------------
+	tmp = allData->RTC->frameTeleCount;
+	allData->frame_b->frameASCII[i++] = (tmp/10000)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
+	allData->frame_b->frameASCII[i++] = ',';
 	allData->frame_b->frameASCII[i++] = '\r';
-	allData->frame_b->frameASCII[i++] = '\n';		//248 bajtów
+	allData->frame_b->frameASCII[i++] = '\n';		
 	allData->frame_b->frameASCII[i++] = 0;
 	allData->frame_b->frameASCII[i++] = 'X';
 }
@@ -159,4 +168,14 @@ void ADC_sync(void){
 void BL_onoff(bool state){
 	if(state) PORTC.OUTSET = PIN2_bm;						
 	else PORTC.OUTCLR = PIN2_bm;						
+}
+
+void CheckOutputState(stan_t * stan){
+	stan->MOV = PORTE.IN & PIN0_bm;
+	stan->MFV = PORTE.IN & PIN1_bm;
+	stan->MPV = PORTR.IN & PIN0_bm;
+	stan->FPV = PORTR.IN & PIN1_bm;
+	stan->IGN = PORTE.IN & PIN2_bm;
+	stan->SERVO1 = PORTD.IN & PIN5_bm;
+	stan->SERVO2 = PORTD.IN & PIN4_bm;
 }
