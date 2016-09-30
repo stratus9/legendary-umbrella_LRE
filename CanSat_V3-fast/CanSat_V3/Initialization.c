@@ -91,13 +91,23 @@ void TimerFInit(uint16_t period_ms){
 }
 
 void ADC_Init(void){
-	ADCA.CTRLA = ADC_ENABLE_bm;
-	ADCA.CALL = ReadSignatureByte(0x20) ; //ADC Calibration Byte 0
-	ADCA.CALH = ReadSignatureByte(0x21) ; //ADC Calibration Byte 1
-	ADCA.CTRLB = ADC_RESOLUTION_12BIT_gc;	//rozdzielczoœæ 12bit, CONVMODE=0
-	ADCA.REFCTRL = ADC_REFSEL_INT1V_gc;
-	ADCA.PRESCALER = ADC_PRESCALER_DIV32_gc;
-	ADCA.CH0.CTRL = ADC_CH_INPUTMODE_SINGLEENDED_gc;
+	ADCB.CTRLA = ADC_ENABLE_bm;
+	ADCB.CTRLB = ADC_RESOLUTION_12BIT_gc;		//rozdzielczoœæ 12bit, CONVMODE=0
+	ADCB.CTRLB |= ADC_FREERUN_bm;				//ci¹g³a konwersja
+	ADCB.CTRLB |= ADC_CONMODE_bm;				//tryb ze znakiem
+	ADCB.EVCTRL = ADC_SWEEP_0123_gc;			//przemiatanie kana³ów 0,1,2,3
+	ADCB.REFCTRL = ADC_REFSEL_INTVCC2_gc;		//wybór napiêcia odniesienia VCC/2
+	ADCB.PRESCALER = ADC_PRESCALER_DIV512_gc;	//preskaler 62.5kHz@32MHz -> ~15ksps@32MHz
+	
+	ADCB.CH0.CTRL = ADC_CH_INPUTMODE_DIFFWGAIN_gc | ADC_CH_GAIN_DIV2_gc;	//tryb ró¿nicowy ze wzmocnieniem 1/2
+	ADCB.CH0.MUXCTRL = ADC_CH_MUXPOS_PIN0_gc | ADC_CH_MUXNEG_GND_MODE4_gc;	//pocz¹tek przemiatania od PIN13
+	ADCB.CH1.CTRL = ADC_CH_INPUTMODE_DIFFWGAIN_gc | ADC_CH_GAIN_DIV2_gc;	//tryb ró¿nicowy ze wzmocnieniem 1/2
+	ADCB.CH1.MUXCTRL = ADC_CH_MUXPOS_PIN1_gc | ADC_CH_MUXNEG_GND_MODE4_gc;	//pocz¹tek przemiatania od PIN14
+	ADCB.CH2.CTRL = ADC_CH_INPUTMODE_DIFFWGAIN_gc | ADC_CH_GAIN_DIV2_gc;	//tryb ró¿nicowy ze wzmocnieniem 1/2
+	ADCB.CH2.MUXCTRL = ADC_CH_MUXPOS_PIN2_gc | ADC_CH_MUXNEG_GND_MODE4_gc;	//pocz¹tek przemiatania od PIN15
+	ADCB.CH3.CTRL = ADC_CH_INPUTMODE_DIFFWGAIN_gc | ADC_CH_GAIN_DIV2_gc;	//tryb ró¿nicowy ze wzmocnieniem 1/2
+	ADCB.CH3.MUXCTRL = ADC_CH_MUXPOS_PIN3_gc | ADC_CH_MUXNEG_GND_MODE4_gc;	//pocz¹tek przemiatania od PIN15
+	ADCB.CH3.INTCTRL = ADC_CH_INTMODE_COMPLETE_gc | ADC_CH_INTLVL_LO_gc;	//przerwanie od zakoñczenia przetwarzania ostatniego kana³u
 }
 
 void USART_Init(void){

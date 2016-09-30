@@ -110,6 +110,26 @@ typedef struct RTC_s{
 	uint32_t frameTeleCount;
 	uint32_t frameFlashCount;
 } RTC_t;
+
+typedef struct AD7195_s{
+	float pressure1;
+	float pressure2;
+	float pressure3;
+	float pressure4;
+	float pressure5;
+	float pressure6;
+	float pressure7;
+	float pressure8;
+	
+	uint32_t raw_press1;
+	uint32_t raw_press2;
+	uint32_t raw_press3;
+	uint32_t raw_press4;
+	uint32_t raw_press5;
+	uint32_t raw_press6;
+	uint32_t raw_press7;
+	uint32_t raw_press8;
+} AD7195_t;
 		
 typedef struct allData_s{
 	Analog_t * Analog;
@@ -118,6 +138,7 @@ typedef struct allData_s{
 	frame_t * frame_b;
 	RTC_t * RTC;
 	Output_t * Output;
+	AD7195_t * AD7195;
 } allData_t;
 
 #endif /* STRUCT_H_ */

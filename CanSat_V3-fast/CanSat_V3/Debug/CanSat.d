@@ -22,7 +22,7 @@ CanSat.d CanSat.o: .././CanSat.c \
  e:\atmel\as7\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\math.h \
  e:\atmel\as7\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\atomic.h \
  .././Initialization.h .././struct.h .././CanSat.h .././util.h .././SPI.h \
- .././ADC.h .././I2C.h
+ .././I2C.h
 
 e:\atmel\as7\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\io.h:
 
@@ -77,7 +77,5 @@ e:\atmel\as7\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\atomic.h:
 .././util.h:
 
 .././SPI.h:
-
-.././ADC.h:
 
 .././I2C.h:

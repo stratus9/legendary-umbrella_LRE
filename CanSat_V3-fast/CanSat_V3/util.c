@@ -48,7 +48,8 @@ void prepareFrame(allData_t * allData){
 	allData->frame_b->frameASCII[i++] = allData->stan->SERVO1+48;		//9
 	allData->frame_b->frameASCII[i++] = allData->stan->SERVO2+48;		//10
 	allData->frame_b->frameASCII[i++] = ',';
-	allData->frame_b->frameASCII[i++] = allData->stan->TestConfig+48;
+	allData->frame_b->frameASCII[i++] = allData->stan->TestConfig+48;	//konfiguracja testu
+	allData->frame_b->frameASCII[i++] = ',';
 	
 	//===============Pressure & altitude===================
 	//--------------LPS25H Altitude----------------------------

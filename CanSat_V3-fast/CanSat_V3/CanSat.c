@@ -19,13 +19,13 @@
 #include "CanSat.h"
 #include "util.h"
 #include "SPI.h"
-#include "ADC.h"
 #include "I2C.h"
 
 
 //-----------------------------------Struktury globalne---------------------------------------------
 static Output_t Output_d;
 static allData_t allData_d;
+static AD7195_t AD7195_d;
 static RTC_t RTC_d;
 static stan_t stan_d;
 Analog_t Analog_d;
@@ -36,10 +36,17 @@ static uint32_t SPIaddress = 0;
 uint32_t mission_time = 0;
 uint32_t frame_count = 0;
 
-
 //----------------------Bad ISR handling------------------------
 ISR(BADISR_vect) {
     LED_PORT.OUTTGL = LED2;
+}
+
+ISR(ADCB_CH3_vect){
+	Analog_d.AnalogIn1 = ADCB.CH0RES;	//dodaæ przeliczenie na temp lub zrobiæ to w frame_prepare
+	Analog_d.AnalogIn2 = ADCB.CH1RES;
+	Analog_d.AnalogIn3 = ADCB.CH2RES;
+	Analog_d.AnalogIn4 = ADCB.CH3RES;
+	LED_PORT.OUTTGL = LED2;
 }
 
 //----------------------RTC ISR handling------------------------
@@ -234,6 +241,7 @@ void structInit(void) {
 	allData_d.frame_b = &frame_b;
 	allData_d.RTC = &RTC_d;
 	allData_d.Output = &Output_d;
+	allData_d.AD7195 = &AD7195_d;
 }
 
 void SensorUpdate(allData_t * allData) {
@@ -241,8 +249,6 @@ void SensorUpdate(allData_t * allData) {
 	
 	//-----------------AD7195 (2)--------------
     
-    //-----------------Read ADC-------------
-    AnalogUpdate(allData->Analog);
 }
 
 void Initialization(void) {
