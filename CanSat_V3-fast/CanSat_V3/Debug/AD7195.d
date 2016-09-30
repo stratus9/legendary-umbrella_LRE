@@ -1,4 +1,4 @@
-CanSat.d CanSat.o: .././CanSat.c \
+AD7195.d AD7195.o: .././AD7195.c \
  e:\atmel\as7\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\io.h \
  e:\atmel\as7\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\sfr_defs.h \
  e:\atmel\as7\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\inttypes.h \
@@ -15,14 +15,12 @@ CanSat.d CanSat.o: .././CanSat.c \
  e:\atmel\as7\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\4.9.2\include\stdarg.h \
  e:\atmel\as7\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\4.9.2\include\stddef.h \
  e:\atmel\as7\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdlib.h \
+ .././AD7195.h .././SPI.h \
  e:\atmel\as7\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\4.9.2\include\stdbool.h \
- e:\atmel\as7\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\interrupt.h \
+ .././struct.h \
  e:\atmel\as7\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay.h \
  e:\atmel\as7\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay_basic.h \
- e:\atmel\as7\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\math.h \
- e:\atmel\as7\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\atomic.h \
- .././Initialization.h .././struct.h .././CanSat.h .././util.h .././SPI.h \
- .././I2C.h .././AD7195.h
+ e:\atmel\as7\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\math.h
 
 e:\atmel\as7\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\io.h:
 
@@ -56,28 +54,16 @@ e:\atmel\as7\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\4.9.2\include\std
 
 e:\atmel\as7\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdlib.h:
 
+.././AD7195.h:
+
+.././SPI.h:
+
 e:\atmel\as7\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\4.9.2\include\stdbool.h:
 
-e:\atmel\as7\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\interrupt.h:
+.././struct.h:
 
 e:\atmel\as7\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay.h:
 
 e:\atmel\as7\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay_basic.h:
 
 e:\atmel\as7\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\math.h:
-
-e:\atmel\as7\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\atomic.h:
-
-.././Initialization.h:
-
-.././struct.h:
-
-.././CanSat.h:
-
-.././util.h:
-
-.././SPI.h:
-
-.././I2C.h:
-
-.././AD7195.h:

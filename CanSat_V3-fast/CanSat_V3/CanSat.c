@@ -20,6 +20,7 @@
 #include "util.h"
 #include "SPI.h"
 #include "I2C.h"
+#include "AD7195.h"
 
 
 //-----------------------------------Struktury globalne---------------------------------------------

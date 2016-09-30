@@ -140,6 +140,12 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AD7195.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="AD7195.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="CanSat.c">
       <SubType>compile</SubType>
     </Compile>

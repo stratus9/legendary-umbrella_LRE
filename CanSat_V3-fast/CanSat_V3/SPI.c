@@ -74,22 +74,6 @@ void SPI_ChipErase(void){
 	SPI_WriteDisable();
 }
 
-char SPI_Read(uint32_t address,uint16_t size, char * tablica){
-	char tmp=0;
-	SPI_CS(true);
-	SPI_W_Byte(0x03);					//Read
-	SPI_W_Byte((address>>16) & 0xFF);	//address MSB
-	SPI_W_Byte((address>>8) & 0xFF);	//address cd.
-	SPI_W_Byte(address & 0xFF);			//address LSB
-	uint16_t i=0;
-	for(i=0;i<size;i++){
-		tmp = SPI_R_Byte();
-		*(tablica++) = tmp;
-	}
-	SPI_CS(false);
-	return tmp;
-}
-
 char SPI_ReadByte(uint32_t address){
 	char tmp;
 	SPI_CS(true);

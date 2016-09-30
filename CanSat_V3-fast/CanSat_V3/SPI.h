@@ -8,6 +8,9 @@
 
 #ifndef SPI_H_
 #define SPI_H_
+#include <stdbool.h>
+#include "struct.h"
+
 void SPI_W_Byte(uint8_t byte);
 uint8_t SPI_R_Byte(void);
 void SPI_CS(bool enable);
@@ -16,7 +19,6 @@ void SPI_WriteEnable(void);
 void SPI_WriteDisable(void);
 uint8_t SPI_Status(void);
 void SPI_ChipErase(void);
-char SPI_Read(uint32_t address,uint16_t size, char * tablica);
 void SPI_WriteByte(uint32_t address, uint8_t data);
 void SPI_WriteProtection(bool block);
 void SPI_CmdSend(char cmd);
@@ -28,4 +30,5 @@ uint32_t SPI_FindEnd(void);
 void SPI_WriteFrame(uint32_t *, uint16_t, frame_t *);
 void SPI_StoreFrame(uint32_t *, uint16_t, frame_t *, RTC_t *);
 //void SPI_PageWrite(uint16_t page, uint16_t page_length, frame_t * frame);
+
 #endif /* SPI_H_ */

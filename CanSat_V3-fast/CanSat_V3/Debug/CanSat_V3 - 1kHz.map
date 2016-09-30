@@ -50,6 +50,23 @@ Discarded input sections
 
  .data          0x00000000        0x0 E:/Atmel/AS7/7.0/Packs/atmel/XMEGAA_DFP/1.0.36/gcc/dev/atxmega256a3bu/avrxmega6/crtatxmega256a3bu.o
  .bss           0x00000000        0x0 E:/Atmel/AS7/7.0/Packs/atmel/XMEGAA_DFP/1.0.36/gcc/dev/atxmega256a3bu/avrxmega6/crtatxmega256a3bu.o
+ .text          0x00000000        0x0 AD7195.o
+ .data          0x00000000        0x0 AD7195.o
+ .bss           0x00000000        0x0 AD7195.o
+ .text.AD7195_CS
+                0x00000000       0x30 AD7195.o
+ .text.AD7195_regwrite
+                0x00000000       0x30 AD7195.o
+ .debug_info    0x00000000      0x347 AD7195.o
+ .debug_abbrev  0x00000000      0x13d AD7195.o
+ .debug_loc     0x00000000      0x10b AD7195.o
+ .debug_aranges
+                0x00000000       0x28 AD7195.o
+ .debug_ranges  0x00000000       0x18 AD7195.o
+ .debug_line    0x00000000      0x15c AD7195.o
+ .debug_str     0x00000000      0x2ca AD7195.o
+ .comment       0x00000000       0x31 AD7195.o
+ .debug_frame   0x00000000       0x44 AD7195.o
  .text          0x00000000        0x0 CanSat.o
  .data          0x00000000        0x0 CanSat.o
  .bss           0x00000000        0x0 CanSat.o
@@ -87,8 +104,6 @@ Discarded input sections
                 0x00000000       0x52 SPI.o
  .text.SPI_Status
                 0x00000000       0x22 SPI.o
- .text.SPI_Read
-                0x00000000       0x68 SPI.o
  .text.SPI_ReadByte
                 0x00000000       0x46 SPI.o
  .text.SPI_CmdSend
@@ -298,6 +313,7 @@ user_signatures  0x00850000         0x00000400         rw !x
 Linker script and memory map
 
 LOAD E:/Atmel/AS7/7.0/Packs/atmel/XMEGAA_DFP/1.0.36/gcc/dev/atxmega256a3bu/avrxmega6/crtatxmega256a3bu.o
+LOAD AD7195.o
 LOAD CanSat.o
 LOAD I2C.o
 LOAD SPI.o
@@ -892,26 +908,26 @@ END GROUP
 .debug_sfnames
  *(.debug_sfnames)
 
-.debug_aranges  0x00000000      0x298
+.debug_aranges  0x00000000      0x290
  *(.debug_aranges)
  .debug_aranges
                 0x00000000       0xa0 CanSat.o
  .debug_aranges
-                0x000000a0       0xb0 SPI.o
+                0x000000a0       0xa8 SPI.o
  .debug_aranges
-                0x00000150       0x88 Initialization.o
+                0x00000148       0x88 Initialization.o
  .debug_aranges
-                0x000001d8       0xc0 util.o
+                0x000001d0       0xc0 util.o
 
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0x45a7
+.debug_info     0x00000000     0x44ad
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000     0x1ab8 CanSat.o
- .debug_info    0x00001ab8      0xf6b SPI.o
- .debug_info    0x00002a23     0x1113 Initialization.o
- .debug_info    0x00003b36      0xa71 util.o
+ .debug_info    0x00001ab8      0xe71 SPI.o
+ .debug_info    0x00002929     0x1113 Initialization.o
+ .debug_info    0x00003a3c      0xa71 util.o
 
 .debug_abbrev   0x00000000      0xa3b
  *(.debug_abbrev)
@@ -920,37 +936,37 @@ END GROUP
  .debug_abbrev  0x0000066f      0x1c9 Initialization.o
  .debug_abbrev  0x00000838      0x203 util.o
 
-.debug_line     0x00000000     0x198e
+.debug_line     0x00000000     0x1924
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0xa85 CanSat.o
- .debug_line    0x00000a85      0x60c SPI.o
- .debug_line    0x00001091      0x466 Initialization.o
- .debug_line    0x000014f7      0x497 util.o
+ .debug_line    0x00000a85      0x5a2 SPI.o
+ .debug_line    0x00001027      0x466 Initialization.o
+ .debug_line    0x0000148d      0x497 util.o
 
-.debug_frame    0x00000000      0x8dc
+.debug_frame    0x00000000      0x8a8
  *(.debug_frame)
  .debug_frame   0x00000000      0x354 CanSat.o
- .debug_frame   0x00000354      0x2a4 SPI.o
- .debug_frame   0x000005f8      0x108 Initialization.o
- .debug_frame   0x00000700      0x1dc util.o
+ .debug_frame   0x00000354      0x270 SPI.o
+ .debug_frame   0x000005c4      0x108 Initialization.o
+ .debug_frame   0x000006cc      0x1dc util.o
 
-.debug_str      0x00000000     0x1dfa
+.debug_str      0x00000000     0x1dec
  *(.debug_str)
  .debug_str     0x00000000      0xb4d CanSat.o
                                 0xbcd (size before relaxing)
- .debug_str     0x00000b4d      0x10a SPI.o
-                                0x4dd (size before relaxing)
- .debug_str     0x00000c57     0x114c Initialization.o
+ .debug_str     0x00000b4d       0xf4 SPI.o
+                                0x4c7 (size before relaxing)
+ .debug_str     0x00000c41     0x114c Initialization.o
                                0x166e (size before relaxing)
- .debug_str     0x00001da3       0x57 util.o
+ .debug_str     0x00001d8d       0x5f util.o
                                 0x724 (size before relaxing)
 
-.debug_loc      0x00000000     0x18dc
+.debug_loc      0x00000000     0x172c
  *(.debug_loc)
  .debug_loc     0x00000000      0xa2f CanSat.o
- .debug_loc     0x00000a2f      0xa79 SPI.o
- .debug_loc     0x000014a8      0x192 Initialization.o
- .debug_loc     0x0000163a      0x2a2 util.o
+ .debug_loc     0x00000a2f      0x8c9 SPI.o
+ .debug_loc     0x000012f8      0x192 Initialization.o
+ .debug_loc     0x0000148a      0x2a2 util.o
 
 .debug_macinfo
  *(.debug_macinfo)
@@ -970,12 +986,12 @@ END GROUP
 .debug_pubtypes
  *(.debug_pubtypes)
 
-.debug_ranges   0x00000000      0x258
+.debug_ranges   0x00000000      0x250
  *(.debug_ranges)
  .debug_ranges  0x00000000       0x90 CanSat.o
- .debug_ranges  0x00000090       0xa0 SPI.o
- .debug_ranges  0x00000130       0x78 Initialization.o
- .debug_ranges  0x000001a8       0xb0 util.o
+ .debug_ranges  0x00000090       0x98 SPI.o
+ .debug_ranges  0x00000128       0x78 Initialization.o
+ .debug_ranges  0x000001a0       0xb0 util.o
 
 .debug_macro
  *(.debug_macro)

@@ -37,6 +37,7 @@ SUBDIRS :=
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
+../AD7195.c \
 ../CanSat.c \
 ../I2C.c \
 ../SPI.c \
@@ -51,6 +52,7 @@ ASM_SRCS +=
 
 
 OBJS +=  \
+AD7195.o \
 CanSat.o \
 I2C.o \
 SPI.o \
@@ -58,6 +60,7 @@ Initialization.o \
 util.o
 
 OBJS_AS_ARGS +=  \
+AD7195.o \
 CanSat.o \
 I2C.o \
 SPI.o \
@@ -65,6 +68,7 @@ Initialization.o \
 util.o
 
 C_DEPS +=  \
+AD7195.d \
 CanSat.d \
 I2C.d \
 SPI.d \
@@ -72,6 +76,7 @@ Initialization.d \
 util.d
 
 C_DEPS_AS_ARGS +=  \
+AD7195.d \
 CanSat.d \
 I2C.d \
 SPI.d \
@@ -92,6 +97,13 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
+./AD7195.o: .././AD7195.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 4.9.2
+	$(QUOTE)E:\Atmel\AS7\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=32000000  -I"E:\Atmel\AS7\7.0\Packs\atmel\XMEGAA_DFP\1.0.36\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega256a3bu -B "E:\Atmel\AS7\7.0\Packs\atmel\XMEGAA_DFP\1.0.36\gcc\dev\atxmega256a3bu" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
 ./CanSat.o: .././CanSat.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 4.9.2
