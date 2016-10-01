@@ -26,7 +26,6 @@ void Buzzer_active(void);
 void Buzzer_inactive(void);
 void Light_Green(void);
 void Light_Red(void);
-void ADC_sync(void);
 void BL_onoff(bool state);
 void CheckOutputState(stan_t *);
 #endif /* UTIL_H_ */

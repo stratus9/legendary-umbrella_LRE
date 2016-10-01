@@ -160,12 +160,6 @@ void Light_Red(void){
 	PORTA.OUTCLR = PIN7_bm;
 }
 
-void ADC_sync(void){
-	PORTD.OUTCLR = PIN1_bm;						//konfiguracja stanu pinu buzzer
-	_delay_ms(100);
-	PORTD.OUTSET = PIN1_bm;						//konfiguracja stanu pinu buzzer
-}
-
 void BL_onoff(bool state){
 	if(state) PORTC.OUTSET = PIN2_bm;						
 	else PORTC.OUTCLR = PIN2_bm;						
