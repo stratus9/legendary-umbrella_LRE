@@ -16,7 +16,8 @@ void AD7195_Init(uint8_t chipNo);
 uint8_t AD7195_WhoIam(uint8_t ChipNo);
 void AD7195_Sync(uint8_t chipNo);
 void AD7195_Reset(uint8_t chipNo);
-void AD7195_ContConvRead(uint8_t chipNo, uint8_t * channel1, uint8_t * channel2, uint32_t * value1, uint32_t * value2);
+void AD7195_ContConvRead(uint8_t * channel1, uint8_t * channel2, uint32_t * value1, uint32_t * value2);
 void AD7195_ContRead(uint8_t chipNo, bool enable);
 bool AD7195_RDY(uint8_t chipNo);
+void AD7195_ReadStore(allData_t * allData);
 #endif /* AD7195_H_ */

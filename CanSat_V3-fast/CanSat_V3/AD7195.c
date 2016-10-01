@@ -74,7 +74,7 @@ void AD7195_Reset(uint8_t chipNo){
 	AD7195_CS(chipNo, true);
 }
 
-void AD7195_ContConvRead(uint8_t chipNo, uint8_t * channel1, uint8_t * channel2, uint32_t * value1, uint32_t * value2){
+void AD7195_ContConvRead(uint8_t * channel1, uint8_t * channel2, uint32_t * value1, uint32_t * value2){
 	AD7195_CS(0, true);
 	SPI_W_Byte(0x58);
 	(*value1) = (uint32_t)SPI_R_Byte() << 16;
@@ -103,4 +103,22 @@ void AD7195_ContRead(uint8_t chipNo, bool enable)
 bool AD7195_RDY(uint8_t chipNo){
 	AD7195_CS(chipNo, true);
 	return (PORTC.IN & PIN6_bm);
+}
+
+void AD7195_ReadStore(allData_t * allData){
+	uint8_t channel1, channel2;
+	uint32_t value1, value2;
+	AD7195_ContConvRead(&channel1, &channel2, &value1, &value2);
+	switch(channel1){
+		case 4: allData->AD7195->raw_press1 = value1; break;
+		case 5: allData->AD7195->raw_press2 = value1; break;
+		case 6: allData->AD7195->raw_press3 = value1; break;
+		case 7: allData->AD7195->raw_press4 = value1; break;
+	}
+	switch(channel2){
+		case 4: allData->AD7195->raw_press5 = value2; break;
+		case 5: allData->AD7195->raw_press6 = value2; break;
+		case 6: allData->AD7195->raw_press7 = value2; break;
+		case 7: allData->AD7195->raw_press8 = value2; break;
+	}
 }

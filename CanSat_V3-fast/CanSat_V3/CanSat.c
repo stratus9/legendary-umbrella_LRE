@@ -369,6 +369,13 @@ int main(void) {
 	uint32_t timer_buffer = 0;
     while(1){
         _delay_us(10);
+		//pomiary
+		if(!AD7195_RDY(0)){
+			//odczytaj pomiar i zapisz do zmiennych
+			AD7195_ReadStore(&allData_d);
+			prepareFrame(&allData_d);
+		}
+		
 		CheckOutputState(&stan_d);
 		if(stan_d.Abort == true){
 			SERVO_close();
@@ -393,7 +400,7 @@ int main(void) {
 				case 2:
 				Buzzer_inactive();
 				Ignition_active();
-				timer_buffer = RTC_d.time+200;
+				timer_buffer = RTC_d.time+200;  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 5s
 				break;
 				//-----Step 3-----------------
 				case 3:
