@@ -151,10 +151,6 @@ void IO_Init(void){
 	PORTD_DIRSET = PIN3_bm;		//TX
 	PORTD_DIRSET = PIN5_bm;		//sleep pin
 	PORTD_OUTCLR = PIN5_bm;
-	//konfiguracja interfejsu GPS
-	PORTF_OUTCLR = PIN2_bm;
-	PORTF_OUTSET = PIN3_bm;
-	PORTF_DIRSET = PIN3_bm;
 	//konfiguracja pinów I2C
 	PORTC_DIR = PIN0_bm | PIN1_bm;
 	PORTC_OUT = PIN0_bm | PIN1_bm;
@@ -186,8 +182,6 @@ void SPI_Init(void){
 	SPI_PORT.DIRCLR = PIN6_bm;
 	SPI_PORT.OUTSET = PIN5_bm | PIN6_bm | PIN7_bm;	//mo¿e dodaæ PIN6_bm
 	//----CS---
-	FLASH_CS_PORT.DIRSET = FLASH_CS_PIN;
-	FLASH_CS_PORT.OUTSET = FLASH_CS_PIN;
 	
 	//-----------Clk=250kHz-------------------------
 	FLASH_SPI.CTRL = SPI_ENABLE_bm | SPI_MODE_0_gc | SPI_PRESCALER_DIV16_gc | SPI_MASTER_bm;

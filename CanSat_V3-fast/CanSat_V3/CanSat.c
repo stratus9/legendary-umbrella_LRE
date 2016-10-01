@@ -27,7 +27,7 @@
 static Output_t Output_d;
 static allData_t allData_d;
 static AD7195_t AD7195_d;
-static RTC_t RTC_d;
+static Clock_t Clock_d;
 static stan_t stan_d;
 Analog_t Analog_d;
 static frame_t frame_d;
@@ -39,7 +39,7 @@ uint32_t frame_count = 0;
 
 //----------------------Bad ISR handling------------------------
 ISR(BADISR_vect) {
-    LED_PORT.OUTTGL = LED2;
+    LED_PORT.OUTTGL = LED1;
 }
 
 ISR(ADCB_CH3_vect){
@@ -47,7 +47,7 @@ ISR(ADCB_CH3_vect){
 	Analog_d.AnalogIn2 = ADCB.CH1RES;
 	Analog_d.AnalogIn3 = ADCB.CH2RES;
 	Analog_d.AnalogIn4 = ADCB.CH3RES;
-	LED_PORT.OUTTGL = LED2;
+	LED_PORT.OUTTGL = LED5;
 }
 
 //----------------------RTC ISR handling------------------------
@@ -71,7 +71,7 @@ ISR(USARTD0_TXC_vect) {
 
 //----------------------Receive from Xbee----------------------------
 ISR(USARTD0_RXC_vect) {
-    LED_PORT.OUTSET = LED3;
+    //LED_PORT.OUTSET = LED3;
     char volatile tmp = XBEE_UART.DATA;
     if(tmp == '$') stan_d.cmd_mode = true;	//enter command mode
     else if((tmp == 'R') && stan_d.cmd_mode) {
@@ -81,7 +81,7 @@ ISR(USARTD0_RXC_vect) {
             RST.CTRL = RST_SWRST_bm;		//zdalny restart systemu
         }
     } else if((tmp == 'P') && stan_d.cmd_mode) {
-        SPI_ChipErase();					//zerowanie pamiêci FLASH
+        //SPI_ChipErase();					//zerowanie pamiêci FLASH
         SPIaddress = 0;
         stan_d.cmd_mode = false;
         buzzer_d.mode = 1;								//3 sygna³y ci¹g³e
@@ -143,22 +143,14 @@ ISR(USARTD0_RXC_vect) {
     } else if((tmp == 'P') && stan_d.cmd_mode) {
         stan_d.run_trigger = true;				
         stan_d.cmd_mode = false;
-		RTC_d.time = 0;
+		//RTC_d.time = 0;
 		
     } else stan_d.cmd_mode = false;
 }
 
 //----------------------Sensors update-------------------------------
 ISR(TCC0_OVF_vect) {
-     SensorUpdate(&allData_d);
-     //============================================================================
-     //                        Prepare frame & store
-     //============================================================================
-     prepareFrame(&allData_d);
-     if(stan_d.flash_trigger) SPI_StoreFrame(&SPIaddress, 400, &frame_b,&RTC_d);
-     if(!(frame_d.mutex)) frame_d = frame_b;	//jeœli frame_d nie zablokowane -> przepisz z bufora
-     LED_PORT.OUTTGL = LED1;
-     allData_d.RTC->time++;
+     
 }
 
 //----------------------Buzzer---------------------------------------
@@ -196,38 +188,21 @@ ISR(TCD0_OVF_vect) {
 //----------------------IO update-------------------------------------
 ISR(TCE0_OVF_vect) {
     //-------------Blokada komend zdalnych----------------------------
-    LED_PORT.OUTCLR = LED3;
+    //LED_PORT.OUTCLR = LED3;
     stan_d.cmd_mode = false;
-	RTC_d.time++;
+	Clock_d.time++;
 }
 
 //----------------------Frame send-------------------------------------
 ISR(TCF0_OVF_vect) {
-    LED_PORT.OUTTGL = LED4;
+    //LED_PORT.OUTTGL = LED4;
     frame_d.terminate = false;
     if(stan_d.telemetry_trigger) {
-        if(RTC_d.frameTeleCount< 99999) RTC_d.frameTeleCount++;
-        else RTC_d.frameTeleCount = 0;
+        if(Clock_d.frameTeleCount< 99999) Clock_d.frameTeleCount++;
+        else Clock_d.frameTeleCount = 0;
         frame_b.iUART = 0;
         USARTD0_TXC_vect();
     }
-}
-
-//----------------------Memory erase---------------------------
-void FLASHerase(void) {
-    const char buf0[] = "\n\rMemory erased!\n\r\n\r\0";
-    while((!(PORTE.IN & PIN0_bm)) || (!(PORTE.IN & PIN1_bm))) {}
-    buzzer_d.mode = 3;																//sygna³ 2Hz
-    buzzer_d.trigger = true;														//odblokowanie buzzera
-    SPI_ChipErase();
-    _delay_ms(1000);
-    uint16_t i = 0;
-    while(buf0[i]) {
-        XBEE_UART.DATA = buf0[i++];
-        _delay_ms(2);
-    }
-    buzzer_d.trigger = false;														//odblokowanie buzzera
-    SPIaddress = 0;
 }
 
 void structInit(void) {
@@ -240,7 +215,7 @@ void structInit(void) {
 	allData_d.stan = &stan_d;
 	allData_d.frame = &frame_d;
 	allData_d.frame_b = &frame_b;
-	allData_d.RTC = &RTC_d;
+	//allData_d.RTC = &RTC_d;
 	allData_d.Output = &Output_d;
 	allData_d.AD7195 = &AD7195_d;
 }
@@ -271,91 +246,20 @@ void Initialization(void) {
 
     //-------SPI Flash Init--------
     SPI_Init();
-    SPI_WriteProtection(false);
-    SPIaddress = SPI_FindEnd();		//szukaj wolnego miejsca w pamiêci------------------------------------------------
-    //SPIaddress = 0;
     //-------w³¹czenie przerwañ----
     PMIC.CTRL = PMIC_LOLVLEN_bm | PMIC_MEDLVLEN_bm | PMIC_HILVLEN_bm;
 }
 
-void InitMemoryErase() {
-    uint32_t i = 0;
-    const char buf0[] = "\n\rMemory erased!\n\r\n\r\0";
-    while((!(PORTE.IN & PIN0_bm)) || (!(PORTE.IN & PIN1_bm))) {}
-    buzzer_d.mode = 3;																//sygna³ 2Hz
-    buzzer_d.trigger = true;														//odblokowanie buzzera
-    SPI_ChipErase();
-    _delay_ms(1000);
-    i = 0;
-    while(buf0[i]) {
-        XBEE_UART.DATA = buf0[i++];
-        _delay_ms(2);
-    }
-    buzzer_d.trigger = false;														//odblokowanie buzzera
-    SPIaddress = 0;
-}
-
-void InitMemoryRead() {
-    uint32_t i = 0;
-    stan_d.flash_trigger = false;
-    buzzer_d.mode = 3;																//sygna³ 2Hz
-    buzzer_d.trigger = true;
-    _delay_ms(200);
-    buzzer_d.trigger = false;
-    while(!(PORTE.IN & PIN1_bm)) {}
-    const char buf1[] = "\n\rTeam,TeleCnt,State,SoftState,Altitude,Velocity,Accel,Gyro,Lat,Long,AltiGPS,Fix,Check,,Cnt,VoltageBat,VoltageVCC,Temp,Press,AccY,AccY2,GyroX,GyroZ,GyroY,\n\r\n\r\0";
-    const char buf2[] = "\n\rReading done\n\r\n\r\0";
-    //------Hello message----------
-    while(buf1[i]) {
-        XBEE_UART.DATA = buf1[i++];
-        _delay_ms(10);
-    }
-    _delay_ms(1000);
-    //-------start Flash read------S
-    uint8_t ch = 0xFF;
-    uint8_t FFcnt = 0;
-    LED_PORT.OUTSET = LED1;
-    SPI_CS(true);
-    SPI_W_Byte(0x03);					//Read
-    SPI_W_Byte(0);	//address MSB
-    SPI_W_Byte(0);	//address cd.
-    SPI_W_Byte(0);	//address LSB
-    i = 0;
-    do {
-        ch = SPI_R_Byte();
-        if(ch != 0xFF) {
-            XBEE_UART.DATA = ch;
-            FFcnt = 0;
-        } else FFcnt++;
-        i++;
-        if((i % 100) == 0) _delay_ms(10);
-        else _delay_us(100);
-    } while((PORTE.IN & PIN0_bm) && (FFcnt < 100));
-    SPI_CS(false);
-    i = 0;
-    while(buf2[i]) {
-        XBEE_UART.DATA = buf2[i++];
-        _delay_ms(1);
-    }
-}
-
 void WarmUp() {
     //------Hello blink
-    LED_PORT.OUTSET = LED2;
+    LED_PORT.OUTSET = LED3;
     _delay_ms(200);
-    LED_PORT.OUTCLR = LED2;
+    LED_PORT.OUTCLR = LED3;
     _delay_ms(100);
-    LED_PORT.OUTSET = LED2;
+    LED_PORT.OUTSET = LED3;
     _delay_ms(200);
-    LED_PORT.OUTCLR = LED2;
+    LED_PORT.OUTCLR = LED3;
     _delay_ms(100);
-}
-
-void WarmUpMemoryOperations() {
-    //----------------Kasowanie pamiêci Flash------------------------
-    if((!(PORTE.IN & PIN0_bm)) && (!(PORTE.IN & PIN1_bm))) InitMemoryErase();
-    //-----------------Odczyt z pamiêci i wys³anie po Xbee-----------
-    else if(!(PORTE.IN & PIN1_bm)) InitMemoryRead();
 }
 
 int main(void) {
@@ -365,17 +269,24 @@ int main(void) {
     Initialization();
     sei();
     WarmUp();					//inicjalizacja BT i odmiganie startu
-    WarmUpMemoryOperations();	//odczyt lub kasowanie pamiêci
+    //WarmUpMemoryOperations();	//odczyt lub kasowanie pamiêci
 	uint32_t timer_buffer = 0;
+	uint8_t counter = 0;
+	Light_Green();
     while(1){
         _delay_us(10);
-		//pomiary
+//============================== Sekcja pomiarów ============================================
 		if(!AD7195_RDY(0)){
-			//odczytaj pomiar i zapisz do zmiennych
 			AD7195_ReadStore(&allData_d);
-			prepareFrame(&allData_d);
+			if(counter >= 3){
+				counter = 0;
+				prepareFrame(&allData_d);
+				AD7195_PressureCalc(&AD7195_d);
+			}
+			else counter++;
 		}
-		
+
+//=========================== Sekcja maszyny stanów =========================================
 		CheckOutputState(&stan_d);
 		if(stan_d.Abort == true){
 			SERVO_close();
@@ -385,47 +296,58 @@ int main(void) {
 			MPV_valve_open();
 			Buzzer_active();
 			Light_Red();
+			PORTF.OUTSET = PIN0_bm;
 		}
-		else if(stan_d.armed_trigger == true) FPV_valve_open();	//w³¹czenie doprê¿ania
-        else if(stan_d.run_trigger == true) {
-			if(timer_buffer <= RTC_d.time) stan_d.State++;
-			switch(stan_d.State){
-				//----- Step 1----------------
-				case 1:
-				Buzzer_active();
-				Light_Red();
-				timer_buffer = RTC_d.time+1000;
-				break;
-				//----- Step 2----------------
-				case 2:
-				Buzzer_inactive();
-				Ignition_active();
-				timer_buffer = RTC_d.time+200;  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 5s
-				break;
-				//-----Step 3-----------------
-				case 3:
-				Ignition_inactive();
-				MFV_valve_open();
-				MOV_valve_open();
-				SERVO_open();
-				timer_buffer = RTC_d.time+stan_d.TestConfig;
-				break;
-				//-----Step 4a----------------
-				case 4:
-				MOV_valve_close();
-				timer_buffer = RTC_d.time+10;
-				break;
-				//-----Step 4b----------------
-				case 5:
-				MFV_valve_close();
-				SERVO_close();
-				MPV_valve_open();
-				timer_buffer = RTC_d.time+1000;
-				break;
-				//-----Step 5------------------
-				MPV_valve_close();
-				Light_Green();
-				stan_d.armed_trigger = false;
+		else if((stan_d.armed_trigger == true) && (stan_d.run_trigger == false)) FPV_valve_open();	//w³¹czenie doprê¿ania
+        else if((stan_d.armed_trigger == true) && (stan_d.run_trigger == true)) {
+			if(timer_buffer <= Clock_d.time){
+				stan_d.State++;
+				switch(stan_d.State){
+					case 0:
+					stan_d.State = 1;
+					break;
+					//----- Step 1---------------- rozruch
+					case 1:
+					Buzzer_active();
+					Light_Red();
+					timer_buffer = Clock_d.time+1000;
+					break;
+					//----- Step 2---------------- zapalnik
+					case 2:
+					Buzzer_inactive();
+					Ignition_active();
+					timer_buffer = Clock_d.time+200;  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 5s
+					break;
+					//-----Step 3----------------- otwarcie paliwa i n2o
+					case 3:
+					Ignition_inactive();
+					MFV_valve_open();
+					MOV_valve_open();
+					SERVO_open();
+					timer_buffer = Clock_d.time+stan_d.TestConfig;
+					break;
+					//-----Step 4a---------------- zamkniêcie n2o
+					case 4:
+					MOV_valve_close();
+					timer_buffer = Clock_d.time+10;
+					break;
+					//-----Step 4b---------------- zamkniêcie paliwa
+					case 5:
+					MFV_valve_close();
+					FPV_valve_close();
+					SERVO_close();
+					MPV_valve_open();	//gaszenie
+					timer_buffer = Clock_d.time+1000;
+					break;
+					//-----Step 5------------------
+					case 6:
+					default:
+					MPV_valve_close();
+					Light_Green();
+					stan_d.run_trigger = false;
+					stan_d.armed_trigger = false;
+					break;
+				}
 			}
         }
     }

@@ -24,7 +24,6 @@
 //----------------------------------Data interfaces--------
 #define FLASH_SPI	SPIC
 #define SPI_PORT	PORTC
-#define FLASH_CS_PIN PIN0_bm
 #define FLASH_CS_PORT PORTD	
 #define SPI_speed		2000	//prêdkoœæ SPI w kHz
 
@@ -33,17 +32,6 @@
 
 #define XBEE_UART		USARTD0
 #define XBEE_UART_PORT	PORTD
-#define GPS_UART		USARTF0
-#define GPS_UART_PORT	PORTF
-#define GPS_SPEED		115200	//115200, 9600
-
-#if GPS_SPEED == 115200
-	#define GPS_BSEL	1047
-	#define GPS_BSCALE	0b10100000
-#elif GPS_SPEED == 9600
-	#define GPS_BSEL	3317
-	#define GPS_BSCALE	0b11000000
-#endif
 
 //----------------------------------Definicja ledów---------
 //	LED1 - green	- sensor update
@@ -52,12 +40,13 @@
 //	LED4 - orange	- GPS
 //	LED5 - yellow	- calibration
 
-#define LED1 PIN2_bm
-#define LED2 PIN3_bm
-#define LED3 PIN4_bm
-#define LED4 PIN5_bm
-#define LED5 PIN6_bm
-#define LED_PORT PORTA
+#define LED1 PIN0_bm
+#define LED2 PIN1_bm
+#define LED3 PIN2_bm
+#define LED4 PIN3_bm
+#define LED5 PIN4_bm
+#define LED6 PIN5_bm
+#define LED_PORT PORTF
 
 //----------------------------Definicja przycisków-------------------
 //	SW1 -			- Read

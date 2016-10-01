@@ -120,9 +120,43 @@ void prepareFrame(allData_t * allData){
 	allData->frame_b->frameASCII[i++] = (tmpf/1)%10 + 48;
 	allData->frame_b->frameASCII[i++] = ',';
 	
+	//-------------- Pressure 5 ----------------------------
+	tmp = allData->AD7195->pressure5*1000;	//bar
+	tmpf = (allData->AD7195->pressure5 - truncf(allData->AD7195->pressure5))*100000.0;
+	if((tmp < 0) || (tmpf <0)){
+		tmp = -tmp;
+		tmpf = -tmpf;
+	}
+	allData->frame_b->frameASCII[i++] = (tmp/10000)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
+	allData->frame_b->frameASCII[i++] = '.';
+	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmpf/10)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmpf/1)%10 + 48;
+	allData->frame_b->frameASCII[i++] = ',';
+	
+	//-------------- Pressure 6 ----------------------------
+	tmp = allData->AD7195->pressure6*1000;	//bar
+	tmpf = (allData->AD7195->pressure6 - truncf(allData->AD7195->pressure6))*100000.0;
+	if((tmp < 0) || (tmpf <0)){
+		tmp = -tmp;
+		tmpf = -tmpf;
+	}
+	allData->frame_b->frameASCII[i++] = (tmp/10000)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
+	allData->frame_b->frameASCII[i++] = '.';
+	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmpf/10)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmpf/1)%10 + 48;
+	allData->frame_b->frameASCII[i++] = ',';
+	
 	allData->frame_b->frameASCII[i++] = '\n';		
 	//----------------packet count-----------------------
-	tmp = allData->RTC->frameTeleCount;
+	tmp = allData->Clock->frameTeleCount;
 	allData->frame_b->frameASCII[i++] = (tmp/10000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
@@ -139,7 +173,7 @@ void prepareFrame(allData_t * allData){
 //	MFV - RELAY2 - PE1
 //	MOV - RELAY3 - PE0
 //	MPV - RELAY4 - PR0
-//	WPV	- RELAY5 - PR1
+//	FPV	- RELAY5 - PR1
 //	??? - RELAY6 - PA6
 //	LGH - RELAY7 - PA7
 
@@ -195,10 +229,10 @@ void SERVO_close(void){
 
 //==================== Buzzer =======================
 void Buzzer_active(void){
-	PORTR.OUTSET = PIN1_bm;
+	PORTD.OUTSET = PIN0_bm;
 }
 void Buzzer_inactive(void){
-	PORTR.OUTCLR = PIN1_bm;
+	PORTD.OUTCLR = PIN0_bm;
 }
 
 //==================== LIGHT =======================
@@ -222,4 +256,8 @@ void CheckOutputState(stan_t * stan){
 	stan->IGN = PORTE.IN & PIN2_bm;
 	stan->SERVO1 = PORTD.IN & PIN5_bm;
 	stan->SERVO2 = PORTD.IN & PIN4_bm;
+}
+
+void TempConvPT100(Analog_t * Analog){
+	Analog->Temp1 = 0;
 }

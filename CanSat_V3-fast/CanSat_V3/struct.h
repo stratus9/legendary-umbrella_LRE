@@ -67,22 +67,22 @@ typedef struct USART_s{
 typedef struct ADC_s{
 	uint16_t ADC16u;
 	int16_t ADC16s;
-	float AnalogIn1;
-	float AnalogIn2;
-	float AnalogIn3;
-	float AnalogIn4;
-	float AnalogIn5;
-	float AnalogIn6;
-	float AnalogIn7;
-	float AnalogIn8;
-	float Press1;
-	float Press2;
-	float Press3;
-	float Press4;
-	float Press5;
-	float Press6;
-	float Press7;
-	float Press8;
+	int16_t AnalogIn1;
+	int16_t AnalogIn2;
+	int16_t AnalogIn3;
+	int16_t AnalogIn4;
+	int16_t AnalogIn5;
+	int16_t AnalogIn6;
+	int16_t AnalogIn7;
+	int16_t AnalogIn8;
+	float Temp1;
+	float Temp2;
+	float Temp3;
+	float Temp4;
+	float Temp5;
+	float Temp6;
+	float Temp7;
+	float Temp8;
 	} Analog_t;
 
 //------------------------FRAME--------------------------------------------------
@@ -105,11 +105,11 @@ typedef struct buzzer_s{
 	uint8_t count;
 } buzzer_t;
 
-typedef struct RTC_s{
+typedef struct Clock_s{
 	uint32_t time;				//jest w sekundach -> zmieni? na ms
 	uint32_t frameTeleCount;
 	uint32_t frameFlashCount;
-} RTC_t;
+} Clock_t;
 
 typedef struct AD7195_s{
 	float pressure1;
@@ -136,7 +136,7 @@ typedef struct allData_s{
 	stan_t * stan;
 	frame_t * frame;
 	frame_t * frame_b;
-	RTC_t * RTC;
+	Clock_t * Clock;
 	Output_t * Output;
 	AD7195_t * AD7195;
 } allData_t;
