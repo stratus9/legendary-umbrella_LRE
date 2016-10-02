@@ -134,6 +134,6 @@ void AD7195_PressureCalc(AD7195_t * AD7195){
 	AD7195->pressure4 = AD7195->raw_press4/1677721.0 - 0;
 	AD7195->pressure5 = AD7195->raw_press5/1677721.0 - 0;
 	AD7195->pressure6 = AD7195->raw_press6/1677721.0 - 0;
-	AD7195->pressure7 = AD7195->raw_press7/1677721.0 - 0;
-	AD7195->pressure8 = AD7195->raw_press8/1677721.0 - 0;
+	AD7195->pressure7 = (AD7195->raw_press7 - 16675031.0)/433.44;
+	AD7195->pressure8 = (AD7195->raw_press8 - 16676277.0)/570.0;
 }
