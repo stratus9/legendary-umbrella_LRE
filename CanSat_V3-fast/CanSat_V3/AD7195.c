@@ -128,12 +128,12 @@ void AD7195_ReadStore(allData_t * allData){
 }
 
 void AD7195_PressureCalc(AD7195_t * AD7195){
-	AD7195->pressure1 = 123*AD7195->raw_press1 - 3423;
-	AD7195->pressure2 = 123*AD7195->raw_press2 - 3423;
-	AD7195->pressure3 = 123*AD7195->raw_press3 - 3423;
-	AD7195->pressure4 = 123*AD7195->raw_press4 - 3423;
-	AD7195->pressure5 = 123*AD7195->raw_press5 - 3423;
-	AD7195->pressure6 = 123*AD7195->raw_press6 - 3423;
-	AD7195->pressure7 = 123*AD7195->raw_press7 - 3423;
-	AD7195->pressure8 = 123*AD7195->raw_press8 - 3423;
+	AD7195->pressure1 = AD7195->raw_press1/1677721.0 - 0;
+	AD7195->pressure2 = AD7195->raw_press2/1677721.0 - 0;
+	AD7195->pressure3 = AD7195->raw_press3/1677721.0 - 0;
+	AD7195->pressure4 = AD7195->raw_press4/1677721.0 - 0;
+	AD7195->pressure5 = AD7195->raw_press5/1677721.0 - 0;
+	AD7195->pressure6 = AD7195->raw_press6/1677721.0 - 0;
+	AD7195->pressure7 = AD7195->raw_press7/1677721.0 - 0;
+	AD7195->pressure8 = AD7195->raw_press8/1677721.0 - 0;
 }

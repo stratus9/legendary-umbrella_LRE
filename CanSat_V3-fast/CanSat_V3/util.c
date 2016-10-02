@@ -35,134 +35,156 @@ void float2char(float number,char * tablica){
 void prepareFrame(allData_t * allData){
 	volatile int16_t i,tmp,tmpf;
 	i=0;
+	//----------------packet count-----------------------
+	tmp = allData->Clock->frameFlashCount;
+	allData->frame_b->frameASCII[i++] = (tmp/10000)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
+	
 	//------------ state-------------------------
 	allData->frame_b->frameASCII[i++] = 'S';
 	allData->frame_b->frameASCII[i++] = allData->stan->run_trigger+48;	//1
 	allData->frame_b->frameASCII[i++] = allData->stan->FPV+48;			//2
 	allData->frame_b->frameASCII[i++] = allData->stan->MFV+48;			//3
 	allData->frame_b->frameASCII[i++] = allData->stan->MOV+48;			//4
-	allData->frame_b->frameASCII[i++] = allData->stan->MPV+48;			//5
-	allData->frame_b->frameASCII[i++] = 0;		
-	allData->frame_b->frameASCII[i++] = 0;
-	allData->frame_b->frameASCII[i++] = allData->stan->IGN+48;			//8
-	allData->frame_b->frameASCII[i++] = allData->stan->SERVO1+48;		//9
-	allData->frame_b->frameASCII[i++] = allData->stan->SERVO2+48;		//10
+	allData->frame_b->frameASCII[i++] = allData->stan->MPV+48;			//5	
+	allData->frame_b->frameASCII[i++] = '0';							//6
+	allData->frame_b->frameASCII[i++] = allData->stan->IGN+48;			//7
+	allData->frame_b->frameASCII[i++] = allData->stan->SERVO1+48;		//8
+	allData->frame_b->frameASCII[i++] = allData->stan->SERVO2+48;		//9
 	allData->frame_b->frameASCII[i++] = ',';
-	allData->frame_b->frameASCII[i++] = allData->stan->TestConfig+48;	//konfiguracja testu
+	allData->frame_b->frameASCII[i++] = (allData->stan->TestConfig/1000)%10+48;	//konfiguracja testu
+	allData->frame_b->frameASCII[i++] = (allData->stan->TestConfig/100)%10+48;	//konfiguracja testu
+	allData->frame_b->frameASCII[i++] = (allData->stan->TestConfig/10)%10+48;	//konfiguracja testu
+	allData->frame_b->frameASCII[i++] = (allData->stan->TestConfig)%10+48;		//konfiguracja testu
 	allData->frame_b->frameASCII[i++] = ',';
 	
 	//=============== Pressure ===================
 	//-------------- Pressure 1 ----------------------------
 	tmp = allData->AD7195->pressure1*1000;	//bar
-	tmpf = (allData->AD7195->pressure1 - truncf(allData->AD7195->pressure1))*100000.0;
-	if((tmp < 0) || (tmpf <0)){
-		tmp = -tmp;
-		tmpf = -tmpf;
-	}
+	if(tmp < 0) tmp = -tmp;
 	allData->frame_b->frameASCII[i++] = (tmp/10000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = '.';
 	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmpf/10)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmpf/1)%10 + 48;
 	allData->frame_b->frameASCII[i++] = ',';
 	
 	//-------------- Pressure 2 ----------------------------
 	tmp = allData->AD7195->pressure2*1000;	//bar
-	tmpf = (allData->AD7195->pressure2 - truncf(allData->AD7195->pressure2))*100000.0;
-	if((tmp < 0) || (tmpf <0)){
-		tmp = -tmp;
-		tmpf = -tmpf;
-	}
+	if(tmp < 0) tmp = -tmp;
 	allData->frame_b->frameASCII[i++] = (tmp/10000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = '.';
 	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmpf/10)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmpf/1)%10 + 48;
 	allData->frame_b->frameASCII[i++] = ',';
 	
 	//-------------- Pressure 3 ----------------------------
 	tmp = allData->AD7195->pressure3*1000;	//bar
-	tmpf = (allData->AD7195->pressure3 - truncf(allData->AD7195->pressure3))*100000.0;
-	if((tmp < 0) || (tmpf <0)){
-		tmp = -tmp;
-		tmpf = -tmpf;
-	}
+	if((tmp < 0) || (tmpf <0)) tmp = -tmp;
 	allData->frame_b->frameASCII[i++] = (tmp/10000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = '.';
 	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmpf/10)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmpf/1)%10 + 48;
 	allData->frame_b->frameASCII[i++] = ',';
 	
 	//-------------- Pressure 4 ----------------------------
 	tmp = allData->AD7195->pressure4*1000;	//bar
-	tmpf = (allData->AD7195->pressure4 - truncf(allData->AD7195->pressure4))*100000.0;
-	if((tmp < 0) || (tmpf <0)){
-		tmp = -tmp;
-		tmpf = -tmpf;
-	}
+	if(tmp < 0) tmp = -tmp;
 	allData->frame_b->frameASCII[i++] = (tmp/10000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = '.';
 	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmpf/10)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmpf/1)%10 + 48;
 	allData->frame_b->frameASCII[i++] = ',';
 	
 	//-------------- Pressure 5 ----------------------------
 	tmp = allData->AD7195->pressure5*1000;	//bar
-	tmpf = (allData->AD7195->pressure5 - truncf(allData->AD7195->pressure5))*100000.0;
-	if((tmp < 0) || (tmpf <0)){
-		tmp = -tmp;
-		tmpf = -tmpf;
-	}
+	if(tmp < 0) tmp = -tmp;
 	allData->frame_b->frameASCII[i++] = (tmp/10000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = '.';
 	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmpf/10)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmpf/1)%10 + 48;
 	allData->frame_b->frameASCII[i++] = ',';
 	
 	//-------------- Pressure 6 ----------------------------
 	tmp = allData->AD7195->pressure6*1000;	//bar
-	tmpf = (allData->AD7195->pressure6 - truncf(allData->AD7195->pressure6))*100000.0;
-	if((tmp < 0) || (tmpf <0)){
-		tmp = -tmp;
-		tmpf = -tmpf;
-	}
+	if(tmp < 0) tmp = -tmp;
 	allData->frame_b->frameASCII[i++] = (tmp/10000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = '.';
 	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmpf/10)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmpf/1)%10 + 48;
 	allData->frame_b->frameASCII[i++] = ',';
 	
-	allData->frame_b->frameASCII[i++] = '\n';		
-	//----------------packet count-----------------------
-	tmp = allData->Clock->frameTeleCount;
-	allData->frame_b->frameASCII[i++] = (tmp/10000)%10 + 48;
+	//-------------- Temp 1 ----------------------------
+	tmp = allData->Analog->Temp1*10;
+	if(tmp < 0){
+		tmp = -tmp;
+		tmpf = -tmpf;
+		allData->frame_b->frameASCII[i++] = '-';
+	}
 	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
+	allData->frame_b->frameASCII[i++] = '.';
 	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
 	allData->frame_b->frameASCII[i++] = ',';
+	
+	//-------------- Temp 2 ----------------------------
+	tmp = allData->Analog->Temp2*10;
+	if(tmp < 0){
+		tmp = -tmp;
+		tmpf = -tmpf;
+		allData->frame_b->frameASCII[i++] = '-';
+	}
+	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
+	allData->frame_b->frameASCII[i++] = '.';
+	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
+	allData->frame_b->frameASCII[i++] = ',';
+	
+	//-------------- Temp 3 ----------------------------
+	tmp = allData->Analog->Temp3*10;
+	if(tmp < 0){
+		tmp = -tmp;
+		tmpf = -tmpf;
+		allData->frame_b->frameASCII[i++] = '-';
+	}
+	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
+	allData->frame_b->frameASCII[i++] = '.';
+	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
+	allData->frame_b->frameASCII[i++] = ',';
+	
+	//-------------- Temp 4 ----------------------------
+	tmp = allData->Analog->Temp4*10;
+	if(tmp < 0){
+		tmp = -tmp;
+		tmpf = -tmpf;
+		allData->frame_b->frameASCII[i++] = '-';
+	}
+	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
+	allData->frame_b->frameASCII[i++] = '.';
+	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
+	allData->frame_b->frameASCII[i++] = ',';
+	
+	//------------ END --------------
 	allData->frame_b->frameASCII[i++] = '\r';
 	allData->frame_b->frameASCII[i++] = '\n';		
 	allData->frame_b->frameASCII[i++] = 0;
@@ -260,4 +282,19 @@ void CheckOutputState(stan_t * stan){
 
 void TempConvPT100(Analog_t * Analog){
 	Analog->Temp1 = 0;
+}
+
+uint16_t Add2Buffer(frame_t * source, frame_t * destination){
+	volatile uint16_t i=0, j=0;
+	while(destination->frameASCII[j]) j++;
+	while(source->frameASCII[i]) destination->frameASCII[j++] = source->frameASCII[i++];
+	destination->frameASCII[j++] = 0;
+	return j;
+}
+
+void ADC_tempCalc(Analog_t * Analog){
+	Analog->Temp1 = 2.616979*220.0*(Analog->AnalogIn1)/2048.0*3.0 / (5.0-(Analog->AnalogIn1)/2048.0*3.0) - 260.1696;
+	Analog->Temp2 = 2.616979*220.0*(Analog->AnalogIn2)/2048.0*3.0 / (5.0-(Analog->AnalogIn2)/2048.0*3.0) - 260.1696;
+	Analog->Temp3 = 2.616979*220.0*(Analog->AnalogIn3)/2048.0*3.0 / (5.0-(Analog->AnalogIn3)/2048.0*3.0) - 260.1696;
+	Analog->Temp4 = 2.616979*220.0*(Analog->AnalogIn4)/2048.0*3.0 / (5.0-(Analog->AnalogIn4)/2048.0*3.0) - 260.1696;
 }

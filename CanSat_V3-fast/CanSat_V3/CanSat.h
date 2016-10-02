@@ -30,8 +30,6 @@
 #define	SENSORS_I2C	TWIC
 #define I2C_speed		300		//prêdkoœæ interfejsu I2C w kHz
 
-#define XBEE_UART		USARTD0
-#define XBEE_UART_PORT	PORTD
 
 //----------------------------------Definicja ledów---------
 //	LED1 - green	- sensor update
@@ -40,12 +38,12 @@
 //	LED4 - orange	- GPS
 //	LED5 - yellow	- calibration
 
-#define LED1 PIN0_bm
-#define LED2 PIN1_bm
-#define LED3 PIN2_bm
-#define LED4 PIN3_bm
-#define LED5 PIN4_bm
-#define LED6 PIN5_bm
+#define LED1 PIN0_bm	//sequence error
+#define LED2 PIN1_bm	//Sequence halt
+#define LED3 PIN2_bm	//seq in progress
+#define LED4 PIN3_bm	//out update
+#define LED5 PIN4_bm	//measur
+#define LED6 PIN5_bm	//memory access
 #define LED_PORT PORTF
 
 //----------------------------Definicja przycisków-------------------

@@ -111,17 +111,17 @@ void ADC_Init(void){
 }
 
 void USART_Init(void){
-	XBEE_UART_PORT.OUTCLR = PIN2_bm;					//konfiguracja pinów Rx i Tx
-	XBEE_UART_PORT.OUTSET = PIN3_bm;
-	XBEE_UART_PORT.DIRSET = PIN3_bm;
+	PORTD.OUTCLR = PIN2_bm;					//konfiguracja pinów Rx i Tx
+	PORTD.OUTSET = PIN3_bm;
+	PORTD.DIRSET = PIN3_bm;
 	
-	XBEE_UART.CTRLC = USART_CHSIZE_8BIT_gc;	//ramka: 8bitów, 1 bit stopu, brak bitu parzystoœci
+	USARTD0.CTRLC = USART_CHSIZE_8BIT_gc;	//ramka: 8bitów, 1 bit stopu, brak bitu parzystoœci
 	int16_t BSEL = 1047;					//konfiguracja prêdkoœci transmisji 115200
 	int8_t BSCALE = 0b10100000;				//-6
-	XBEE_UART.BAUDCTRLA = (uint8_t)(BSEL&0x00FF);
-	XBEE_UART.BAUDCTRLB = (uint8_t)(((BSEL >> 8) & 0x000F) | BSCALE) ;
-	XBEE_UART.CTRLA |= USART_RXCINTLVL_LO_gc | USART_TXCINTLVL_HI_gc;		//odblokowanie przerwañ nadajnika i odbiornika, niski priorytet
-	XBEE_UART.CTRLB |= USART_TXEN_bm | USART_RXEN_bm;						//w³¹czenie nadajnika i odbiornika USART
+	USARTD0.BAUDCTRLA = (uint8_t)(BSEL&0x00FF);
+	USARTD0.BAUDCTRLB = (uint8_t)(((BSEL >> 8) & 0x000F) | BSCALE) ;
+	USARTD0.CTRLA |= USART_RXCINTLVL_LO_gc | USART_TXCINTLVL_HI_gc;		//odblokowanie przerwañ nadajnika i odbiornika, niski priorytet
+	USARTD0.CTRLB |= USART_TXEN_bm | USART_RXEN_bm;						//w³¹czenie nadajnika i odbiornika USART
 }
 
 void IO_Init(void){

@@ -22,6 +22,14 @@
 #include "I2C.h"
 #include "AD7195.h"
 
+//----- do karty SD -----
+#include <string.h>
+#include "FATFS/ff.h"
+#include "SD.h"
+FIL pomiar;
+FATFS fatfs;
+UINT bw;
+
 
 //-----------------------------------Struktury globalne---------------------------------------------
 static Output_t Output_d;
@@ -32,6 +40,7 @@ static stan_t stan_d;
 Analog_t Analog_d;
 static frame_t frame_d;
 static frame_t frame_b;
+static frameSD_t frame_sd;
 static buzzer_t buzzer_d;
 uint32_t mission_time = 0;
 uint32_t frame_count = 0;
@@ -60,8 +69,8 @@ ISR(RTC_OVF_vect){
 ISR(USARTD0_TXC_vect) {
     if((frame_d.frameASCII[frame_d.iUART]) && (frame_d.frameASCII[frame_d.iUART] != '#')) {
         frame_d.mutex = true;
-        if(frame_d.frameASCII[frame_d.iUART] == '%') XBEE_UART.DATA = '\n';
-        else XBEE_UART.DATA = frame_d.frameASCII[frame_d.iUART];
+        if(frame_d.frameASCII[frame_d.iUART] == '%') USARTD0.DATA = '\n';
+        else USARTD0.DATA = frame_d.frameASCII[frame_d.iUART];
         if(frame_d.iUART < 151) frame_d.iUART++;
         else frame_d.frameASCII[frame_d.iUART] = 0;
     } else frame_d.mutex = false;
@@ -70,7 +79,7 @@ ISR(USARTD0_TXC_vect) {
 //----------------------Receive from Xbee----------------------------
 ISR(USARTD0_RXC_vect) {
     //LED_PORT.OUTSET = LED3;
-    char volatile tmp = XBEE_UART.DATA;
+    char volatile tmp = USARTD0.DATA;
     if(tmp == '$') stan_d.cmd_mode = true;	//enter command mode
 	
 	//------- Reset --------
@@ -137,6 +146,9 @@ ISR(USARTD0_RXC_vect) {
     } else if((tmp == 'P') && stan_d.cmd_mode) {
         stan_d.armed_trigger = true;				
         stan_d.cmd_mode = false;
+		if (f_open(&pomiar, "naszplik.txt", FA_WRITE | FA_CREATE_ALWAYS) == FR_OK){	//jesli plik "naszplik.txt" nie istnieje, stworz go
+			f_write(&pomiar, "State, Config, Press 1, Press 2, Press 3, Temp 1, Temp 2, Temp3, Press 4, Press 5, Press 6, Temp 4\n\r", 101, &bw);
+		}
 	
 	//------ Rozpoczêcie testu --------
 	} else if((tmp == 'S') && (stan_d.TestConfig != 0) && stan_d.cmd_mode) {
@@ -193,7 +205,7 @@ ISR(TCE0_OVF_vect) {
 
 //----------------------Frame send-------------------------------------
 ISR(TCF0_OVF_vect) {
-    //LED_PORT.OUTTGL = LED4;
+    LED_PORT.OUTTGL = LED4;
     frame_d.terminate = false;
     if(stan_d.telemetry_trigger) {
         if(Clock_d.frameTeleCount< 99999) Clock_d.frameTeleCount++;
@@ -247,8 +259,9 @@ void Initialization(void) {
 	volatile char id2 = AD7195_WhoIam(1);
 	//------- AD7195 Sync ------------
 	AD7195_Sync();
-    //-------SPI Flash Init--------
-
+    //-------SPI Memory Init--------
+	MemorySPIInit();
+	volatile char status = SD_CardInit();
     //-------w³¹czenie przerwañ----
     PMIC.CTRL = PMIC_LOLVLEN_bm | PMIC_MEDLVLEN_bm | PMIC_HILVLEN_bm;
 }
@@ -271,21 +284,36 @@ int main(void) {
     frame_d.terminate = false;
     Initialization();
     sei();
-    WarmUp();					//inicjalizacja BT i odmiganie startu
-    //WarmUpMemoryOperations();	//odczyt lub kasowanie pamiêci
+    WarmUp();					//odmiganie startu
+    
 	uint32_t timer_buffer = 0;
 	uint8_t counter = 0;
+	
+	f_mount(0, &fatfs);  //Dostêp do systemu plików
 	Light_Green();
     while(1){
-        _delay_us(10);
+        _delay_us(1);
 //============================== Sekcja pomiarów ============================================
 		if(!AD7195_RDY(0)){
 			LED_PORT.OUTTGL = LED5;
+			ADC_tempCalc(&Analog_d);
 			AD7195_ReadStore(&allData_d);
 			if(counter >= 3){
 				counter = 0;
-				prepareFrame(&allData_d);
 				AD7195_PressureCalc(&AD7195_d);
+				prepareFrame(&allData_d);
+				if(!frame_d.mutex) frame_d = frame_b;
+				LED_PORT.OUTSET = LED6;
+				if(stan_d.armed_trigger){
+					if(Add2Buffer(&frame_b, &frame_sd) >= 500){
+						LED_PORT.OUTSET = LED2;
+						f_write(&pomiar, &frame_sd, sizeof(frame_sd.frameASCII), &bw);
+						frame_sd.frameASCII[0] = 0;
+						LED_PORT.OUTCLR = LED2;
+					}
+				}
+				else f_close(&pomiar);
+				LED_PORT.OUTCLR = LED6;
 			}
 			else counter++;
 		}
@@ -300,6 +328,7 @@ int main(void) {
 			MPV_valve_open();
 			Buzzer_active();
 			Light_Red();
+			stan_d.TestConfig = 0;
 			PORTF.OUTSET = PIN0_bm;
 		}
 		else if((stan_d.armed_trigger == true) && (stan_d.run_trigger == false)) FPV_valve_open();	//w³¹czenie doprê¿ania

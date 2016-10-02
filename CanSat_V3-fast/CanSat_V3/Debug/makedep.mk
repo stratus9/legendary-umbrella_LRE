@@ -6,7 +6,11 @@ AD7195.c
 
 CanSat.c
 
+FATFS\ff.c
+
 I2C.c
+
+SD.c
 
 SPI.c
 

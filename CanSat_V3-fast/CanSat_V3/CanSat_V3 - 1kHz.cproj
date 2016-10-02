@@ -152,10 +152,31 @@
     <Compile Include="CanSat.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="FATFS\diskio.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="FATFS\ff.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="FATFS\ff.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="FATFS\ffconf.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="FATFS\integer.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="I2C.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="I2C.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="SD.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="SD.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="SPI.c">
@@ -181,12 +202,18 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="FATFS\00readme.txt">
+      <SubType>compile</SubType>
+    </None>
     <None Include="ISR.txt">
       <SubType>compile</SubType>
     </None>
     <None Include="other.txt">
       <SubType>compile</SubType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="FATFS\" />
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
 </Project>

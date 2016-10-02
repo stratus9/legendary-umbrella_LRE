@@ -87,16 +87,15 @@ typedef struct ADC_s{
 
 //------------------------FRAME--------------------------------------------------
 typedef struct frame_s{
-	char frameASCII[600];
+	char frameASCII[100];
 	uint16_t iUART;
 	bool mutex;
 	bool terminate;
-	float max_acc;
-	//GPS
-	char latitude[14];
-	char longitude[14];
-	char altitude[9];
 } frame_t;
+
+typedef struct frameSD_s{
+	char frameASCII[530];
+} frameSD_t;
 
 typedef struct buzzer_s{
 	bool trigger;

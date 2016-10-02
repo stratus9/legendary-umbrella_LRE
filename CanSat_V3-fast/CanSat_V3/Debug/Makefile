@@ -32,14 +32,17 @@ LIB_DEP:=
 LINKER_SCRIPT_DEP:=
 
 # Every subdirectory with source files must be described here
-SUBDIRS := 
+SUBDIRS :=  \
+../FATFS/
 
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
 ../AD7195.c \
 ../CanSat.c \
+../FATFS/ff.c \
 ../I2C.c \
+../SD.c \
 ../SPI.c \
 ../Initialization.c \
 ../util.c
@@ -54,7 +57,9 @@ ASM_SRCS +=
 OBJS +=  \
 AD7195.o \
 CanSat.o \
+FATFS/ff.o \
 I2C.o \
+SD.o \
 SPI.o \
 Initialization.o \
 util.o
@@ -62,7 +67,9 @@ util.o
 OBJS_AS_ARGS +=  \
 AD7195.o \
 CanSat.o \
+FATFS/ff.o \
 I2C.o \
+SD.o \
 SPI.o \
 Initialization.o \
 util.o
@@ -70,7 +77,9 @@ util.o
 C_DEPS +=  \
 AD7195.d \
 CanSat.d \
+FATFS/ff.d \
 I2C.d \
+SD.d \
 SPI.d \
 Initialization.d \
 util.d
@@ -78,7 +87,9 @@ util.d
 C_DEPS_AS_ARGS +=  \
 AD7195.d \
 CanSat.d \
+FATFS/ff.d \
 I2C.d \
+SD.d \
 SPI.d \
 Initialization.d \
 util.d
@@ -111,7 +122,21 @@ LINKER_SCRIPT_DEP+=
 	@echo Finished building: $<
 	
 
+FATFS/ff.o: ../FATFS/ff.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 4.9.2
+	$(QUOTE)E:\Atmel\AS7\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=32000000  -I"E:\Atmel\AS7\7.0\Packs\atmel\XMEGAA_DFP\1.0.36\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega128a3u -B "E:\Atmel\AS7\7.0\Packs\atmel\XMEGAA_DFP\1.0.36\gcc\dev\atxmega128a3u" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
 ./I2C.o: .././I2C.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 4.9.2
+	$(QUOTE)E:\Atmel\AS7\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=32000000  -I"E:\Atmel\AS7\7.0\Packs\atmel\XMEGAA_DFP\1.0.36\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega128a3u -B "E:\Atmel\AS7\7.0\Packs\atmel\XMEGAA_DFP\1.0.36\gcc\dev\atxmega128a3u" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+./SD.o: .././SD.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 4.9.2
 	$(QUOTE)E:\Atmel\AS7\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=32000000  -I"E:\Atmel\AS7\7.0\Packs\atmel\XMEGAA_DFP\1.0.36\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega128a3u -B "E:\Atmel\AS7\7.0\Packs\atmel\XMEGAA_DFP\1.0.36\gcc\dev\atxmega128a3u" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
@@ -141,6 +166,13 @@ LINKER_SCRIPT_DEP+=
 
 
 ./%.o: .././%.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 4.9.2
+	$(QUOTE)E:\Atmel\AS7\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=32000000  -I"E:\Atmel\AS7\7.0\Packs\atmel\XMEGAA_DFP\1.0.36\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega128a3u -B "E:\Atmel\AS7\7.0\Packs\atmel\XMEGAA_DFP\1.0.36\gcc\dev\atxmega128a3u" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+FATFS/%.o: ../FATFS/%.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 4.9.2
 	$(QUOTE)E:\Atmel\AS7\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=32000000  -I"E:\Atmel\AS7\7.0\Packs\atmel\XMEGAA_DFP\1.0.36\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega128a3u -B "E:\Atmel\AS7\7.0\Packs\atmel\XMEGAA_DFP\1.0.36\gcc\dev\atxmega128a3u" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
