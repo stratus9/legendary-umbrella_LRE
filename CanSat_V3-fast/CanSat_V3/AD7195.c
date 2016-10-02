@@ -37,7 +37,7 @@ void AD7195_Init(uint8_t chipNo){
 	SPI_W_Byte(0b11110000);					//przemiatanie kana³ów 1-4
 	SPI_W_Byte(0b00011111);					//current source off, refdet off, buffer on, unipolar, 128gain
 	AD7195_CS(chipNo, true);
-	
+	_delay_ms(10);
 	// Ustawienie Mode register
 	AD7195_CS(chipNo, true);
 	SPI_W_Byte(0b00001000);					//Write, mode register
@@ -56,7 +56,7 @@ uint8_t AD7195_WhoIam(uint8_t ChipNo){
 	return id;
 }
 
-void AD7195_Sync(uint8_t chipNo){
+void AD7195_Sync(void){
 	PORTD.OUTCLR = PIN1_bm;						//konfiguracja stanu pinu buzzer
 	_delay_ms(100);
 	PORTD.OUTSET = PIN1_bm;						//konfiguracja stanu pinu buzzer
@@ -102,7 +102,11 @@ void AD7195_ContRead(uint8_t chipNo, bool enable)
 
 bool AD7195_RDY(uint8_t chipNo){
 	AD7195_CS(chipNo, true);
-	return (PORTC.IN & PIN6_bm);
+	SPI_W_Byte(0b01000000);					//Read, ID register
+	char status = SPI_R_Byte();					//CHOP off, AC ex off
+	AD7195_CS(chipNo, true);
+	
+	return status & 0x80;
 }
 
 void AD7195_ReadStore(allData_t * allData){

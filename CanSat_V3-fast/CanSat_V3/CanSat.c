@@ -33,7 +33,6 @@ Analog_t Analog_d;
 static frame_t frame_d;
 static frame_t frame_b;
 static buzzer_t buzzer_d;
-static uint32_t SPIaddress = 0;
 uint32_t mission_time = 0;
 uint32_t frame_count = 0;
 
@@ -47,7 +46,6 @@ ISR(ADCB_CH3_vect){
 	Analog_d.AnalogIn2 = ADCB.CH1RES;
 	Analog_d.AnalogIn3 = ADCB.CH2RES;
 	Analog_d.AnalogIn4 = ADCB.CH3RES;
-	LED_PORT.OUTTGL = LED5;
 }
 
 //----------------------RTC ISR handling------------------------
@@ -74,19 +72,15 @@ ISR(USARTD0_RXC_vect) {
     //LED_PORT.OUTSET = LED3;
     char volatile tmp = XBEE_UART.DATA;
     if(tmp == '$') stan_d.cmd_mode = true;	//enter command mode
+	
+	//------- Reset --------
     else if((tmp == 'R') && stan_d.cmd_mode) {
         ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
             stan_d.cmd_mode = false;
             CPU_CCP = CCP_IOREG_gc;
             RST.CTRL = RST_SWRST_bm;		//zdalny restart systemu
         }
-    } else if((tmp == 'P') && stan_d.cmd_mode) {
-        //SPI_ChipErase();					//zerowanie pamiêci FLASH
-        SPIaddress = 0;
-        stan_d.cmd_mode = false;
-        buzzer_d.mode = 1;								//3 sygna³y ci¹g³e
-        buzzer_d.trigger = true;						//odblokowanie buzzera
-		_delay_ms(1000);
+	
 	//-----Test MOV------
     } else if((tmp == '1') && stan_d.cmd_mode) {
         stan_d.flash_trigger = true;					
@@ -112,39 +106,43 @@ ISR(USARTD0_RXC_vect) {
 		stan_d.telemetry_trigger = false;		
 		stan_d.cmd_mode = false;
 		
-	//------Konfiguracja sekwencji 1------
+	//------Konfiguracja sekwencji 1------ dzia³a
     } else if((tmp == '6') && stan_d.cmd_mode) {
 		stan_d.TestConfig = 150;		
 		stan_d.cmd_mode = false;
 		
-	//------Konfiguracja sekwencji 2--------
+	//------Konfiguracja sekwencji 2-------- dzia³a
     } else if((tmp == '7') && stan_d.cmd_mode) {
 		stan_d.TestConfig = 200;		
 		stan_d.cmd_mode = false;
 		
-	//------Konfiguracja sekwencji 3---------
+	//------Konfiguracja sekwencji 3--------- dzia³a
     } else if((tmp == '8') && stan_d.cmd_mode) {
 		stan_d.TestConfig = 350;		
 		stan_d.cmd_mode = false;
 		
-	//------Konfiguracja sekwencji 4---------
+	//------Konfiguracja sekwencji 4--------- dzia³a
     } else if((tmp == '9') && stan_d.cmd_mode) {
 		stan_d.TestConfig = 650;		
 		stan_d.cmd_mode = false;
 		
-	//------Przerwanie testu-----------------
+	//------Przerwanie testu----------------- dzia³a
     } else if((tmp == 'A') && stan_d.cmd_mode) {
         stan_d.Abort = true;						//ABORT!!!! ABORT!!! ABORT!!!
 		stan_d.run_trigger = false;
 		stan_d.armed_trigger = false;
         stan_d.cmd_mode = false;
 		
-	//------Rozpoczêcie testu----------------
+	//------Doprê¿anie ---------------- 
     } else if((tmp == 'P') && stan_d.cmd_mode) {
-        stan_d.run_trigger = true;				
+        stan_d.armed_trigger = true;				
         stan_d.cmd_mode = false;
-		//RTC_d.time = 0;
-		
+	
+	//------ Rozpoczêcie testu --------
+	} else if((tmp == 'S') && (stan_d.TestConfig != 0) && stan_d.cmd_mode) {
+	stan_d.run_trigger = true;
+	stan_d.cmd_mode = false;
+	
     } else stan_d.cmd_mode = false;
 }
 
@@ -240,12 +238,17 @@ void Initialization(void) {
     TimerFInit(telemetry_time);	//frame send
     structInit();
     I2C_Init();
+	SPI_Init();
     //--------AD7195 (1) Init-----------
-	
+	AD7195_Init(0);
+	volatile char id1 = AD7195_WhoIam(0);
 	//--------AD7195 (2) Init-----------
-
+	AD7195_Init(1);
+	volatile char id2 = AD7195_WhoIam(1);
+	//------- AD7195 Sync ------------
+	AD7195_Sync();
     //-------SPI Flash Init--------
-    SPI_Init();
+
     //-------w³¹czenie przerwañ----
     PMIC.CTRL = PMIC_LOLVLEN_bm | PMIC_MEDLVLEN_bm | PMIC_HILVLEN_bm;
 }
@@ -277,6 +280,7 @@ int main(void) {
         _delay_us(10);
 //============================== Sekcja pomiarów ============================================
 		if(!AD7195_RDY(0)){
+			LED_PORT.OUTTGL = LED5;
 			AD7195_ReadStore(&allData_d);
 			if(counter >= 3){
 				counter = 0;
@@ -299,7 +303,7 @@ int main(void) {
 			PORTF.OUTSET = PIN0_bm;
 		}
 		else if((stan_d.armed_trigger == true) && (stan_d.run_trigger == false)) FPV_valve_open();	//w³¹czenie doprê¿ania
-        else if((stan_d.armed_trigger == true) && (stan_d.run_trigger == true)) {
+        else if((stan_d.armed_trigger == true) && (stan_d.run_trigger == true) && (stan_d.TestConfig != 0)) {
 			if(timer_buffer <= Clock_d.time){
 				stan_d.State++;
 				switch(stan_d.State){
@@ -346,6 +350,7 @@ int main(void) {
 					Light_Green();
 					stan_d.run_trigger = false;
 					stan_d.armed_trigger = false;
+					stan_d.TestConfig = 0;
 					break;
 				}
 			}
