@@ -83,6 +83,10 @@ typedef struct ADC_s{
 	float Temp6;
 	float Temp7;
 	float Temp8;
+	float R1;
+	float R2;
+	float R3;
+	float R4;
 	} Analog_t;
 
 //------------------------FRAME--------------------------------------------------

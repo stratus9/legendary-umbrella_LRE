@@ -208,7 +208,7 @@ ISR(TCE0_OVF_vect) {
 
 //----------------------Frame send-------------------------------------
 ISR(TCF0_OVF_vect) {
-    LED_PORT.OUTTGL = LED4;
+    //LED_PORT.OUTTGL = LED4;
     frame_d.terminate = false;
     if(stan_d.telemetry_trigger) {
         if(Clock_d.frameTeleCount< 99999) Clock_d.frameTeleCount++;

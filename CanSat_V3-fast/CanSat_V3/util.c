@@ -287,4 +287,13 @@ void ADC_tempCalc(Analog_t * Analog){
 	Analog->Temp2 = 2.616979*220.0*(Analog->AnalogIn2)/2048.0*3.0 / (5.0-(Analog->AnalogIn2)/2048.0*3.0) - 260.1696;
 	Analog->Temp3 = 2.616979*220.0*(Analog->AnalogIn3)/2048.0*3.0 / (5.0-(Analog->AnalogIn3)/2048.0*3.0) - 260.1696;
 	Analog->Temp4 = 2.616979*220.0*(Analog->AnalogIn4)/2048.0*3.0 / (5.0-(Analog->AnalogIn4)/2048.0*3.0) - 260.1696;
+	
+	float V = (Analog->AnalogIn1)/2048.0*3.3;
+	Analog->R1 = (V*221)/(5-V);
+	float V = (Analog->AnalogIn1)/2048.0*3.3;
+	Analog->R2 = (V*221)/(5-V);
+	float V = (Analog->AnalogIn1)/2048.0*3.3;
+	Analog->R3 = (V*221)/(5-V);
+	float V = (Analog->AnalogIn1)/2048.0*3.3;
+	Analog->R4 = (V*221)/(5-V);
 }
