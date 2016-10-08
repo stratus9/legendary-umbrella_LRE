@@ -28,6 +28,6 @@ void Light_Green(void);
 void Light_Red(void);
 void BL_onoff(bool state);
 void CheckOutputState(stan_t *);
-uint16_t Add2Buffer(frame_t * source, frame_t * destination);
+uint16_t Add2Buffer(frame_t * source, frameSD_t * destination);
 void ADC_tempCalc(Analog_t * Analog);
 #endif /* UTIL_H_ */

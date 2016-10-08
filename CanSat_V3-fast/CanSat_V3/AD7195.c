@@ -25,7 +25,7 @@ void AD7195_regwrite(uint8_t chipNo, uint8_t address, uint32_t value){
 	SPI_W_Byte((value>>16) & 0x0000FF);		//send oldest byte
 	SPI_W_Byte((value>>8)  & 0x0000FF);		
 	SPI_W_Byte( value      & 0x0000FF);		
-	AD7195_CS(chipNo, true);
+	AD7195_CS(chipNo, false);
 }
 
 void AD7195_Init(uint8_t chipNo){
@@ -35,8 +35,8 @@ void AD7195_Init(uint8_t chipNo){
 	SPI_W_Byte(0b00010000);					//Write, config register, no cont. reading ??
 	SPI_W_Byte(0b00000000);					//CHOP off, AC ex off
 	SPI_W_Byte(0b11110000);					//przemiatanie kana³ów 1-4
-	SPI_W_Byte(0b00011111);					//current source off, refdet off, buffer on, unipolar, 128gain
-	AD7195_CS(chipNo, true);
+	SPI_W_Byte(0b00011110);					//current source off, refdet off, buffer on, unipolar, 128gain
+	AD7195_CS(chipNo, false);
 	_delay_ms(10);
 	// Ustawienie Mode register
 	AD7195_CS(chipNo, true);
@@ -44,14 +44,14 @@ void AD7195_Init(uint8_t chipNo){
 	SPI_W_Byte(0b00010100);					//conti conv, status reg read with data, ext clock
 	SPI_W_Byte(0b00000000);					//sinc4, no parity check, no one cycle, 
 	SPI_W_Byte(0b00000001);					//FS=1 -> 4.8 kSps
-	AD7195_CS(chipNo, true);
+	AD7195_CS(chipNo, false);
 }
 
 uint8_t AD7195_WhoIam(uint8_t ChipNo){
 	AD7195_CS(ChipNo, true);
 	SPI_W_Byte(0b01100000);					//Read, ID register
 	char id = SPI_R_Byte();					//CHOP off, AC ex off
-	AD7195_CS(ChipNo, true);
+	AD7195_CS(ChipNo, false);
 	
 	return id;
 }
@@ -70,8 +70,9 @@ void AD7195_Reset(uint8_t chipNo){
 	SPI_W_Byte(0xFF);					
 	SPI_W_Byte(0xFF);					
 	SPI_W_Byte(0xFF);					
-	SPI_W_Byte(0xFF);					
-	AD7195_CS(chipNo, true);
+	SPI_W_Byte(0xFF);	
+	SPI_W_Byte(0xFF);				
+	AD7195_CS(chipNo, false);
 }
 
 void AD7195_ContConvRead(uint8_t * channel1, uint8_t * channel2, uint32_t * value1, uint32_t * value2){
@@ -104,7 +105,7 @@ bool AD7195_RDY(uint8_t chipNo){
 	AD7195_CS(chipNo, true);
 	SPI_W_Byte(0b01000000);					//Read, ID register
 	char status = SPI_R_Byte();					//CHOP off, AC ex off
-	AD7195_CS(chipNo, true);
+	AD7195_CS(chipNo, false);
 	
 	return status & 0x80;
 }
@@ -128,12 +129,12 @@ void AD7195_ReadStore(allData_t * allData){
 }
 
 void AD7195_PressureCalc(AD7195_t * AD7195){
-	AD7195->pressure1 = AD7195->raw_press1/1677721.0 - 0;
-	AD7195->pressure2 = AD7195->raw_press2/1677721.0 - 0;
-	AD7195->pressure3 = AD7195->raw_press3/1677721.0 - 0;
-	AD7195->pressure4 = AD7195->raw_press4/1677721.0 - 0;
-	AD7195->pressure5 = AD7195->raw_press5/1677721.0 - 0;
-	AD7195->pressure6 = AD7195->raw_press6/1677721.0 - 0;
-	AD7195->pressure7 = (AD7195->raw_press7 - 16675031.0)/433.44;
-	AD7195->pressure8 = (AD7195->raw_press8 - 16676277.0)/570.0;
+	AD7195->pressure1 = 0;
+	AD7195->pressure2 = 0;
+	AD7195->pressure3 = 0;
+	AD7195->pressure4 = (AD7195->raw_press4 - 8522432.0)/ 87850.0;
+	AD7195->pressure5 = (AD7195->raw_press5 - 8522432.0)/ 87850.0;
+	AD7195->pressure6 = (AD7195->raw_press6 - 8645000.0)/139500.0;
+	AD7195->pressure7 = (AD7195->raw_press7 - 8522432.0)/ 87850.0;
+	AD7195->pressure8 = (AD7195->raw_press8 - 8645000.0)/139500.0;
 }

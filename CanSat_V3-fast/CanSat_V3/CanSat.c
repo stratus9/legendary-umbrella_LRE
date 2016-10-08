@@ -92,28 +92,31 @@ ISR(USARTD0_RXC_vect) {
 	
 	//-----Test MOV------
     } else if((tmp == '1') && stan_d.cmd_mode) {
-        stan_d.flash_trigger = true;					
+        MOV_valve_open();
+		_delay_ms(1000);
+		MOV_valve_close();						
         stan_d.cmd_mode = false;
 		
 	//-----Test MFV------
     } else if((tmp == '2') && stan_d.cmd_mode) {
-        stan_d.flash_trigger = false;					
+        MFV_valve_open();
+		_delay_ms(1000);
+		MFV_valve_close();				
         stan_d.cmd_mode = false;
 		
 	//-----Test MPV------
     } else if((tmp == '3') && stan_d.cmd_mode) {
-        stan_d.telemetry_trigger = true;			
+        MPV_valve_open();
+		_delay_ms(1000);
+		MPV_valve_close();			
         stan_d.cmd_mode = false;
 		
 	//-----Test FPV------
     } else if((tmp == '4') && stan_d.cmd_mode) {
-        stan_d.telemetry_trigger = false;			
+        FPV_valve_open();
+		_delay_ms(1000);
+		FPV_valve_close();
         stan_d.cmd_mode = false;
-		
-	//-----Otwarcie zaworu doprê¿ania----
-    } else if((tmp == '5') && stan_d.cmd_mode) {
-		stan_d.telemetry_trigger = false;		
-		stan_d.cmd_mode = false;
 		
 	//------Konfiguracja sekwencji 1------ dzia³a
     } else if((tmp == '6') && stan_d.cmd_mode) {
@@ -147,7 +150,7 @@ ISR(USARTD0_RXC_vect) {
         stan_d.armed_trigger = true;				
         stan_d.cmd_mode = false;
 		if (f_open(&pomiar, "naszplik.txt", FA_WRITE | FA_CREATE_ALWAYS) == FR_OK){	//jesli plik "naszplik.txt" nie istnieje, stworz go
-			f_write(&pomiar, "State, Config, Press 1, Press 2, Press 3, Temp 1, Temp 2, Temp3, Press 4, Press 5, Press 6, Temp 4\n\r", 101, &bw);
+			f_write(&pomiar, "State, Config, Press 1, Press 2, Press 3, Temp 1, Temp 2, Temp3, Press 4, Press 5, Press 6, Temp 4\r\n", 101, &bw);
 		}
 	
 	//------ Rozpoczêcie testu --------
@@ -307,9 +310,10 @@ int main(void) {
 				if(!frame_d.mutex) frame_d = frame_b;
 				LED_PORT.OUTSET = LED6;
 				if(stan_d.armed_trigger){
-					if(Add2Buffer(&frame_b, &frame_sd) >= 500){
+					Clock_d.frameFlashCount++;
+					if(Add2Buffer(&frame_b, &frame_sd) >= 450){
 						LED_PORT.OUTSET = LED2;
-						f_write(&pomiar, &frame_sd, sizeof(frame_sd.frameASCII), &bw);
+						f_write(&pomiar, &frame_sd, 492, &bw);
 						frame_sd.frameASCII[0] = 0;
 						LED_PORT.OUTCLR = LED2;
 					}
@@ -332,6 +336,7 @@ int main(void) {
 			Light_Red();
 			stan_d.TestConfig = 0;
 			PORTF.OUTSET = PIN0_bm;
+			LED_PORT.OUTCLR = LED3;
 		}
 		else if((stan_d.armed_trigger == true) && (stan_d.run_trigger == false)) FPV_valve_open();	//w³¹czenie doprê¿ania
         else if((stan_d.armed_trigger == true) && (stan_d.run_trigger == true) && (stan_d.TestConfig != 0)) {
@@ -339,11 +344,13 @@ int main(void) {
 				stan_d.State++;
 				switch(stan_d.State){
 					case 0:
+					LED_PORT.OUTSET = LED3;
 					stan_d.State = 1;
 					break;
 					//----- Step 1---------------- rozruch
 					case 1:
 					Buzzer_active();
+					SERVO_close();
 					Light_Red();
 					timer_buffer = Clock_d.time+1000;
 					break;
@@ -382,6 +389,8 @@ int main(void) {
 					stan_d.run_trigger = false;
 					stan_d.armed_trigger = false;
 					stan_d.TestConfig = 0;
+					stan_d.State = 0;
+					LED_PORT.OUTCLR = LED3;
 					break;
 				}
 			}
