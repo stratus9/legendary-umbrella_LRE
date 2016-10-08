@@ -306,7 +306,7 @@ int main(void) {
 			if(counter >= 3){
 				counter = 0;
 				AD7195_PressureCalc(&AD7195_d);
-				prepareFrame(&allData_d);
+				prepareFrameDEBUG(&allData_d);
 				if(!frame_d.mutex) frame_d = frame_b;
 				LED_PORT.OUTSET = LED6;
 				if(stan_d.armed_trigger){
