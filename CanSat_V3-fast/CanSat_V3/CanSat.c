@@ -149,8 +149,10 @@ ISR(USARTD0_RXC_vect) {
     } else if((tmp == 'P') && stan_d.cmd_mode) {
         stan_d.armed_trigger = true;				
         stan_d.cmd_mode = false;
-		if (f_open(&pomiar, "naszplik.txt", FA_WRITE | FA_CREATE_ALWAYS) == FR_OK){	//jesli plik "naszplik.txt" nie istnieje, stworz go
-			f_write(&pomiar, "State, Config, Press 1, Press 2, Press 3, Temp 1, Temp 2, Temp3, Press 4, Press 5, Press 6, Temp 4\r\n", 101, &bw);
+		char filename[8];
+		FindNextFilename(filename);
+		if (f_open(&pomiar, filename, FA_WRITE | FA_CREATE_ALWAYS) == FR_OK){	//jesli plik "naszplik.txt" nie istnieje, stworz go
+			f_write(&pomiar, "State, Config, Press 1, Press 2, Press 3, Temp 1, Temp 2, Temp3, Press 4, Press 5, Press 6, Temp 4\r", 101, &bw);
 		}
 	
 	//------ Rozpoczêcie testu --------
@@ -257,16 +259,16 @@ void Initialization(void) {
     //--------AD7195 (1) Init-----------
 	AD7195_Reset(0);
 	AD7195_Init(0);
-	volatile char id1 = AD7195_WhoIam(0);
+	//volatile char id1 = AD7195_WhoIam(0);
 	//--------AD7195 (2) Init-----------
 	AD7195_Reset(1);
 	AD7195_Init(1);
-	volatile char id2 = AD7195_WhoIam(1);
+	//volatile char id2 = AD7195_WhoIam(1);
 	//------- AD7195 Sync ------------
 	AD7195_Sync();
     //-------SPI Memory Init--------
 	MemorySPIInit();
-	volatile char status = SD_CardInit();
+	SD_CardInit();
     //-------w³¹czenie przerwañ----
     PMIC.CTRL = PMIC_LOLVLEN_bm | PMIC_MEDLVLEN_bm | PMIC_HILVLEN_bm;
 }

@@ -13,6 +13,7 @@
 #include "struct.h"
 #include "util.h"
 #include "CanSat.h"
+#include "FATFS/ff.h"
 
 void float2char(float number,char * tablica){
 	uint16_t tmp;
@@ -36,8 +37,47 @@ void prepareFrameDEBUG(allData_t * allData){
 	i=0;
 	
 	//=============== Pressure ===================
-	//-------------- Pressure 4 ----------------------------
+	//-------------- Pressure 1 ----------------------------
 	tmp = allData->AD7195->raw_press1;	//bar
+	if(tmp < 0) tmp = -tmp;
+	allData->frame_b->frameASCII[i++] = (tmp/10000000)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp/1000000)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp/100000)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp/10000)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
+	allData->frame_b->frameASCII[i++] = '\t';
+	
+	//-------------- Pressure 2 ----------------------------
+	tmp = allData->AD7195->raw_press2;	//bar
+	if(tmp < 0) tmp = -tmp;
+	allData->frame_b->frameASCII[i++] = (tmp/10000000)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp/1000000)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp/100000)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp/10000)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
+	allData->frame_b->frameASCII[i++] = '\t';
+	
+	//-------------- Pressure 3 ----------------------------
+	tmp = allData->AD7195->raw_press3;	//bar
+	if((tmp < 0) || (tmpf <0)) tmp = -tmp;
+	allData->frame_b->frameASCII[i++] = (tmp/10000000)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp/1000000)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp/100000)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp/10000)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
+	allData->frame_b->frameASCII[i++] = '\t';
+	
+	//-------------- Pressure 4 ----------------------------
+	tmp = allData->AD7195->raw_press4;	//bar
 	if(tmp < 0) tmp = -tmp;
 	allData->frame_b->frameASCII[i++] = (tmp/10000000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/1000000)%10 + 48;
@@ -64,59 +104,11 @@ void prepareFrameDEBUG(allData_t * allData){
 	
 	//-------------- Pressure 6 ----------------------------
 	tmp = allData->AD7195->raw_press6;	//bar
-	if((tmp < 0) || (tmpf <0)) tmp = -tmp;
+	if(tmp < 0) tmp = -tmp;
 	allData->frame_b->frameASCII[i++] = (tmp/10000000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/1000000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/100000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/10000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
-	allData->frame_b->frameASCII[i++] = '\t';
-	
-	//-------------- Temp 1 ----------------------------
-	tmp = allData->Analog->AnalogIn1;
-	if(tmp < 0){
-		tmp = -tmp;
-		allData->frame_b->frameASCII[i++] = '-';
-	}
-	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
-	allData->frame_b->frameASCII[i++] = '\t';
-	
-	//-------------- Temp 2 ----------------------------
-	tmp = allData->Analog->AnalogIn2*10;
-	if(tmp < 0){
-		tmp = -tmp;
-		allData->frame_b->frameASCII[i++] = '-';
-	}
-	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
-	allData->frame_b->frameASCII[i++] = '\t';
-	
-	//-------------- Temp 3 ----------------------------
-	tmp = allData->Analog->AnalogIn3*10;
-	if(tmp < 0){
-		tmp = -tmp;
-		allData->frame_b->frameASCII[i++] = '-';
-	}
-	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
-	allData->frame_b->frameASCII[i++] = '\t';
-	
-	//-------------- Temp 4 ----------------------------
-	tmp = allData->Analog->AnalogIn4*10;
-	if(tmp < 0){
-		tmp = -tmp;
-		allData->frame_b->frameASCII[i++] = '-';
-	}
 	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
@@ -143,6 +135,54 @@ void prepareFrameDEBUG(allData_t * allData){
 	allData->frame_b->frameASCII[i++] = (tmp/1000000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/100000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/10000)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
+	allData->frame_b->frameASCII[i++] = '\t';
+	
+	//-------------- Temp 1 ----------------------------
+	tmp = allData->Analog->AnalogIn1;
+	if(tmp < 0){
+		tmp = -tmp;
+		allData->frame_b->frameASCII[i++] = '-';
+	}
+	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
+	allData->frame_b->frameASCII[i++] = '\t';
+	
+	//-------------- Temp 2 ----------------------------
+	tmp = allData->Analog->AnalogIn2;
+	if(tmp < 0){
+		tmp = -tmp;
+		allData->frame_b->frameASCII[i++] = '-';
+	}
+	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
+	allData->frame_b->frameASCII[i++] = '\t';
+	
+	//-------------- Temp 3 ----------------------------
+	tmp = allData->Analog->AnalogIn3;
+	if(tmp < 0){
+		tmp = -tmp;
+		allData->frame_b->frameASCII[i++] = '-';
+	}
+	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
+	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
+	allData->frame_b->frameASCII[i++] = '\t';
+	
+	//-------------- Temp 4 ----------------------------
+	tmp = allData->Analog->AnalogIn4;
+	if(tmp < 0){
+		tmp = -tmp;
+		allData->frame_b->frameASCII[i++] = '-';
+	}
 	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
@@ -431,4 +471,26 @@ void ADC_tempCalc(Analog_t * Analog){
 	Analog->R3 = (V*221)/(5-V);
 	V = (Analog->AnalogIn1)/2048.0*3.3;
 	Analog->R4 = (V*221)/(5-V);
+}
+
+uint8_t FindNextFilename(char * filename){
+	FRESULT fr;
+	FILINFO fno;
+	uint8_t i = 0;
+	char name[8];
+	do{
+		i++;
+		sprintf(name, "%03u.csv",i);
+	}while(f_stat(name, &fno) == FR_OK);
+	*filename++ = name[0];
+	*filename++ = name[1];
+	*filename++ = name[2];
+	*filename++ = name[3];
+	*filename++ = name[4];
+	*filename++ = name[5];
+	*filename++ = name[6];
+	*filename++ = name[7];
+	*filename++ = name[8];
+	
+	return i;
 }
