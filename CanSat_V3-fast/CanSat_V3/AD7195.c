@@ -13,19 +13,11 @@
 #include <util/delay.h>
 
 void AD7195_CS(uint8_t chipNo, bool state){
-	if((chipNo == 0) && (state == false))  PORTC.OUTSET = PIN3_bm;
-	if((chipNo == 0) && (state == true)) PORTC.OUTCLR = PIN3_bm;
-	if((chipNo == 1) && (state == false))  PORTC.OUTSET = PIN4_bm;
-	if((chipNo == 1) && (state == true)) PORTC.OUTCLR = PIN4_bm;
-}
-
-void AD7195_regwrite(uint8_t chipNo, uint8_t address, uint32_t value){
-	AD7195_CS(chipNo, true);
-	SPI_W_Byte(address);					//Select target register
-	SPI_W_Byte((value>>16) & 0x0000FF);		//send oldest byte
-	SPI_W_Byte((value>>8)  & 0x0000FF);		
-	SPI_W_Byte( value      & 0x0000FF);		
-	AD7195_CS(chipNo, false);
+	if((chipNo == 0) && (state == false)) PORTC.OUTSET = PIN3_bm;
+	if((chipNo == 0) && (state == true))  PORTC.OUTCLR = PIN3_bm;
+	
+	if((chipNo == 1) && (state == false)) PORTC.OUTSET = PIN4_bm;
+	if((chipNo == 1) && (state == true))  PORTC.OUTCLR = PIN4_bm;
 }
 
 void AD7195_Init(uint8_t chipNo){
@@ -71,7 +63,12 @@ void AD7195_Reset(uint8_t chipNo){
 	SPI_W_Byte(0xFF);					
 	SPI_W_Byte(0xFF);					
 	SPI_W_Byte(0xFF);	
-	SPI_W_Byte(0xFF);				
+	SPI_W_Byte(0xFF);
+	SPI_W_Byte(0xFF);
+	SPI_W_Byte(0xFF);
+	SPI_W_Byte(0xFF);
+	SPI_W_Byte(0xFF);
+	SPI_W_Byte(0xFF);			
 	AD7195_CS(chipNo, false);
 }
 
@@ -91,14 +88,6 @@ void AD7195_ContConvRead(uint8_t * channel1, uint8_t * channel2, uint32_t * valu
 	(*value2) |= (uint32_t)SPI_R_Byte();
 	(*channel2) = SPI_R_Byte() & 0x0F;
 	AD7195_CS(1, false);
-}
-
-void AD7195_ContRead(uint8_t chipNo, bool enable)
-{
-	AD7195_CS(chipNo, true);
-	if(enable) SPI_W_Byte(0x5C);
-	else SPI_W_Byte(0x5C);
-	AD7195_CS(chipNo, false);
 }
 
 bool AD7195_RDY(uint8_t chipNo){

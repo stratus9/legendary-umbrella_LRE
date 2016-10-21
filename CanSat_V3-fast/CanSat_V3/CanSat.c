@@ -210,7 +210,7 @@ ISR(TCE0_OVF_vect) {
 
 //----------------------Frame send-------------------------------------
 ISR(TCF0_OVF_vect) {
-    //LED_PORT.OUTTGL = LED4;
+    LED_PORT.OUTTGL = LED4;
     frame_d.terminate = false;
     if(stan_d.telemetry_trigger) {
         if(Clock_d.frameTeleCount< 99999) Clock_d.frameTeleCount++;
@@ -230,7 +230,7 @@ void structInit(void) {
 	allData_d.stan = &stan_d;
 	allData_d.frame = &frame_d;
 	allData_d.frame_b = &frame_b;
-	//allData_d.RTC = &RTC_d;
+	allData_d.Clock = &Clock_d;
 	allData_d.Output = &Output_d;
 	allData_d.AD7195 = &AD7195_d;
 }
@@ -315,7 +315,8 @@ int main(void) {
 					Clock_d.frameFlashCount++;
 					if(Add2Buffer(&frame_b, &frame_sd) >= 450){
 						LED_PORT.OUTSET = LED2;
-						f_write(&pomiar, &frame_sd, 492, &bw);
+						f_write(&pomiar, &frame_sd, FindTableLength(frame_sd.frameASCII), &bw);
+						//f_write(&pomiar, &frame_sd, 500, &bw);
 						frame_sd.frameASCII[0] = 0;
 						LED_PORT.OUTCLR = LED2;
 					}

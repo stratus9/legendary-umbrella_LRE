@@ -22,9 +22,9 @@
 #define calibrationCNT	(int)(ceil(2*sampling_rate))				//iloœæ próbek do kalibracji
 
 //----------------------------------Data interfaces--------
-#define FLASH_SPI	SPIC
-#define SPI_PORT	PORTC
-#define FLASH_CS_PORT PORTC
+#define ADC_SPI		SPIC
+#define SPI_PORT		PORTC
+#define FLASH_CS_PORT	PORTC
 #define SPI_speed		2000	//prêdkoœæ SPI w kHz
 
 #define	SENSORS_I2C	TWIC

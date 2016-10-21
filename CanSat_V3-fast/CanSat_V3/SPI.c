@@ -15,14 +15,14 @@
 #include "CanSat.h"
 
 void SPI_W_Byte(uint8_t byte){
-	FLASH_SPI.DATA = byte;
-	while(!(FLASH_SPI.STATUS & SPI_IF_bm)){}
-	volatile char tmp = FLASH_SPI.DATA;
+	ADC_SPI.DATA = byte;
+	while(!(ADC_SPI.STATUS & SPI_IF_bm)){}
+	volatile char tmp = ADC_SPI.DATA;
 }
 
 uint8_t SPI_R_Byte(void){
-	FLASH_SPI.DATA = 0x00;
-	while(!(FLASH_SPI.STATUS & SPI_IF_bm)){}
-	return FLASH_SPI.DATA;
+	ADC_SPI.DATA = 0x00;
+	while(!(ADC_SPI.STATUS & SPI_IF_bm)){}
+	return ADC_SPI.DATA;
 }
 

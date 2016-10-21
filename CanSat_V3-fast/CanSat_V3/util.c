@@ -474,7 +474,6 @@ void ADC_tempCalc(Analog_t * Analog){
 }
 
 uint8_t FindNextFilename(char * filename){
-	FRESULT fr;
 	FILINFO fno;
 	uint8_t i = 0;
 	char name[8];
@@ -492,5 +491,11 @@ uint8_t FindNextFilename(char * filename){
 	*filename++ = name[7];
 	*filename++ = name[8];
 	
+	return i;
+}
+
+uint16_t FindTableLength(char * table){
+	uint16_t i=0;
+	while((*table++) && (i < 512)) i++;
 	return i;
 }

@@ -94,9 +94,9 @@ SPI.d \
 Initialization.d \
 util.d
 
-OUTPUT_FILE_PATH +=CanSat_V3\ -\ 1kHz.elf
+OUTPUT_FILE_PATH +=V1.0.elf
 
-OUTPUT_FILE_PATH_AS_ARGS +="CanSat_V3 - 1kHz.elf"
+OUTPUT_FILE_PATH_AS_ARGS +=V1.0.elf
 
 ADDITIONAL_DEPENDENCIES:=
 
@@ -108,61 +108,21 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
-./AD7195.o: .././AD7195.c
-	@echo Building file: $<
-	@echo Invoking: AVR/GNU C Compiler : 4.9.2
-	$(QUOTE)E:\Atmel\AS7\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=32000000  -I"E:\Atmel\AS7\7.0\Packs\atmel\XMEGAA_DFP\1.0.36\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega128a3u -B "E:\Atmel\AS7\7.0\Packs\atmel\XMEGAA_DFP\1.0.36\gcc\dev\atxmega128a3u" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
-	@echo Finished building: $<
-	
 
-./CanSat.o: .././CanSat.c
-	@echo Building file: $<
-	@echo Invoking: AVR/GNU C Compiler : 4.9.2
-	$(QUOTE)E:\Atmel\AS7\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=32000000  -I"E:\Atmel\AS7\7.0\Packs\atmel\XMEGAA_DFP\1.0.36\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega128a3u -B "E:\Atmel\AS7\7.0\Packs\atmel\XMEGAA_DFP\1.0.36\gcc\dev\atxmega128a3u" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
-	@echo Finished building: $<
-	
 
-FATFS/ff.o: ../FATFS/ff.c
-	@echo Building file: $<
-	@echo Invoking: AVR/GNU C Compiler : 4.9.2
-	$(QUOTE)E:\Atmel\AS7\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=32000000  -I"E:\Atmel\AS7\7.0\Packs\atmel\XMEGAA_DFP\1.0.36\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega128a3u -B "E:\Atmel\AS7\7.0\Packs\atmel\XMEGAA_DFP\1.0.36\gcc\dev\atxmega128a3u" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
-	@echo Finished building: $<
-	
 
-./I2C.o: .././I2C.c
-	@echo Building file: $<
-	@echo Invoking: AVR/GNU C Compiler : 4.9.2
-	$(QUOTE)E:\Atmel\AS7\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=32000000  -I"E:\Atmel\AS7\7.0\Packs\atmel\XMEGAA_DFP\1.0.36\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega128a3u -B "E:\Atmel\AS7\7.0\Packs\atmel\XMEGAA_DFP\1.0.36\gcc\dev\atxmega128a3u" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
-	@echo Finished building: $<
-	
 
-./SD.o: .././SD.c
-	@echo Building file: $<
-	@echo Invoking: AVR/GNU C Compiler : 4.9.2
-	$(QUOTE)E:\Atmel\AS7\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=32000000  -I"E:\Atmel\AS7\7.0\Packs\atmel\XMEGAA_DFP\1.0.36\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega128a3u -B "E:\Atmel\AS7\7.0\Packs\atmel\XMEGAA_DFP\1.0.36\gcc\dev\atxmega128a3u" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
-	@echo Finished building: $<
-	
 
-./SPI.o: .././SPI.c
-	@echo Building file: $<
-	@echo Invoking: AVR/GNU C Compiler : 4.9.2
-	$(QUOTE)E:\Atmel\AS7\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=32000000  -I"E:\Atmel\AS7\7.0\Packs\atmel\XMEGAA_DFP\1.0.36\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega128a3u -B "E:\Atmel\AS7\7.0\Packs\atmel\XMEGAA_DFP\1.0.36\gcc\dev\atxmega128a3u" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
-	@echo Finished building: $<
-	
 
-./Initialization.o: .././Initialization.c
-	@echo Building file: $<
-	@echo Invoking: AVR/GNU C Compiler : 4.9.2
-	$(QUOTE)E:\Atmel\AS7\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=32000000  -I"E:\Atmel\AS7\7.0\Packs\atmel\XMEGAA_DFP\1.0.36\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega128a3u -B "E:\Atmel\AS7\7.0\Packs\atmel\XMEGAA_DFP\1.0.36\gcc\dev\atxmega128a3u" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
-	@echo Finished building: $<
-	
 
-./util.o: .././util.c
-	@echo Building file: $<
-	@echo Invoking: AVR/GNU C Compiler : 4.9.2
-	$(QUOTE)E:\Atmel\AS7\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=32000000  -I"E:\Atmel\AS7\7.0\Packs\atmel\XMEGAA_DFP\1.0.36\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega128a3u -B "E:\Atmel\AS7\7.0\Packs\atmel\XMEGAA_DFP\1.0.36\gcc\dev\atxmega128a3u" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
-	@echo Finished building: $<
-	
+
+
+
+
+
+
+
+
 
 
 ./%.o: .././%.c
@@ -204,13 +164,13 @@ all: $(OUTPUT_FILE_PATH) $(ADDITIONAL_DEPENDENCIES)
 $(OUTPUT_FILE_PATH): $(OBJS) $(USER_OBJS) $(OUTPUT_FILE_DEP) $(LIB_DEP) $(LINKER_SCRIPT_DEP)
 	@echo Building target: $@
 	@echo Invoking: AVR/GNU Linker : 4.9.2
-	$(QUOTE)E:\Atmel\AS7\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE) -o$(OUTPUT_FILE_PATH_AS_ARGS) $(OBJS_AS_ARGS) $(USER_OBJS) $(LIBS) -Wl,-Map="CanSat_V3 - 1kHz.map" -Wl,--start-group -Wl,-lm  -Wl,--end-group -Wl,--gc-sections -mrelax -mmcu=atxmega128a3u -B "E:\Atmel\AS7\7.0\Packs\atmel\XMEGAA_DFP\1.0.36\gcc\dev\atxmega128a3u"  
+	$(QUOTE)E:\Atmel\AS7\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE) -o$(OUTPUT_FILE_PATH_AS_ARGS) $(OBJS_AS_ARGS) $(USER_OBJS) $(LIBS) -Wl,-Map="V1.0.map" -Wl,--start-group -Wl,-lm  -Wl,--end-group -Wl,--gc-sections -mrelax -mmcu=atxmega128a3u -B "E:\Atmel\AS7\7.0\Packs\atmel\XMEGAA_DFP\1.0.36\gcc\dev\atxmega128a3u"  
 	@echo Finished building target: $@
-	"E:\Atmel\AS7\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-objcopy.exe" -O ihex -R .eeprom -R .fuse -R .lock -R .signature -R .user_signatures  "CanSat_V3 - 1kHz.elf" "CanSat_V3 - 1kHz.hex"
-	"E:\Atmel\AS7\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-objcopy.exe" -j .eeprom  --set-section-flags=.eeprom=alloc,load --change-section-lma .eeprom=0  --no-change-warnings -O ihex "CanSat_V3 - 1kHz.elf" "CanSat_V3 - 1kHz.eep" || exit 0
-	"E:\Atmel\AS7\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-objdump.exe" -h -S "CanSat_V3 - 1kHz.elf" > "CanSat_V3 - 1kHz.lss"
-	"E:\Atmel\AS7\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-objcopy.exe" -O srec -R .eeprom -R .fuse -R .lock -R .signature -R .user_signatures "CanSat_V3 - 1kHz.elf" "CanSat_V3 - 1kHz.srec"
-	"E:\Atmel\AS7\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-size.exe" "CanSat_V3 - 1kHz.elf"
+	"E:\Atmel\AS7\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-objcopy.exe" -O ihex -R .eeprom -R .fuse -R .lock -R .signature -R .user_signatures  "V1.0.elf" "V1.0.hex"
+	"E:\Atmel\AS7\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-objcopy.exe" -j .eeprom  --set-section-flags=.eeprom=alloc,load --change-section-lma .eeprom=0  --no-change-warnings -O ihex "V1.0.elf" "V1.0.eep" || exit 0
+	"E:\Atmel\AS7\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-objdump.exe" -h -S "V1.0.elf" > "V1.0.lss"
+	"E:\Atmel\AS7\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-objcopy.exe" -O srec -R .eeprom -R .fuse -R .lock -R .signature -R .user_signatures "V1.0.elf" "V1.0.srec"
+	"E:\Atmel\AS7\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-size.exe" "V1.0.elf"
 	
 	
 
@@ -222,5 +182,5 @@ $(OUTPUT_FILE_PATH): $(OBJS) $(USER_OBJS) $(OUTPUT_FILE_DEP) $(LIB_DEP) $(LINKER
 clean:
 	-$(RM) $(OBJS_AS_ARGS) $(EXECUTABLES)  
 	-$(RM) $(C_DEPS_AS_ARGS)   
-	rm -rf "CanSat_V3 - 1kHz.elf" "CanSat_V3 - 1kHz.a" "CanSat_V3 - 1kHz.hex" "CanSat_V3 - 1kHz.lss" "CanSat_V3 - 1kHz.eep" "CanSat_V3 - 1kHz.map" "CanSat_V3 - 1kHz.srec" "CanSat_V3 - 1kHz.usersignatures"
+	rm -rf "V1.0.elf" "V1.0.a" "V1.0.hex" "V1.0.lss" "V1.0.eep" "V1.0.map" "V1.0.srec" "V1.0.usersignatures"
 	
