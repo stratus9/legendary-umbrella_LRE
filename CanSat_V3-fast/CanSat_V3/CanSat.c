@@ -296,7 +296,7 @@ int main(void) {
 	uint32_t timer_buffer = 0;
 	uint8_t counter = 0;
 	
-	f_mount(0, &fatfs);  //Dostêp do systemu plików
+	f_mount(&fatfs,0,1);  //Dostêp do systemu plików
 	Light_Green();
     while(1){
         _delay_us(1);

@@ -178,7 +178,7 @@ void SPI_Init(void) {
     SPI_PORT.DIRCLR = PIN6_bm;
     SPI_PORT.OUTSET = PIN5_bm | PIN6_bm | PIN7_bm;	//mo¿e dodaæ PIN6_bm
     //----CS---
-    //-----------Clk = 2 MHz-------------------------
+    //-----------Clk = 4 MHz-------------------------
     ADC_SPI.CTRL = SPI_ENABLE_bm | SPI_MODE_0_gc | SPI_PRESCALER_DIV16_gc | SPI_CLK2X_bm | SPI_MASTER_bm;
     //FLASH_SPI.INTCTRL = SPI_INTLVL_LO_gc;
 }
