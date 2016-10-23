@@ -12,6 +12,7 @@
 #include "struct.h"
 #include "Initialization.h"
 #include "CanSat.h"
+#include "util.h"
 
 void CPU_clk(uint8_t val) {
     Osc2MHz((uint8_t)(val / 2));
@@ -188,4 +189,8 @@ uint8_t ReadSignatureByte(uint16_t Address) {
     __asm__ ("lpm %0, Z\n" : "=r" (Result) : "z" (Address));
     NVM_CMD = NVM_CMD_NO_OPERATION_gc;
     return Result;
+}
+
+void Clock_Init(void){
+	//Iniclajalizacja RTC itd
 }

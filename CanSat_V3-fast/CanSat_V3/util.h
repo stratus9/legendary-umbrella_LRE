@@ -34,4 +34,6 @@ uint16_t Add2Buffer(frame_t *, frameSD_t *);
 void ADC_tempCalc(Analog_t *);
 uint8_t FindNextFilename(char *);
 uint16_t FindTableLength(char *);
+void ClockReset(allData_t * allData);
+void ClockGet(allData_t * allData);
 #endif /* UTIL_H_ */

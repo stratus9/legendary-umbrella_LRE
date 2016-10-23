@@ -590,3 +590,11 @@ uint16_t FindTableLength(char * table){
 	while((*table++) && (i < 512)) i++;
 	return i;
 }
+
+void ClockReset(allData_t * allData){
+	allData->Clock->time = 0;
+}
+
+void ClockGet(allData_t * allData){
+	allData->Clock->time = 0; //wstawiæ odczyt z timera
+}

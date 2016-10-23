@@ -16,7 +16,7 @@ Initialization.d Initialization.o: .././Initialization.c \
  e:\atmel\as7\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\4.9.2\include\stddef.h \
  e:\atmel\as7\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdlib.h \
  e:\atmel\as7\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\4.9.2\include\stdbool.h \
- .././struct.h .././Initialization.h .././CanSat.h
+ .././struct.h .././Initialization.h .././CanSat.h .././util.h
 
 e:\atmel\as7\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\io.h:
 
@@ -57,3 +57,5 @@ e:\atmel\as7\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\4.9.2\include\std
 .././Initialization.h:
 
 .././CanSat.h:
+
+.././util.h:

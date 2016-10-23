@@ -13,21 +13,21 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  000070b4  2**2
                   CONTENTS, READONLY
-  5 .debug_aranges 000004b0  00000000  00000000  000070f4  2**0
+  5 .debug_aranges 000004c8  00000000  00000000  000070f4  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   00009c32  00000000  00000000  000075a4  2**0
+  6 .debug_info   00009caa  00000000  00000000  000075bc  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 00001218  00000000  00000000  000111d6  2**0
+  7 .debug_abbrev 0000121a  00000000  00000000  00011266  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   000049c5  00000000  00000000  000123ee  2**0
+  8 .debug_line   00004a04  00000000  00000000  00012480  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  000014cc  00000000  00000000  00016db4  2**2
+  9 .debug_frame  000014fc  00000000  00000000  00016e84  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    0000261d  00000000  00000000  00018280  2**0
+ 10 .debug_str    0000263c  00000000  00000000  00018380  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00008c4a  00000000  00000000  0001a89d  2**0
+ 11 .debug_loc    00008c4a  00000000  00000000  0001a9bc  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000520  00000000  00000000  000234e7  2**0
+ 12 .debug_ranges 00000538  00000000  00000000  00023606  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -8631,9 +8631,9 @@ void Osc2MHz(uint8_t pll_factor) {
     3c54:	08 95       	ret
 
 00003c56 <CPU_clk>:
-#include "struct.h"
 #include "Initialization.h"
 #include "CanSat.h"
+#include "util.h"
 
 void CPU_clk(uint8_t val) {
     Osc2MHz((uint8_t)(val / 2));
@@ -13881,6 +13881,7 @@ uint16_t FindTableLength(char * table){
     648a:	90 e0       	ldi	r25, 0x00	; 0
 	while((*table++) && (i < 512)) i++;
 	return i;
+}
     648c:	08 95       	ret
 
 0000648e <__subsf3>:

@@ -24,5 +24,7 @@ void IO_Init(void);
 void I2C_Init(void);
 void SPI_Init(void);
 uint8_t ReadSignatureByte(uint16_t);
+void Clock_Init(void);
 void GPS_Conf(void);
+
 #endif /* INITIALIZATION_H_ */
