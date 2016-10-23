@@ -117,7 +117,7 @@ void USART_Init(void) {
     USARTD0.BAUDCTRLA = (uint8_t)(BSEL & 0x00FF);
     USARTD0.BAUDCTRLB = (uint8_t)(((BSEL >> 8) & 0x000F) | BSCALE) ;
     USARTD0.CTRLA |= USART_RXCINTLVL_LO_gc | USART_TXCINTLVL_HI_gc;		//odblokowanie przerwañ nadajnika i odbiornika, niski priorytet
-    USARTD0.CTRLB |= USART_TXEN_bm | USART_RXEN_bm;						//w³¹czenie nadajnika i odbiornika USART
+    USARTD0.CTRLB = USART_TXEN_bm | USART_RXEN_bm;						//w³¹czenie nadajnika i odbiornika USART
 }
 
 void IO_Init(void) {
@@ -177,7 +177,6 @@ void SPI_Init(void) {
     SPI_PORT.DIRSET = PIN5_bm | PIN7_bm;
     SPI_PORT.DIRCLR = PIN6_bm;
     SPI_PORT.OUTSET = PIN5_bm | PIN6_bm | PIN7_bm;	//mo¿e dodaæ PIN6_bm
-    //----CS---
     //-----------Clk = 4 MHz-------------------------
     ADC_SPI.CTRL = SPI_ENABLE_bm | SPI_MODE_0_gc | SPI_PRESCALER_DIV16_gc | SPI_CLK2X_bm | SPI_MASTER_bm;
     //FLASH_SPI.INTCTRL = SPI_INTLVL_LO_gc;

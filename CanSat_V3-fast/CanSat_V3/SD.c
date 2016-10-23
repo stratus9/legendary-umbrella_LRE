@@ -26,7 +26,7 @@ void SPI_SD_CS(_Bool SS_en) {
 }
 
 void SPI_SetBaudrate_400kHz() {
-    SD_SPI.CTRL = (SD_SPI.CTRL & (~SPI_PRESCALER_gm)) | SPI_PRESCALER_DIV64_gc; //Preskaler nale¿y dobraæ zale¿nie od taktowania CPU
+    SD_SPI.CTRL = (SD_SPI.CTRL & (~(SPI_PRESCALER_gm | SPI_CLK2X_bm))) | SPI_PRESCALER_DIV64_gc; //Preskaler nale¿y dobraæ zale¿nie od taktowania CPU
 }
 
 void SPI_SetMaxBaudrate() {
@@ -141,9 +141,9 @@ _Bool SD_CardInit() {
     } while ((ret & 0xc0) && --i);
     _Bool result;
     if(ret == 0x05) result = SD_CardInitV1();
-    else result = SD_CardInitV2(); //Z jak¹ kart¹ mamy do czynienia
+    else result = SD_CardInitV2();				//Z jak¹ kart¹ mamy do czynienia
     if(result == false) SD_Status = STA_NODISK;
-    SPI_SetMaxBaudrate(&USARTC1);  //Prze³¹cz interfejs na maksymaln¹ szybkoœæ pracy
+    SPI_SetMaxBaudrate();						//Prze³¹cz interfejs na maksymaln¹ szybkoœæ pracy
     return result;
 }
 
@@ -161,7 +161,7 @@ _Bool SD_Rec_Datablock(uint8_t *buff, uint16_t size) {
     uint8_t rec, timeout;
     timeout = 200;
     do {
-        _delay_us(500);                  //Zanim blok danych bêdzie gotowy potrzebujemy chwilkê
+        _delay_us(500);                  //Zanim blok danych bêdzie gotowy potrzebujemy chwilkê	-------------------->mo¿liwa optymalizacja - skrócenie czasu
         rec = SPI_RW_Byte(0xff);
     } while((rec == 0xff) && timeout--); //Czekamy na otrzymanie 0xfe, ale max 100 ms
     if(rec != 0xfe) return false;		 //B³¹d - nie ma pocz¹tku danych
