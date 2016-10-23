@@ -264,7 +264,7 @@ DRESULT disk_read (
     BYTE drv,			/* Physical drive nmuber (0) */
     BYTE *buff,			/* Pointer to the data buffer to store read data */
     DWORD sector,		/* Start sector number (LBA) */
-    BYTE count) {		/* Sector count (1..255) */
+    UINT count) {		/* Sector count (1..255) */
     if(drv) return RES_ERROR;
     return SD_disk_read(buff, sector, count);
 }
@@ -277,12 +277,10 @@ DRESULT disk_write (
     BYTE drv,			/* Physical drive nmuber (0) */
     const BYTE *buff,	/* Pointer to the data to be written */
     DWORD sector,		/* Start sector number (LBA) */
-    BYTE count) {		/* Sector count (1..255) */
+    UINT count) {		/* Sector count (1..255) */
     if(drv) return RES_ERROR;
     return DS_disk_write(buff, sector, count);
 }
-
-#if _USE_IOCTL
 
 _Bool SD_GetResponse(void *buf, uint8_t size) {
     uint8_t i = 10;
@@ -326,20 +324,20 @@ DRESULT disk_ioctl (
         break;
     case CTRL_SYNC:
         break;
-    case CTRL_ERASE_SECTOR:
-        break;
     default:
         res = RES_PARERR;            //Nieznane polecenie
     }
     return res;
 }
-#endif
 
 
-#if _USE_WRITE
 
 DWORD get_fattime (void) {
-    return 0;  //B³êdnie, nale¿y tu zwróciæ poprawn¹ datê
+    /* Returns current time packed into a DWORD variable */
+    return     ((DWORD)(2014 - 1980) << 25)   /* Year 2014 */
+    | ((DWORD)1 << 21)            /* Month 1 */
+    | ((DWORD)11 << 16)            /* Mday 28 */
+    | ((DWORD)0 << 11)            /* Hour 0 */
+    | ((DWORD)0 << 5)            /* Min 0 */
+    | ((DWORD)0 >> 1);            /* Sec 0 */
 }
-
-#endif
