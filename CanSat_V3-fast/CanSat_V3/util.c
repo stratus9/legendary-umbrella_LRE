@@ -211,30 +211,30 @@ void prepareFrame(allData_t * allData){
 	volatile int16_t i,tmp,tmpf;
 	i=0;
 	
-	/* 1  */	//------------ state-------------------------
-	/* 2  */	allData->frame_b->frameASCII[i++] = 'S';
-	/* 3  */	allData->frame_b->frameASCII[i++] = allData->stan->run_trigger+48;	//1
-	/* 4  */	allData->frame_b->frameASCII[i++] = allData->stan->FPV+48;			//2
-	/* 5  */	allData->frame_b->frameASCII[i++] = allData->stan->MFV+48;			//3
-	/* 6  */	allData->frame_b->frameASCII[i++] = allData->stan->MOV+48;			//4
-	/* 7  */	allData->frame_b->frameASCII[i++] = allData->stan->MPV+48;			//5	
-	/* 8  */	allData->frame_b->frameASCII[i++] = '0';							//6
-	/* 9  */	allData->frame_b->frameASCII[i++] = allData->stan->IGN+48;			//7
-	/* 10 */	allData->frame_b->frameASCII[i++] = allData->stan->SERVO1+48;		//8
-	/* 11 */	allData->frame_b->frameASCII[i++] = allData->stan->SERVO2+48;		//9
-	/* 12 */	allData->frame_b->frameASCII[i++] = ',';
-	/* 13 */	allData->frame_b->frameASCII[i++] = (allData->stan->TestConfig/1000)%10+48;	//konfiguracja testu
-	/* 14 */	allData->frame_b->frameASCII[i++] = (allData->stan->TestConfig/100)%10+48;	//konfiguracja testu
-	/* 15 */	allData->frame_b->frameASCII[i++] = (allData->stan->TestConfig/10)%10+48;	//konfiguracja testu
-	/* 16 */	allData->frame_b->frameASCII[i++] = (allData->stan->TestConfig)%10+48;		//konfiguracja testu
-	/* 17 */	allData->frame_b->frameASCII[i++] = ',';
+	/* 2  */	//------------ state-------------------------
+	/* 3  */	allData->frame_b->frameASCII[i++] = 'S';
+	/* 4  */	allData->frame_b->frameASCII[i++] = allData->stan->run_trigger+48;	//1
+	/* 5  */	allData->frame_b->frameASCII[i++] = allData->stan->FPV+48;			//2
+	/* 6  */	allData->frame_b->frameASCII[i++] = allData->stan->MFV+48;			//3
+	/* 7  */	allData->frame_b->frameASCII[i++] = allData->stan->MOV+48;			//4
+	/* 8  */	allData->frame_b->frameASCII[i++] = allData->stan->MPV+48;			//5	
+	/* 9  */	allData->frame_b->frameASCII[i++] = '0';							//6
+	/* 10  */	allData->frame_b->frameASCII[i++] = allData->stan->IGN+48;			//7
+	/* 11 */	allData->frame_b->frameASCII[i++] = allData->stan->SERVO1+48;		//8
+	/* 12 */	allData->frame_b->frameASCII[i++] = allData->stan->SERVO2+48;		//9
+	/* 13 */	allData->frame_b->frameASCII[i++] = ',';
+	/* 14 */	allData->frame_b->frameASCII[i++] = (allData->stan->TestConfig/1000)%10+48;	//konfiguracja testu
+	/* 15 */	allData->frame_b->frameASCII[i++] = (allData->stan->TestConfig/100)%10+48;	//konfiguracja testu
+	/* 16 */	allData->frame_b->frameASCII[i++] = (allData->stan->TestConfig/10)%10+48;	//konfiguracja testu
+	/* 17 */	allData->frame_b->frameASCII[i++] = (allData->stan->TestConfig)%10+48;		//konfiguracja testu
+	/* 18 */	allData->frame_b->frameASCII[i++] = ',';
 	
 	//=============== Pressure ===================
 	//-------------- Pressure 4 ----------------------------
 	tmp = allData->AD7195->pressure4*1000;	//bar
 	if(tmp < 0) tmp = -tmp;
-	/* 18 */	allData->frame_b->frameASCII[i++] = (tmp/10000)%10 + 48;
-	/* 19 */	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
+	/* 19 */	allData->frame_b->frameASCII[i++] = (tmp/10000)%10 + 48;
+	/* 20 */	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
 	/* 21 */	allData->frame_b->frameASCII[i++] = '.';
 	/* 22 */	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
 	/* 23 */	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
@@ -354,10 +354,97 @@ void prepareFrame(allData_t * allData){
 	/* 87 */	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
 	
 	//------------ END --------------
-	allData->frame_b->frameASCII[i++] = '\r';
-	allData->frame_b->frameASCII[i++] = '\n';		
+	/* 88 */	allData->frame_b->frameASCII[i++] = '\r';
+	/* 89 */	allData->frame_b->frameASCII[i++] = '\n';		
 	allData->frame_b->frameASCII[i++] = 0;
 	allData->frame_b->frameASCII[i++] = 'X';
+}
+
+void prepareFrameBIN(allData_t * allData){
+	uint8_t i=0;
+	uint8_t tmpint = 0;
+	float2array_t tmp;
+	int32_2array_t tmp2;
+	
+	//------------ state-------------------------
+				tmpint = (allData->stan->run_trigger)<<7 | (allData->stan->FPV)<<6 | (allData->stan->MPV)<<5 | (allData->stan->MOV)<<4 | (allData->stan->MPV)<<3 | (allData->stan->IGN)<<2 | (allData->stan->SERVO1)<<1 | (allData->stan->SERVO2)<<0;
+	/* 1  */	allData->frame_b->frameASCII[i++] = tmpint;
+	//------------ Test config ------------------
+				tmp2.uintNumber = allData->stan->TestConfig;
+	/* 2  */	allData->frame_b->frameASCII[i++] = tmp2.arrayNumber[0];
+	/* 3  */	allData->frame_b->frameASCII[i++] = tmp2.arrayNumber[0];
+	/* 4  */	allData->frame_b->frameASCII[i++] = tmp2.arrayNumber[0];
+	/* 5  */	allData->frame_b->frameASCII[i++] = tmp2.arrayNumber[0];
+		
+	//=============== Pressure ===================
+	//-------------- Pressure 1 ----------------------------
+	tmp.floatNumber = allData->AD7195->pressure1;
+	/* 6  */	allData->frame_b->frameBIN[i++] = tmp.arrayNumber[0];
+	/* 7  */	allData->frame_b->frameBIN[i++] = tmp.arrayNumber[1];
+	/* 8  */	allData->frame_b->frameBIN[i++] = tmp.arrayNumber[2];
+	/* 9  */	allData->frame_b->frameBIN[i++] = tmp.arrayNumber[3];
+	//-------------- Pressure 2 ----------------------------
+	tmp.floatNumber = allData->AD7195->pressure2;
+	/* 10 */	allData->frame_b->frameBIN[i++] = tmp.arrayNumber[0];
+	/* 11 */	allData->frame_b->frameBIN[i++] = tmp.arrayNumber[1];
+	/* 12 */	allData->frame_b->frameBIN[i++] = tmp.arrayNumber[2];
+	/* 13 */	allData->frame_b->frameBIN[i++] = tmp.arrayNumber[3];
+	//-------------- Pressure 3 ----------------------------
+	tmp.floatNumber = allData->AD7195->pressure3;
+	/* 14 */	allData->frame_b->frameBIN[i++] = tmp.arrayNumber[0];
+	/* 15 */	allData->frame_b->frameBIN[i++] = tmp.arrayNumber[1];
+	/* 16 */	allData->frame_b->frameBIN[i++] = tmp.arrayNumber[2];
+	/* 17 */	allData->frame_b->frameBIN[i++] = tmp.arrayNumber[3];
+	//-------------- Pressure 4 ----------------------------
+	tmp.floatNumber = allData->AD7195->pressure4;
+	/* 18 */	allData->frame_b->frameBIN[i++] = tmp.arrayNumber[0];
+	/* 19 */	allData->frame_b->frameBIN[i++] = tmp.arrayNumber[1];
+	/* 20 */	allData->frame_b->frameBIN[i++] = tmp.arrayNumber[2];
+	/* 21 */	allData->frame_b->frameBIN[i++] = tmp.arrayNumber[3];
+	//-------------- Pressure 5 ----------------------------
+	tmp.floatNumber = allData->AD7195->pressure5;
+	/* 22 */	allData->frame_b->frameBIN[i++] = tmp.arrayNumber[0];
+	/* 23 */	allData->frame_b->frameBIN[i++] = tmp.arrayNumber[1];
+	/* 24 */	allData->frame_b->frameBIN[i++] = tmp.arrayNumber[2];
+	/* 25 */	allData->frame_b->frameBIN[i++] = tmp.arrayNumber[3];
+	//-------------- Pressure 6 ----------------------------
+	tmp.floatNumber = allData->AD7195->pressure6;
+	/* 26 */	allData->frame_b->frameBIN[i++] = tmp.arrayNumber[0];
+	/* 27 */	allData->frame_b->frameBIN[i++] = tmp.arrayNumber[1];
+	/* 28 */	allData->frame_b->frameBIN[i++] = tmp.arrayNumber[2];
+	/* 29 */	allData->frame_b->frameBIN[i++] = tmp.arrayNumber[3];
+	
+	//================= Temperature ========================
+	//------------------ Temp 1 ----------------------------
+	tmp.floatNumber = allData->Analog->Temp1;
+	/* 30 */	allData->frame_b->frameBIN[i++] = tmp.arrayNumber[0];
+	/* 31 */	allData->frame_b->frameBIN[i++] = tmp.arrayNumber[1];
+	/* 32 */	allData->frame_b->frameBIN[i++] = tmp.arrayNumber[2];
+	/* 33 */	allData->frame_b->frameBIN[i++] = tmp.arrayNumber[3];
+	//------------------ Temp 2 ----------------------------
+	tmp.floatNumber = allData->Analog->Temp2;
+	/* 34 */	allData->frame_b->frameBIN[i++] = tmp.arrayNumber[0];
+	/* 35 */	allData->frame_b->frameBIN[i++] = tmp.arrayNumber[1];
+	/* 36 */	allData->frame_b->frameBIN[i++] = tmp.arrayNumber[2];
+	/* 37 */	allData->frame_b->frameBIN[i++] = tmp.arrayNumber[3];
+	//------------------ Temp 3 ----------------------------
+	tmp.floatNumber = allData->Analog->Temp3;
+	/* 38 */	allData->frame_b->frameBIN[i++] = tmp.arrayNumber[0];
+	/* 39 */	allData->frame_b->frameBIN[i++] = tmp.arrayNumber[1];
+	/* 40 */	allData->frame_b->frameBIN[i++] = tmp.arrayNumber[2];
+	/* 41 */	allData->frame_b->frameBIN[i++] = tmp.arrayNumber[3];
+	//------------------ Temp 4 ----------------------------
+	tmp.floatNumber = allData->Analog->Temp4;
+	/* 42 */	allData->frame_b->frameBIN[i++] = tmp.arrayNumber[0];
+	/* 43 */	allData->frame_b->frameBIN[i++] = tmp.arrayNumber[1];
+	/* 44 */	allData->frame_b->frameBIN[i++] = tmp.arrayNumber[2];
+	/* 45 */	allData->frame_b->frameBIN[i++] = tmp.arrayNumber[3];
+	//----------------- Frame count/time -------------------
+	tmp2.uintNumber = allData->Clock->time;
+	/* 42 */	allData->frame_b->frameBIN[i++] = tmp2.arrayNumber[0];
+	/* 43 */	allData->frame_b->frameBIN[i++] = tmp2.arrayNumber[1];
+	/* 44 */	allData->frame_b->frameBIN[i++] = tmp2.arrayNumber[2];
+	/* 45 */	allData->frame_b->frameBIN[i++] = tmp2.arrayNumber[3];
 }
 
 //	IGN - RELAY1 - PE2

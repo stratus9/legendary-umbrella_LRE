@@ -7,27 +7,27 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
   1 .data         0000007c  00802000  00006f46  00006fda  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  2 .bss          000007fe  0080207c  0080207c  00007056  2**0
+  2 .bss          000008c6  0080207c  0080207c  00007056  2**0
                   ALLOC
   3 .comment      0000005c  00000000  00000000  00007056  2**0
                   CONTENTS, READONLY
   4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  000070b4  2**2
                   CONTENTS, READONLY
-  5 .debug_aranges 000004a8  00000000  00000000  000070f4  2**0
+  5 .debug_aranges 000004b0  00000000  00000000  000070f4  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   00009b1e  00000000  00000000  0000759c  2**0
+  6 .debug_info   00009c32  00000000  00000000  000075a4  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 000011ed  00000000  00000000  000110ba  2**0
+  7 .debug_abbrev 00001218  00000000  00000000  000111d6  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   0000482e  00000000  00000000  000122a7  2**0
+  8 .debug_line   000049c5  00000000  00000000  000123ee  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  000014b0  00000000  00000000  00016ad8  2**2
+  9 .debug_frame  000014cc  00000000  00000000  00016db4  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    0000259b  00000000  00000000  00017f88  2**0
+ 10 .debug_str    0000261d  00000000  00000000  00018280  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    000087ab  00000000  00000000  0001a523  2**0
+ 11 .debug_loc    00008c4a  00000000  00000000  0001a89d  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000518  00000000  00000000  00022cce  2**0
+ 12 .debug_ranges 00000520  00000000  00000000  000234e7  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -314,7 +314,7 @@ Disassembly of section .text:
      224:	d9 f7       	brne	.-10     	; 0x21c <__do_copy_data+0x10>
 
 00000226 <__do_clear_bss>:
-     226:	28 e2       	ldi	r18, 0x28	; 40
+     226:	29 e2       	ldi	r18, 0x29	; 41
      228:	ac e7       	ldi	r26, 0x7C	; 124
      22a:	b0 e2       	ldi	r27, 0x20	; 32
      22c:	01 c0       	rjmp	.+2      	; 0x230 <.do_clear_bss_start>
@@ -323,7 +323,7 @@ Disassembly of section .text:
      22e:	1d 92       	st	X+, r1
 
 00000230 <.do_clear_bss_start>:
-     230:	aa 37       	cpi	r26, 0x7A	; 122
+     230:	a2 34       	cpi	r26, 0x42	; 66
      232:	b2 07       	cpc	r27, r18
      234:	e1 f7       	brne	.-8      	; 0x22e <.do_clear_bss_loop>
      236:	9d d5       	rcall	.+2874   	; 0xd72 <main>
@@ -997,7 +997,7 @@ void SensorUpdate(allData_t * allData) {
      6ec:	8d 91       	ld	r24, X+
      6ee:	9c 91       	ld	r25, X
      6f0:	51 97       	sbiw	r26, 0x11	; 17
-     6f2:	e1 e0       	ldi	r30, 0x01	; 1
+     6f2:	e9 ec       	ldi	r30, 0xC9	; 201
      6f4:	f6 e2       	ldi	r31, 0x26	; 38
      6f6:	84 83       	std	Z+4, r24	; 0x04
      6f8:	95 83       	std	Z+5, r25	; 0x05
@@ -1045,38 +1045,38 @@ void SensorUpdate(allData_t * allData) {
      748:	9f 93       	push	r25
      74a:	ef 93       	push	r30
      74c:	ff 93       	push	r31
-     74e:	e0 91 5e 23 	lds	r30, 0x235E
-     752:	f0 91 5f 23 	lds	r31, 0x235F
-     756:	e6 50       	subi	r30, 0x06	; 6
-     758:	fd 4d       	sbci	r31, 0xDD	; 221
+     74e:	e0 91 26 24 	lds	r30, 0x2426
+     752:	f0 91 27 24 	lds	r31, 0x2427
+     756:	e2 5a       	subi	r30, 0xA2	; 162
+     758:	fc 4d       	sbci	r31, 0xDC	; 220
      75a:	80 81       	ld	r24, Z
      75c:	88 23       	and	r24, r24
      75e:	f9 f0       	breq	.+62     	; 0x79e <__vector_90+0x66>
      760:	83 32       	cpi	r24, 0x23	; 35
      762:	e9 f0       	breq	.+58     	; 0x79e <__vector_90+0x66>
      764:	91 e0       	ldi	r25, 0x01	; 1
-     766:	90 93 60 23 	sts	0x2360, r25
+     766:	90 93 28 24 	sts	0x2428, r25
      76a:	85 32       	cpi	r24, 0x25	; 37
      76c:	21 f4       	brne	.+8      	; 0x776 <__vector_90+0x3e>
      76e:	8a e0       	ldi	r24, 0x0A	; 10
      770:	80 93 a0 09 	sts	0x09A0, r24
      774:	02 c0       	rjmp	.+4      	; 0x77a <__vector_90+0x42>
      776:	80 93 a0 09 	sts	0x09A0, r24
-     77a:	80 91 5e 23 	lds	r24, 0x235E
-     77e:	90 91 5f 23 	lds	r25, 0x235F
+     77a:	80 91 26 24 	lds	r24, 0x2426
+     77e:	90 91 27 24 	lds	r25, 0x2427
      782:	87 39       	cpi	r24, 0x97	; 151
      784:	91 05       	cpc	r25, r1
      786:	30 f4       	brcc	.+12     	; 0x794 <__vector_90+0x5c>
      788:	01 96       	adiw	r24, 0x01	; 1
-     78a:	80 93 5e 23 	sts	0x235E, r24
-     78e:	90 93 5f 23 	sts	0x235F, r25
+     78a:	80 93 26 24 	sts	0x2426, r24
+     78e:	90 93 27 24 	sts	0x2427, r25
      792:	07 c0       	rjmp	.+14     	; 0x7a2 <__vector_90+0x6a>
      794:	fc 01       	movw	r30, r24
-     796:	e6 50       	subi	r30, 0x06	; 6
-     798:	fd 4d       	sbci	r31, 0xDD	; 221
+     796:	e2 5a       	subi	r30, 0xA2	; 162
+     798:	fc 4d       	sbci	r31, 0xDC	; 220
      79a:	10 82       	st	Z, r1
      79c:	02 c0       	rjmp	.+4      	; 0x7a2 <__vector_90+0x6a>
-     79e:	10 92 60 23 	sts	0x2360, r1
+     79e:	10 92 28 24 	sts	0x2428, r1
      7a2:	ff 91       	pop	r31
      7a4:	ef 91       	pop	r30
      7a6:	9f 91       	pop	r25
@@ -1122,18 +1122,18 @@ void SensorUpdate(allData_t * allData) {
      7f4:	84 32       	cpi	r24, 0x24	; 36
      7f6:	21 f4       	brne	.+8      	; 0x800 <__vector_88+0x48>
      7f8:	81 e0       	ldi	r24, 0x01	; 1
-     7fa:	80 93 64 23 	sts	0x2364, r24
+     7fa:	80 93 2c 24 	sts	0x242C, r24
      7fe:	49 c1       	rjmp	.+658    	; 0xa92 <__vector_88+0x2da>
      800:	89 81       	ldd	r24, Y+1	; 0x01
      802:	82 35       	cpi	r24, 0x52	; 82
      804:	81 f4       	brne	.+32     	; 0x826 <__vector_88+0x6e>
-     806:	80 91 64 23 	lds	r24, 0x2364
+     806:	80 91 2c 24 	lds	r24, 0x242C
      80a:	88 23       	and	r24, r24
      80c:	09 f4       	brne	.+2      	; 0x810 <__vector_88+0x58>
      80e:	0c c1       	rjmp	.+536    	; 0xa28 <__vector_88+0x270>
      810:	8f b7       	in	r24, 0x3f	; 63
      812:	f8 94       	cli
-     814:	10 92 64 23 	sts	0x2364, r1
+     814:	10 92 2c 24 	sts	0x242C, r1
      818:	98 ed       	ldi	r25, 0xD8	; 216
      81a:	94 bf       	out	0x34, r25	; 52
      81c:	91 e0       	ldi	r25, 0x01	; 1
@@ -1143,7 +1143,7 @@ void SensorUpdate(allData_t * allData) {
      826:	89 81       	ldd	r24, Y+1	; 0x01
      828:	81 33       	cpi	r24, 0x31	; 49
      82a:	a9 f4       	brne	.+42     	; 0x856 <__vector_88+0x9e>
-     82c:	80 91 64 23 	lds	r24, 0x2364
+     82c:	80 91 2c 24 	lds	r24, 0x242C
      830:	88 23       	and	r24, r24
      832:	09 f4       	brne	.+2      	; 0x836 <__vector_88+0x7e>
      834:	ff c0       	rjmp	.+510    	; 0xa34 <__vector_88+0x27c>
@@ -1158,12 +1158,12 @@ void SensorUpdate(allData_t * allData) {
      848:	00 c0       	rjmp	.+0      	; 0x84a <__vector_88+0x92>
      84a:	00 00       	nop
      84c:	0e 94 f0 2f 	call	0x5fe0	; 0x5fe0 <MOV_valve_close>
-     850:	10 92 64 23 	sts	0x2364, r1
+     850:	10 92 2c 24 	sts	0x242C, r1
      854:	1e c1       	rjmp	.+572    	; 0xa92 <__vector_88+0x2da>
      856:	89 81       	ldd	r24, Y+1	; 0x01
      858:	82 33       	cpi	r24, 0x32	; 50
      85a:	a9 f4       	brne	.+42     	; 0x886 <__vector_88+0xce>
-     85c:	80 91 64 23 	lds	r24, 0x2364
+     85c:	80 91 2c 24 	lds	r24, 0x242C
      860:	88 23       	and	r24, r24
      862:	09 f4       	brne	.+2      	; 0x866 <__vector_88+0xae>
      864:	ed c0       	rjmp	.+474    	; 0xa40 <__vector_88+0x288>
@@ -1178,12 +1178,12 @@ void SensorUpdate(allData_t * allData) {
      878:	00 c0       	rjmp	.+0      	; 0x87a <__vector_88+0xc2>
      87a:	00 00       	nop
      87c:	0e 94 e8 2f 	call	0x5fd0	; 0x5fd0 <MFV_valve_close>
-     880:	10 92 64 23 	sts	0x2364, r1
+     880:	10 92 2c 24 	sts	0x242C, r1
      884:	06 c1       	rjmp	.+524    	; 0xa92 <__vector_88+0x2da>
      886:	89 81       	ldd	r24, Y+1	; 0x01
      888:	83 33       	cpi	r24, 0x33	; 51
      88a:	a9 f4       	brne	.+42     	; 0x8b6 <__vector_88+0xfe>
-     88c:	80 91 64 23 	lds	r24, 0x2364
+     88c:	80 91 2c 24 	lds	r24, 0x242C
      890:	88 23       	and	r24, r24
      892:	09 f4       	brne	.+2      	; 0x896 <__vector_88+0xde>
      894:	db c0       	rjmp	.+438    	; 0xa4c <__vector_88+0x294>
@@ -1198,12 +1198,12 @@ void SensorUpdate(allData_t * allData) {
      8a8:	00 c0       	rjmp	.+0      	; 0x8aa <__vector_88+0xf2>
      8aa:	00 00       	nop
      8ac:	0e 94 f8 2f 	call	0x5ff0	; 0x5ff0 <MPV_valve_close>
-     8b0:	10 92 64 23 	sts	0x2364, r1
+     8b0:	10 92 2c 24 	sts	0x242C, r1
      8b4:	ee c0       	rjmp	.+476    	; 0xa92 <__vector_88+0x2da>
      8b6:	89 81       	ldd	r24, Y+1	; 0x01
      8b8:	84 33       	cpi	r24, 0x34	; 52
      8ba:	a9 f4       	brne	.+42     	; 0x8e6 <__vector_88+0x12e>
-     8bc:	80 91 64 23 	lds	r24, 0x2364
+     8bc:	80 91 2c 24 	lds	r24, 0x242C
      8c0:	88 23       	and	r24, r24
      8c2:	09 f4       	brne	.+2      	; 0x8c6 <__vector_88+0x10e>
      8c4:	c9 c0       	rjmp	.+402    	; 0xa58 <__vector_88+0x2a0>
@@ -1218,17 +1218,17 @@ void SensorUpdate(allData_t * allData) {
      8d8:	00 c0       	rjmp	.+0      	; 0x8da <__vector_88+0x122>
      8da:	00 00       	nop
      8dc:	0e 94 00 30 	call	0x6000	; 0x6000 <FPV_valve_close>
-     8e0:	10 92 64 23 	sts	0x2364, r1
+     8e0:	10 92 2c 24 	sts	0x242C, r1
      8e4:	d6 c0       	rjmp	.+428    	; 0xa92 <__vector_88+0x2da>
      8e6:	89 81       	ldd	r24, Y+1	; 0x01
      8e8:	86 33       	cpi	r24, 0x36	; 54
      8ea:	89 f4       	brne	.+34     	; 0x90e <__vector_88+0x156>
-     8ec:	80 91 64 23 	lds	r24, 0x2364
+     8ec:	80 91 2c 24 	lds	r24, 0x242C
      8f0:	88 23       	and	r24, r24
      8f2:	09 f4       	brne	.+2      	; 0x8f6 <__vector_88+0x13e>
      8f4:	b7 c0       	rjmp	.+366    	; 0xa64 <__vector_88+0x2ac>
-     8f6:	e2 e6       	ldi	r30, 0x62	; 98
-     8f8:	f3 e2       	ldi	r31, 0x23	; 35
+     8f6:	ea e2       	ldi	r30, 0x2A	; 42
+     8f8:	f4 e2       	ldi	r31, 0x24	; 36
      8fa:	86 e9       	ldi	r24, 0x96	; 150
      8fc:	90 e0       	ldi	r25, 0x00	; 0
      8fe:	a0 e0       	ldi	r26, 0x00	; 0
@@ -1242,12 +1242,12 @@ void SensorUpdate(allData_t * allData) {
      90e:	89 81       	ldd	r24, Y+1	; 0x01
      910:	87 33       	cpi	r24, 0x37	; 55
      912:	89 f4       	brne	.+34     	; 0x936 <__vector_88+0x17e>
-     914:	80 91 64 23 	lds	r24, 0x2364
+     914:	80 91 2c 24 	lds	r24, 0x242C
      918:	88 23       	and	r24, r24
      91a:	09 f4       	brne	.+2      	; 0x91e <__vector_88+0x166>
      91c:	a9 c0       	rjmp	.+338    	; 0xa70 <__vector_88+0x2b8>
-     91e:	e2 e6       	ldi	r30, 0x62	; 98
-     920:	f3 e2       	ldi	r31, 0x23	; 35
+     91e:	ea e2       	ldi	r30, 0x2A	; 42
+     920:	f4 e2       	ldi	r31, 0x24	; 36
      922:	88 ec       	ldi	r24, 0xC8	; 200
      924:	90 e0       	ldi	r25, 0x00	; 0
      926:	a0 e0       	ldi	r26, 0x00	; 0
@@ -1261,12 +1261,12 @@ void SensorUpdate(allData_t * allData) {
      936:	89 81       	ldd	r24, Y+1	; 0x01
      938:	88 33       	cpi	r24, 0x38	; 56
      93a:	89 f4       	brne	.+34     	; 0x95e <__vector_88+0x1a6>
-     93c:	80 91 64 23 	lds	r24, 0x2364
+     93c:	80 91 2c 24 	lds	r24, 0x242C
      940:	88 23       	and	r24, r24
      942:	09 f4       	brne	.+2      	; 0x946 <__vector_88+0x18e>
      944:	9b c0       	rjmp	.+310    	; 0xa7c <__vector_88+0x2c4>
-     946:	e2 e6       	ldi	r30, 0x62	; 98
-     948:	f3 e2       	ldi	r31, 0x23	; 35
+     946:	ea e2       	ldi	r30, 0x2A	; 42
+     948:	f4 e2       	ldi	r31, 0x24	; 36
      94a:	8e e5       	ldi	r24, 0x5E	; 94
      94c:	91 e0       	ldi	r25, 0x01	; 1
      94e:	a0 e0       	ldi	r26, 0x00	; 0
@@ -1280,12 +1280,12 @@ void SensorUpdate(allData_t * allData) {
      95e:	89 81       	ldd	r24, Y+1	; 0x01
      960:	89 33       	cpi	r24, 0x39	; 57
      962:	89 f4       	brne	.+34     	; 0x986 <__vector_88+0x1ce>
-     964:	80 91 64 23 	lds	r24, 0x2364
+     964:	80 91 2c 24 	lds	r24, 0x242C
      968:	88 23       	and	r24, r24
      96a:	09 f4       	brne	.+2      	; 0x96e <__vector_88+0x1b6>
      96c:	8d c0       	rjmp	.+282    	; 0xa88 <__vector_88+0x2d0>
-     96e:	e2 e6       	ldi	r30, 0x62	; 98
-     970:	f3 e2       	ldi	r31, 0x23	; 35
+     96e:	ea e2       	ldi	r30, 0x2A	; 42
+     970:	f4 e2       	ldi	r31, 0x24	; 36
      972:	8a e8       	ldi	r24, 0x8A	; 138
      974:	92 e0       	ldi	r25, 0x02	; 2
      976:	a0 e0       	ldi	r26, 0x00	; 0
@@ -1299,12 +1299,12 @@ void SensorUpdate(allData_t * allData) {
      986:	89 81       	ldd	r24, Y+1	; 0x01
      988:	81 34       	cpi	r24, 0x41	; 65
      98a:	69 f4       	brne	.+26     	; 0x9a6 <__vector_88+0x1ee>
-     98c:	80 91 64 23 	lds	r24, 0x2364
+     98c:	80 91 2c 24 	lds	r24, 0x242C
      990:	88 23       	and	r24, r24
      992:	09 f4       	brne	.+2      	; 0x996 <__vector_88+0x1de>
      994:	7c c0       	rjmp	.+248    	; 0xa8e <__vector_88+0x2d6>
-     996:	e2 e6       	ldi	r30, 0x62	; 98
-     998:	f3 e2       	ldi	r31, 0x23	; 35
+     996:	ea e2       	ldi	r30, 0x2A	; 42
+     998:	f4 e2       	ldi	r31, 0x24	; 36
      99a:	81 e0       	ldi	r24, 0x01	; 1
      99c:	87 83       	std	Z+7, r24	; 0x07
      99e:	16 82       	std	Z+6, r1	; 0x06
@@ -1314,11 +1314,11 @@ void SensorUpdate(allData_t * allData) {
      9a6:	89 81       	ldd	r24, Y+1	; 0x01
      9a8:	80 35       	cpi	r24, 0x50	; 80
      9aa:	11 f5       	brne	.+68     	; 0x9f0 <__vector_88+0x238>
-     9ac:	80 91 64 23 	lds	r24, 0x2364
+     9ac:	80 91 2c 24 	lds	r24, 0x242C
      9b0:	88 23       	and	r24, r24
      9b2:	f1 f0       	breq	.+60     	; 0x9f0 <__vector_88+0x238>
-     9b4:	e2 e6       	ldi	r30, 0x62	; 98
-     9b6:	f3 e2       	ldi	r31, 0x23	; 35
+     9b4:	ea e2       	ldi	r30, 0x2A	; 42
+     9b6:	f4 e2       	ldi	r31, 0x24	; 36
      9b8:	81 e0       	ldi	r24, 0x01	; 1
      9ba:	85 83       	std	Z+5, r24	; 0x05
      9bc:	12 82       	std	Z+2, r1	; 0x02
@@ -1329,42 +1329,42 @@ void SensorUpdate(allData_t * allData) {
      9c8:	be 01       	movw	r22, r28
      9ca:	6e 5f       	subi	r22, 0xFE	; 254
      9cc:	7f 4f       	sbci	r23, 0xFF	; 255
-     9ce:	8d ed       	ldi	r24, 0xDD	; 221
-     9d0:	93 e2       	ldi	r25, 0x23	; 35
+     9ce:	85 ea       	ldi	r24, 0xA5	; 165
+     9d0:	94 e2       	ldi	r25, 0x24	; 36
      9d2:	0e 94 df 15 	call	0x2bbe	; 0x2bbe <f_open>
      9d6:	81 11       	cpse	r24, r1
      9d8:	5c c0       	rjmp	.+184    	; 0xa92 <__vector_88+0x2da>
-     9da:	2f ef       	ldi	r18, 0xFF	; 255
-     9dc:	35 e2       	ldi	r19, 0x25	; 37
+     9da:	27 ec       	ldi	r18, 0xC7	; 199
+     9dc:	36 e2       	ldi	r19, 0x26	; 38
      9de:	45 e6       	ldi	r20, 0x65	; 101
      9e0:	50 e0       	ldi	r21, 0x00	; 0
      9e2:	60 e0       	ldi	r22, 0x00	; 0
      9e4:	70 e2       	ldi	r23, 0x20	; 32
-     9e6:	8d ed       	ldi	r24, 0xDD	; 221
-     9e8:	93 e2       	ldi	r25, 0x23	; 35
+     9e6:	85 ea       	ldi	r24, 0xA5	; 165
+     9e8:	94 e2       	ldi	r25, 0x24	; 36
      9ea:	0e 94 c2 17 	call	0x2f84	; 0x2f84 <f_write>
      9ee:	51 c0       	rjmp	.+162    	; 0xa92 <__vector_88+0x2da>
      9f0:	89 81       	ldd	r24, Y+1	; 0x01
      9f2:	83 35       	cpi	r24, 0x53	; 83
      9f4:	b1 f4       	brne	.+44     	; 0xa22 <__vector_88+0x26a>
-     9f6:	80 91 6b 23 	lds	r24, 0x236B
-     9fa:	90 91 6c 23 	lds	r25, 0x236C
-     9fe:	a0 91 6d 23 	lds	r26, 0x236D
-     a02:	b0 91 6e 23 	lds	r27, 0x236E
+     9f6:	80 91 33 24 	lds	r24, 0x2433
+     9fa:	90 91 34 24 	lds	r25, 0x2434
+     9fe:	a0 91 35 24 	lds	r26, 0x2435
+     a02:	b0 91 36 24 	lds	r27, 0x2436
      a06:	89 2b       	or	r24, r25
      a08:	8a 2b       	or	r24, r26
      a0a:	8b 2b       	or	r24, r27
      a0c:	51 f0       	breq	.+20     	; 0xa22 <__vector_88+0x26a>
-     a0e:	80 91 64 23 	lds	r24, 0x2364
+     a0e:	80 91 2c 24 	lds	r24, 0x242C
      a12:	88 23       	and	r24, r24
      a14:	31 f0       	breq	.+12     	; 0xa22 <__vector_88+0x26a>
-     a16:	e2 e6       	ldi	r30, 0x62	; 98
-     a18:	f3 e2       	ldi	r31, 0x23	; 35
+     a16:	ea e2       	ldi	r30, 0x2A	; 42
+     a18:	f4 e2       	ldi	r31, 0x24	; 36
      a1a:	81 e0       	ldi	r24, 0x01	; 1
      a1c:	86 83       	std	Z+6, r24	; 0x06
      a1e:	12 82       	std	Z+2, r1	; 0x02
      a20:	38 c0       	rjmp	.+112    	; 0xa92 <__vector_88+0x2da>
-     a22:	10 92 64 23 	sts	0x2364, r1
+     a22:	10 92 2c 24 	sts	0x242C, r1
      a26:	35 c0       	rjmp	.+106    	; 0xa92 <__vector_88+0x2da>
      a28:	89 81       	ldd	r24, Y+1	; 0x01
      a2a:	89 81       	ldd	r24, Y+1	; 0x01
@@ -1533,9 +1533,9 @@ void SensorUpdate(allData_t * allData) {
      b7a:	bf 93       	push	r27
      b7c:	ef 93       	push	r30
      b7e:	ff 93       	push	r31
-     b80:	10 92 64 23 	sts	0x2364, r1
-     b84:	e6 e7       	ldi	r30, 0x76	; 118
-     b86:	f3 e2       	ldi	r31, 0x23	; 35
+     b80:	10 92 2c 24 	sts	0x242C, r1
+     b84:	ee e3       	ldi	r30, 0x3E	; 62
+     b86:	f4 e2       	ldi	r31, 0x24	; 36
      b88:	80 81       	ld	r24, Z
      b8a:	91 81       	ldd	r25, Z+1	; 0x01
      b8c:	a2 81       	ldd	r26, Z+2	; 0x02
@@ -1583,14 +1583,14 @@ void SensorUpdate(allData_t * allData) {
      bdc:	ff 93       	push	r31
      bde:	88 e0       	ldi	r24, 0x08	; 8
      be0:	80 93 a7 06 	sts	0x06A7, r24
-     be4:	10 92 61 23 	sts	0x2361, r1
-     be8:	80 91 65 23 	lds	r24, 0x2365
+     be4:	10 92 29 24 	sts	0x2429, r1
+     be8:	80 91 2d 24 	lds	r24, 0x242D
      bec:	88 23       	and	r24, r24
      bee:	41 f1       	breq	.+80     	; 0xc40 <__vector_108+0x88>
-     bf0:	80 91 7a 23 	lds	r24, 0x237A
-     bf4:	90 91 7b 23 	lds	r25, 0x237B
-     bf8:	a0 91 7c 23 	lds	r26, 0x237C
-     bfc:	b0 91 7d 23 	lds	r27, 0x237D
+     bf0:	80 91 42 24 	lds	r24, 0x2442
+     bf4:	90 91 43 24 	lds	r25, 0x2443
+     bf8:	a0 91 44 24 	lds	r26, 0x2444
+     bfc:	b0 91 45 24 	lds	r27, 0x2445
      c00:	8f 39       	cpi	r24, 0x9F	; 159
      c02:	26 e8       	ldi	r18, 0x86	; 134
      c04:	92 07       	cpc	r25, r18
@@ -1601,17 +1601,17 @@ void SensorUpdate(allData_t * allData) {
      c0e:	01 96       	adiw	r24, 0x01	; 1
      c10:	a1 1d       	adc	r26, r1
      c12:	b1 1d       	adc	r27, r1
-     c14:	80 93 7a 23 	sts	0x237A, r24
-     c18:	90 93 7b 23 	sts	0x237B, r25
-     c1c:	a0 93 7c 23 	sts	0x237C, r26
-     c20:	b0 93 7d 23 	sts	0x237D, r27
+     c14:	80 93 42 24 	sts	0x2442, r24
+     c18:	90 93 43 24 	sts	0x2443, r25
+     c1c:	a0 93 44 24 	sts	0x2444, r26
+     c20:	b0 93 45 24 	sts	0x2445, r27
      c24:	08 c0       	rjmp	.+16     	; 0xc36 <__vector_108+0x7e>
-     c26:	10 92 7a 23 	sts	0x237A, r1
-     c2a:	10 92 7b 23 	sts	0x237B, r1
-     c2e:	10 92 7c 23 	sts	0x237C, r1
-     c32:	10 92 7d 23 	sts	0x237D, r1
-     c36:	10 92 f6 22 	sts	0x22F6, r1
-     c3a:	10 92 f7 22 	sts	0x22F7, r1
+     c26:	10 92 42 24 	sts	0x2442, r1
+     c2a:	10 92 43 24 	sts	0x2443, r1
+     c2e:	10 92 44 24 	sts	0x2444, r1
+     c32:	10 92 45 24 	sts	0x2445, r1
+     c36:	10 92 5a 23 	sts	0x235A, r1
+     c3a:	10 92 5b 23 	sts	0x235B, r1
      c3e:	7c dd       	rcall	.-1288   	; 0x738 <__vector_90>
      c40:	ff 91       	pop	r31
      c42:	ef 91       	pop	r30
@@ -1634,40 +1634,40 @@ void SensorUpdate(allData_t * allData) {
      c64:	18 95       	reti
 
 00000c66 <structInit>:
-     c66:	10 92 5e 23 	sts	0x235E, r1
-     c6a:	10 92 5f 23 	sts	0x235F, r1
-     c6e:	a2 e6       	ldi	r26, 0x62	; 98
-     c70:	b3 e2       	ldi	r27, 0x23	; 35
+     c66:	10 92 26 24 	sts	0x2426, r1
+     c6a:	10 92 27 24 	sts	0x2427, r1
+     c6e:	aa e2       	ldi	r26, 0x2A	; 42
+     c70:	b4 e2       	ldi	r27, 0x24	; 36
      c72:	1c 92       	st	X, r1
      c74:	11 96       	adiw	r26, 0x01	; 1
      c76:	1c 92       	st	X, r1
      c78:	11 97       	sbiw	r26, 0x01	; 1
-     c7a:	e2 ec       	ldi	r30, 0xC2	; 194
-     c7c:	f3 e2       	ldi	r31, 0x23	; 35
-     c7e:	81 e0       	ldi	r24, 0x01	; 1
+     c7a:	ea e8       	ldi	r30, 0x8A	; 138
+     c7c:	f4 e2       	ldi	r31, 0x24	; 36
+     c7e:	89 ec       	ldi	r24, 0xC9	; 201
      c80:	96 e2       	ldi	r25, 0x26	; 38
      c82:	80 83       	st	Z, r24
      c84:	91 83       	std	Z+1, r25	; 0x01
      c86:	a2 83       	std	Z+2, r26	; 0x02
      c88:	b3 83       	std	Z+3, r27	; 0x03
-     c8a:	8a ef       	ldi	r24, 0xFA	; 250
-     c8c:	92 e2       	ldi	r25, 0x22	; 34
+     c8a:	8e e5       	ldi	r24, 0x5E	; 94
+     c8c:	93 e2       	ldi	r25, 0x23	; 35
      c8e:	84 83       	std	Z+4, r24	; 0x04
      c90:	95 83       	std	Z+5, r25	; 0x05
      c92:	82 e9       	ldi	r24, 0x92	; 146
      c94:	92 e2       	ldi	r25, 0x22	; 34
      c96:	86 83       	std	Z+6, r24	; 0x06
      c98:	97 83       	std	Z+7, r25	; 0x07
-     c9a:	86 e7       	ldi	r24, 0x76	; 118
-     c9c:	93 e2       	ldi	r25, 0x23	; 35
+     c9a:	8e e3       	ldi	r24, 0x3E	; 62
+     c9c:	94 e2       	ldi	r25, 0x24	; 36
      c9e:	80 87       	std	Z+8, r24	; 0x08
      ca0:	91 87       	std	Z+9, r25	; 0x09
-     ca2:	80 ed       	ldi	r24, 0xD0	; 208
-     ca4:	93 e2       	ldi	r25, 0x23	; 35
+     ca2:	88 e9       	ldi	r24, 0x98	; 152
+     ca4:	94 e2       	ldi	r25, 0x24	; 36
      ca6:	82 87       	std	Z+10, r24	; 0x0a
      ca8:	93 87       	std	Z+11, r25	; 0x0b
-     caa:	82 e8       	ldi	r24, 0x82	; 130
-     cac:	93 e2       	ldi	r25, 0x23	; 35
+     caa:	8a e4       	ldi	r24, 0x4A	; 74
+     cac:	94 e2       	ldi	r25, 0x24	; 36
      cae:	84 87       	std	Z+12, r24	; 0x0c
      cb0:	95 87       	std	Z+13, r25	; 0x0d
      cb2:	08 95       	ret
@@ -1806,14 +1806,14 @@ void WarmUp() {
 
 int main(void) {
     stan_d.flash_trigger = STARTUP_flash;
-     d72:	e2 e6       	ldi	r30, 0x62	; 98
-     d74:	f3 e2       	ldi	r31, 0x23	; 35
+     d72:	ea e2       	ldi	r30, 0x2A	; 42
+     d74:	f4 e2       	ldi	r31, 0x24	; 36
      d76:	14 82       	std	Z+4, r1	; 0x04
     stan_d.telemetry_trigger = STARTUP_tele;
      d78:	81 e0       	ldi	r24, 0x01	; 1
      d7a:	83 83       	std	Z+3, r24	; 0x03
     frame_d.terminate = false;
-     d7c:	10 92 61 23 	sts	0x2361, r1
+     d7c:	10 92 29 24 	sts	0x2429, r1
     Initialization();
      d80:	99 df       	rcall	.-206    	; 0xcb4 <Initialization>
     sei();
@@ -1828,8 +1828,8 @@ int main(void) {
      d86:	41 e0       	ldi	r20, 0x01	; 1
      d88:	60 e0       	ldi	r22, 0x00	; 0
      d8a:	70 e0       	ldi	r23, 0x00	; 0
-     d8c:	85 e4       	ldi	r24, 0x45	; 69
-     d8e:	96 e2       	ldi	r25, 0x26	; 38
+     d8c:	8d e0       	ldi	r24, 0x0D	; 13
+     d8e:	97 e2       	ldi	r25, 0x27	; 39
      d90:	0e 94 91 15 	call	0x2b22	; 0x2b22 <f_mount>
 	Light_Green();
      d94:	0e 94 1a 30 	call	0x6034	; 0x6034 <Light_Green>
@@ -1867,9 +1867,9 @@ int main(void) {
 				prepareFrameDEBUG(&allData_d);
 				if(!frame_d.mutex) frame_d = frame_b;
      daa:	0f 2e       	mov	r0, r31
-     dac:	f0 e6       	ldi	r31, 0x60	; 96
+     dac:	f8 e2       	ldi	r31, 0x28	; 40
      dae:	8f 2e       	mov	r8, r31
-     db0:	f3 e2       	ldi	r31, 0x23	; 35
+     db0:	f4 e2       	ldi	r31, 0x24	; 36
      db2:	9f 2e       	mov	r9, r31
      db4:	f0 2d       	mov	r31, r0
 				LED_PORT.OUTSET = LED6;
@@ -1877,13 +1877,13 @@ int main(void) {
      db8:	33 24       	eor	r3, r3
      dba:	35 f8       	bld	r3, 5
 				if(stan_d.armed_trigger){
-     dbc:	c2 e6       	ldi	r28, 0x62	; 98
-     dbe:	d3 e2       	ldi	r29, 0x23	; 35
+     dbc:	ca e2       	ldi	r28, 0x2A	; 42
+     dbe:	d4 e2       	ldi	r29, 0x24	; 36
 					Clock_d.frameFlashCount++;
      dc0:	0f 2e       	mov	r0, r31
-     dc2:	f6 e7       	ldi	r31, 0x76	; 118
+     dc2:	fe e3       	ldi	r31, 0x3E	; 62
      dc4:	af 2e       	mov	r10, r31
-     dc6:	f3 e2       	ldi	r31, 0x23	; 35
+     dc6:	f4 e2       	ldi	r31, 0x24	; 36
      dc8:	bf 2e       	mov	r11, r31
      dca:	f0 2d       	mov	r31, r0
 			AD7195_ReadStore(&allData_d);
@@ -1893,7 +1893,7 @@ int main(void) {
 				prepareFrameDEBUG(&allData_d);
 				if(!frame_d.mutex) frame_d = frame_b;
      dcc:	0f 2e       	mov	r0, r31
-     dce:	f8 e6       	ldi	r31, 0x68	; 104
+     dce:	fc ec       	ldi	r31, 0xCC	; 204
      dd0:	2f 2e       	mov	r2, r31
      dd2:	f0 2d       	mov	r31, r0
 					Light_Green();
@@ -1937,12 +1937,12 @@ int main(void) {
      dee:	f8 01       	movw	r30, r16
      df0:	c7 82       	std	Z+7, r12	; 0x07
 			ADC_tempCalc(&Analog_d);
-     df2:	81 e0       	ldi	r24, 0x01	; 1
+     df2:	89 ec       	ldi	r24, 0xC9	; 201
      df4:	96 e2       	ldi	r25, 0x26	; 38
      df6:	0e 94 a6 30 	call	0x614c	; 0x614c <ADC_tempCalc>
 			AD7195_ReadStore(&allData_d);
-     dfa:	82 ec       	ldi	r24, 0xC2	; 194
-     dfc:	93 e2       	ldi	r25, 0x23	; 35
+     dfa:	8a e8       	ldi	r24, 0x8A	; 138
+     dfc:	94 e2       	ldi	r25, 0x24	; 36
      dfe:	33 db       	rcall	.-2458   	; 0x466 <AD7195_ReadStore>
 			if(counter >= 3){
      e00:	f2 e0       	ldi	r31, 0x02	; 2
@@ -1951,12 +1951,12 @@ int main(void) {
      e06:	4c c0       	rjmp	.+152    	; 0xea0 <main+0x12e>
 				counter = 0;
 				AD7195_PressureCalc(&AD7195_d);
-     e08:	82 e8       	ldi	r24, 0x82	; 130
-     e0a:	93 e2       	ldi	r25, 0x23	; 35
+     e08:	8a e4       	ldi	r24, 0x4A	; 74
+     e0a:	94 e2       	ldi	r25, 0x24	; 36
      e0c:	d0 db       	rcall	.-2144   	; 0x5ae <AD7195_PressureCalc>
 				prepareFrameDEBUG(&allData_d);
-     e0e:	82 ec       	ldi	r24, 0xC2	; 194
-     e10:	93 e2       	ldi	r25, 0x23	; 35
+     e0e:	8a e8       	ldi	r24, 0x8A	; 138
+     e10:	94 e2       	ldi	r25, 0x24	; 36
      e12:	0e 94 62 1f 	call	0x3ec4	; 0x3ec4 <prepareFrameDEBUG>
 				if(!frame_d.mutex) frame_d = frame_b;
      e16:	f4 01       	movw	r30, r8
@@ -1965,8 +1965,8 @@ int main(void) {
      e1c:	09 c0       	rjmp	.+18     	; 0xe30 <main+0xbe>
      e1e:	e2 e9       	ldi	r30, 0x92	; 146
      e20:	f2 e2       	ldi	r31, 0x22	; 34
-     e22:	aa ef       	ldi	r26, 0xFA	; 250
-     e24:	b2 e2       	ldi	r27, 0x22	; 34
+     e22:	ae e5       	ldi	r26, 0x5E	; 94
+     e24:	b3 e2       	ldi	r27, 0x23	; 35
      e26:	82 2d       	mov	r24, r2
      e28:	01 90       	ld	r0, Z+
      e2a:	0d 92       	st	X+, r0
@@ -2009,13 +2009,13 @@ int main(void) {
      e6a:	80 e8       	ldi	r24, 0x80	; 128
      e6c:	90 e2       	ldi	r25, 0x20	; 32
      e6e:	0e 94 33 32 	call	0x6466	; 0x6466 <FindTableLength>
-     e72:	2f ef       	ldi	r18, 0xFF	; 255
-     e74:	35 e2       	ldi	r19, 0x25	; 37
+     e72:	27 ec       	ldi	r18, 0xC7	; 199
+     e74:	36 e2       	ldi	r19, 0x26	; 38
      e76:	ac 01       	movw	r20, r24
      e78:	60 e8       	ldi	r22, 0x80	; 128
      e7a:	70 e2       	ldi	r23, 0x20	; 32
-     e7c:	8d ed       	ldi	r24, 0xDD	; 221
-     e7e:	93 e2       	ldi	r25, 0x23	; 35
+     e7c:	85 ea       	ldi	r24, 0xA5	; 165
+     e7e:	94 e2       	ldi	r25, 0x24	; 36
      e80:	0e 94 c2 17 	call	0x2f84	; 0x2f84 <f_write>
 						//f_write(&pomiar, &frame_sd, 500, &bw);
 						frame_sd.frameASCII[0] = 0;
@@ -2028,8 +2028,8 @@ int main(void) {
 					}
 				}
 				else f_close(&pomiar);
-     e90:	8d ed       	ldi	r24, 0xDD	; 221
-     e92:	93 e2       	ldi	r25, 0x23	; 35
+     e90:	85 ea       	ldi	r24, 0xA5	; 165
+     e92:	94 e2       	ldi	r25, 0x24	; 36
      e94:	0e 94 0b 1a 	call	0x3416	; 0x3416 <f_close>
 				LED_PORT.OUTCLR = LED6;
      e98:	f8 01       	movw	r30, r16
@@ -4534,8 +4534,8 @@ int main(void) {
     2164:	fc 01       	movw	r30, r24
     2166:	ee 0f       	add	r30, r30
     2168:	ff 1f       	adc	r31, r31
-    216a:	e5 52       	subi	r30, 0x25	; 37
-    216c:	fc 4d       	sbci	r31, 0xDC	; 220
+    216a:	ed 55       	subi	r30, 0x5D	; 93
+    216c:	fb 4d       	sbci	r31, 0xDB	; 219
     216e:	00 81       	ld	r16, Z
     2170:	11 81       	ldd	r17, Z+1	; 0x01
     2172:	01 15       	cp	r16, r1
@@ -5065,11 +5065,11 @@ int main(void) {
     25a6:	e9 89       	ldd	r30, Y+17	; 0x11
     25a8:	d8 01       	movw	r26, r16
     25aa:	ec 93       	st	X, r30
-    25ac:	80 91 d9 23 	lds	r24, 0x23D9
-    25b0:	90 91 da 23 	lds	r25, 0x23DA
+    25ac:	80 91 a1 24 	lds	r24, 0x24A1
+    25b0:	90 91 a2 24 	lds	r25, 0x24A2
     25b4:	01 96       	adiw	r24, 0x01	; 1
-    25b6:	80 93 d9 23 	sts	0x23D9, r24
-    25ba:	90 93 da 23 	sts	0x23DA, r25
+    25b6:	80 93 a1 24 	sts	0x24A1, r24
+    25ba:	90 93 a2 24 	sts	0x24A2, r25
     25be:	15 96       	adiw	r26, 0x05	; 5
     25c0:	8d 93       	st	X+, r24
     25c2:	9c 93       	st	X, r25
@@ -5786,8 +5786,8 @@ int main(void) {
     2b4a:	fc 01       	movw	r30, r24
     2b4c:	ee 0f       	add	r30, r30
     2b4e:	ff 1f       	adc	r31, r31
-    2b50:	e5 52       	subi	r30, 0x25	; 37
-    2b52:	fc 4d       	sbci	r31, 0xDC	; 220
+    2b50:	ed 55       	subi	r30, 0x5D	; 93
+    2b52:	fb 4d       	sbci	r31, 0xDB	; 219
     2b54:	01 90       	ld	r0, Z+
     2b56:	f0 81       	ld	r31, Z
     2b58:	e0 2d       	mov	r30, r0
@@ -5804,8 +5804,8 @@ int main(void) {
     2b6e:	88 0f       	add	r24, r24
     2b70:	99 1f       	adc	r25, r25
     2b72:	fc 01       	movw	r30, r24
-    2b74:	e5 52       	subi	r30, 0x25	; 37
-    2b76:	fc 4d       	sbci	r31, 0xDC	; 220
+    2b74:	ed 55       	subi	r30, 0x5D	; 93
+    2b76:	fb 4d       	sbci	r31, 0xDB	; 219
     2b78:	20 83       	st	Z, r18
     2b7a:	31 83       	std	Z+1, r19	; 0x01
     2b7c:	23 2b       	or	r18, r19
@@ -5829,8 +5829,8 @@ int main(void) {
     2ba0:	88 0f       	add	r24, r24
     2ba2:	99 1f       	adc	r25, r25
     2ba4:	fc 01       	movw	r30, r24
-    2ba6:	e5 52       	subi	r30, 0x25	; 37
-    2ba8:	fc 4d       	sbci	r31, 0xDC	; 220
+    2ba6:	ed 55       	subi	r30, 0x5D	; 93
+    2ba8:	fb 4d       	sbci	r31, 0xDB	; 219
     2baa:	10 82       	st	Z, r1
     2bac:	11 82       	std	Z+1, r1	; 0x01
     2bae:	80 e0       	ldi	r24, 0x00	; 0
@@ -7074,7 +7074,7 @@ void MemorySPIInit() {
     34fe:	80 93 c0 0a 	sts	0x0AC0, r24
     SD_Status = STA_NOINIT; //Dysk niezainicjowany
     3502:	81 e0       	ldi	r24, 0x01	; 1
-    3504:	80 93 78 28 	sts	0x2878, r24
+    3504:	80 93 40 29 	sts	0x2940, r24
     3508:	08 95       	ret
 
 0000350a <SD_CRC7>:
@@ -7444,10 +7444,10 @@ _Bool SD_CardInitV1() {
     368c:	80 e1       	ldi	r24, 0x10	; 16
     368e:	8f df       	rcall	.-226    	; 0x35ae <SD_SendCMD>
     SD_Status = 0;
-    3690:	10 92 78 28 	sts	0x2878, r1
+    3690:	10 92 40 29 	sts	0x2940, r1
     SD_Type = CT_SD1;
     3694:	82 e0       	ldi	r24, 0x02	; 2
-    3696:	80 93 79 28 	sts	0x2879, r24
+    3696:	80 93 41 29 	sts	0x2941, r24
     return true;
     369a:	81 e0       	ldi	r24, 0x01	; 1
     369c:	01 c0       	rjmp	.+2      	; 0x36a0 <SD_CardInitV1+0x50>
@@ -7526,13 +7526,13 @@ _Bool SD_CardInitV2() {
     36ee:	81 11       	cpse	r24, r1
     36f0:	13 c0       	rjmp	.+38     	; 0x3718 <SD_CardInitV2+0x74>
         SD_Status = 0;
-    36f2:	10 92 78 28 	sts	0x2878, r1
+    36f2:	10 92 40 29 	sts	0x2940, r1
         if(SD_GetR7() & SD_OCR_CCS) SD_Type = CT_SD2; //Pobierz OCR
     36f6:	19 df       	rcall	.-462    	; 0x352a <SD_GetR7>
     36f8:	96 ff       	sbrs	r25, 6
     36fa:	05 c0       	rjmp	.+10     	; 0x3706 <SD_CardInitV2+0x62>
     36fc:	84 e0       	ldi	r24, 0x04	; 4
-    36fe:	80 93 79 28 	sts	0x2879, r24
+    36fe:	80 93 41 29 	sts	0x2941, r24
         else SD_Type = CT_SD1;
     }
     return true;
@@ -7545,7 +7545,7 @@ _Bool SD_CardInitV2() {
         if(SD_GetR7() & SD_OCR_CCS) SD_Type = CT_SD2; //Pobierz OCR
         else SD_Type = CT_SD1;
     3706:	82 e0       	ldi	r24, 0x02	; 2
-    3708:	80 93 79 28 	sts	0x2879, r24
+    3708:	80 93 41 29 	sts	0x2941, r24
     }
     return true;
     370c:	81 e0       	ldi	r24, 0x01	; 1
@@ -7620,7 +7620,7 @@ _Bool SD_CardInit() {
     3748:	05 c0       	rjmp	.+10     	; 0x3754 <SD_CardInit+0x36>
         SD_Status = STA_NODISK;            //Brak karty lub inny b³¹d
     374a:	82 e0       	ldi	r24, 0x02	; 2
-    374c:	80 93 78 28 	sts	0x2878, r24
+    374c:	80 93 40 29 	sts	0x2940, r24
         return false;                      //Niedoczekaliœmy siê
     3750:	80 e0       	ldi	r24, 0x00	; 0
     3752:	1a c0       	rjmp	.+52     	; 0x3788 <SD_CardInit+0x6a>
@@ -7655,7 +7655,7 @@ _Bool SD_CardInit() {
     377a:	c1 11       	cpse	r28, r1
     377c:	03 c0       	rjmp	.+6      	; 0x3784 <SD_CardInit+0x66>
     377e:	82 e0       	ldi	r24, 0x02	; 2
-    3780:	80 93 78 28 	sts	0x2878, r24
+    3780:	80 93 40 29 	sts	0x2940, r24
     SPI_SetMaxBaudrate();						//Prze³¹cz interfejs na maksymaln¹ szybkoœæ pracy
     3784:	a4 de       	rcall	.-696    	; 0x34ce <SPI_SetMaxBaudrate>
     return result;
@@ -7816,11 +7816,11 @@ uint8_t SD_disk_read(uint8_t *buff, uint32_t sector, uint8_t count) {
     3838:	8c 01       	movw	r16, r24
     383a:	c2 2f       	mov	r28, r18
     if(SD_Status != 0) return RES_NOTRDY;
-    383c:	80 91 78 28 	lds	r24, 0x2878
+    383c:	80 91 40 29 	lds	r24, 0x2940
     3840:	81 11       	cpse	r24, r1
     3842:	32 c0       	rjmp	.+100    	; 0x38a8 <SD_disk_read+0x76>
     if(SD_Type == CT_SD1) sector *= 512;	//SDSC adresowana jest bajtami
-    3844:	80 91 79 28 	lds	r24, 0x2879
+    3844:	80 91 41 29 	lds	r24, 0x2941
     3848:	82 30       	cpi	r24, 0x02	; 2
     384a:	49 f4       	brne	.+18     	; 0x385e <SD_disk_read+0x2c>
     384c:	03 2e       	mov	r0, r19
@@ -7918,11 +7918,11 @@ uint8_t DS_disk_write(const uint8_t *buff, uint32_t sector, uint8_t count) {
     38c4:	7b 01       	movw	r14, r22
     38c6:	c2 2f       	mov	r28, r18
     if(SD_Status != 0) return RES_NOTRDY;
-    38c8:	80 91 78 28 	lds	r24, 0x2878
+    38c8:	80 91 40 29 	lds	r24, 0x2940
     38cc:	81 11       	cpse	r24, r1
     38ce:	3c c0       	rjmp	.+120    	; 0x3948 <DS_disk_write+0x96>
     if(SD_Type == CT_SD1) sector *= 512;	//SDSC adresowana jest bajtami
-    38d0:	80 91 79 28 	lds	r24, 0x2879
+    38d0:	80 91 41 29 	lds	r24, 0x2941
     38d4:	82 30       	cpi	r24, 0x02	; 2
     38d6:	49 f4       	brne	.+18     	; 0x38ea <DS_disk_write+0x38>
     38d8:	0b 2e       	mov	r0, r27
@@ -8031,7 +8031,7 @@ DSTATUS disk_initialize(
     SD_CardInit();
     395e:	df de       	rcall	.-578    	; 0x371e <SD_CardInit>
     return SD_Status;
-    3960:	80 91 78 28 	lds	r24, 0x2878
+    3960:	80 91 40 29 	lds	r24, 0x2940
     3964:	08 95       	ret
 /* Initialize Disk Drive                                                 */
 /*-----------------------------------------------------------------------*/
@@ -8055,7 +8055,7 @@ DSTATUS disk_status(
     396a:	81 11       	cpse	r24, r1
     396c:	03 c0       	rjmp	.+6      	; 0x3974 <disk_status+0xa>
     return SD_Status;
-    396e:	80 91 78 28 	lds	r24, 0x2878
+    396e:	80 91 40 29 	lds	r24, 0x2940
     3972:	08 95       	ret
 /* Get Disk Status                                                       */
 /*-----------------------------------------------------------------------*/
@@ -8227,7 +8227,7 @@ DRESULT disk_ioctl (
     3a1c:	cd bf       	out	0x3d, r28	; 61
     3a1e:	de bf       	out	0x3e, r29	; 62
     if(SD_Status != 0) return RES_NOTRDY;    //Pamiêæ niezainicjowana
-    3a20:	80 91 78 28 	lds	r24, 0x2878
+    3a20:	80 91 40 29 	lds	r24, 0x2940
     3a24:	81 11       	cpse	r24, r1
     3a26:	aa c0       	rjmp	.+340    	; 0x3b7c <disk_ioctl+0x17e>
     DRESULT res = RES_OK;

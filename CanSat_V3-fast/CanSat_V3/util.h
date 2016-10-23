@@ -11,6 +11,7 @@
 void float2char(float, char *);
 void prepareFrameDEBUG(allData_t *);
 void prepareFrame(allData_t *);
+void prepareFrameBIN(allData_t * allData);
 void Ignition_active(void);
 void Ignition_inactive(void);
 void MFV_valve_open(void);

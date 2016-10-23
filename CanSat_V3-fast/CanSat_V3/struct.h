@@ -92,6 +92,7 @@ typedef struct ADC_s{
 //------------------------FRAME--------------------------------------------------
 typedef struct frame_s{
 	char frameASCII[100];
+	char frameBIN[100];
 	uint16_t iUART;
 	bool mutex;
 	bool terminate;
@@ -143,5 +144,16 @@ typedef struct allData_s{
 	Output_t * Output;
 	AD7195_t * AD7195;
 } allData_t;
+
+typedef union float2array_u{
+	float floatNumber;
+	char arrayNumber[4];
+} float2array_t;
+
+typedef union int32_2array_u{
+	uint32_t uintNumber;
+	int32_t intNumber;
+	char arrayNumber[4];
+} int32_2array_t;
 
 #endif /* STRUCT_H_ */
