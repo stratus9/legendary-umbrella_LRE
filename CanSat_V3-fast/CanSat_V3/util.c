@@ -39,7 +39,7 @@ void prepareFrameDEBUG(allData_t * allData){
 	//=============== Pressure ===================
 	//-------------- Pressure 1 ----------------------------
 	tmp = allData->AD7195->raw_press1;	//bar
-	if(tmp < 0) tmp = -tmp;
+	tmp = abs(tmp);
 	allData->frame_b->frameASCII[i++] = (tmp/10000000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/1000000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/100000)%10 + 48;
@@ -48,11 +48,11 @@ void prepareFrameDEBUG(allData_t * allData){
 	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
-	allData->frame_b->frameASCII[i++] = '\t';
+	allData->frame_b->frameASCII[i++] = ',';
 	
 	//-------------- Pressure 2 ----------------------------
 	tmp = allData->AD7195->raw_press2;	//bar
-	if(tmp < 0) tmp = -tmp;
+	tmp = abs(tmp);
 	allData->frame_b->frameASCII[i++] = (tmp/10000000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/1000000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/100000)%10 + 48;
@@ -61,11 +61,11 @@ void prepareFrameDEBUG(allData_t * allData){
 	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
-	allData->frame_b->frameASCII[i++] = '\t';
+	allData->frame_b->frameASCII[i++] = ',';
 	
 	//-------------- Pressure 3 ----------------------------
 	tmp = allData->AD7195->raw_press3;	//bar
-	if((tmp < 0) || (tmpf <0)) tmp = -tmp;
+	tmp = abs(tmp);
 	allData->frame_b->frameASCII[i++] = (tmp/10000000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/1000000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/100000)%10 + 48;
@@ -74,11 +74,11 @@ void prepareFrameDEBUG(allData_t * allData){
 	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
-	allData->frame_b->frameASCII[i++] = '\t';
+	allData->frame_b->frameASCII[i++] = ',';
 	
 	//-------------- Pressure 4 ----------------------------
 	tmp = allData->AD7195->raw_press4;	//bar
-	if(tmp < 0) tmp = -tmp;
+	tmp = abs(tmp);
 	allData->frame_b->frameASCII[i++] = (tmp/10000000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/1000000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/100000)%10 + 48;
@@ -87,11 +87,11 @@ void prepareFrameDEBUG(allData_t * allData){
 	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
-	allData->frame_b->frameASCII[i++] = '\t';
+	allData->frame_b->frameASCII[i++] = ',';
 	
 	//-------------- Pressure 5 ----------------------------
 	tmp = allData->AD7195->raw_press5;	//bar
-	if(tmp < 0) tmp = -tmp;
+	tmp = abs(tmp);
 	allData->frame_b->frameASCII[i++] = (tmp/10000000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/1000000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/100000)%10 + 48;
@@ -100,11 +100,11 @@ void prepareFrameDEBUG(allData_t * allData){
 	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
-	allData->frame_b->frameASCII[i++] = '\t';
+	allData->frame_b->frameASCII[i++] = ',';
 	
 	//-------------- Pressure 6 ----------------------------
 	tmp = allData->AD7195->raw_press6;	//bar
-	if(tmp < 0) tmp = -tmp;
+	tmp = abs(tmp);
 	allData->frame_b->frameASCII[i++] = (tmp/10000000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/1000000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/100000)%10 + 48;
@@ -113,11 +113,11 @@ void prepareFrameDEBUG(allData_t * allData){
 	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
-	allData->frame_b->frameASCII[i++] = '\t';
+	allData->frame_b->frameASCII[i++] = ',';
 	
 	//-------------- Pressure 7 ----------------------------
 	tmp = allData->AD7195->raw_press7;	//bar
-	if(tmp < 0) tmp = -tmp;
+	tmp = abs(tmp);
 	allData->frame_b->frameASCII[i++] = (tmp/10000000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/1000000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/100000)%10 + 48;
@@ -126,11 +126,11 @@ void prepareFrameDEBUG(allData_t * allData){
 	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
-	allData->frame_b->frameASCII[i++] = '\t';
+	allData->frame_b->frameASCII[i++] = ',';
 	
 	//-------------- Pressure 8 ----------------------------
 	tmp = allData->AD7195->raw_press8;	//bar
-	if(tmp < 0) tmp = -tmp;
+	tmp = abs(tmp);
 	allData->frame_b->frameASCII[i++] = (tmp/10000000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/1000000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/100000)%10 + 48;
@@ -139,7 +139,7 @@ void prepareFrameDEBUG(allData_t * allData){
 	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
-	allData->frame_b->frameASCII[i++] = '\t';
+	allData->frame_b->frameASCII[i++] = ',';
 	
 	//-------------- Temp 1 ----------------------------
 	tmp = allData->Analog->AnalogIn1;
@@ -151,7 +151,7 @@ void prepareFrameDEBUG(allData_t * allData){
 	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
-	allData->frame_b->frameASCII[i++] = '\t';
+	allData->frame_b->frameASCII[i++] = ',';
 	
 	//-------------- Temp 2 ----------------------------
 	tmp = allData->Analog->AnalogIn2;
@@ -163,7 +163,7 @@ void prepareFrameDEBUG(allData_t * allData){
 	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
-	allData->frame_b->frameASCII[i++] = '\t';
+	allData->frame_b->frameASCII[i++] = ',';
 	
 	//-------------- Temp 3 ----------------------------
 	tmp = allData->Analog->AnalogIn3;
@@ -175,7 +175,7 @@ void prepareFrameDEBUG(allData_t * allData){
 	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
-	allData->frame_b->frameASCII[i++] = '\t';
+	allData->frame_b->frameASCII[i++] = ',';
 	
 	//-------------- Temp 4 ----------------------------
 	tmp = allData->Analog->AnalogIn4;
@@ -187,7 +187,7 @@ void prepareFrameDEBUG(allData_t * allData){
 	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
-	allData->frame_b->frameASCII[i++] = '\t';
+	allData->frame_b->frameASCII[i++] = ',';
 	
 	//----------------packet count-----------------------
 	tmp = allData->Clock->frameFlashCount;
