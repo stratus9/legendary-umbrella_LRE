@@ -11,6 +11,7 @@
 
 #include "SPI.h"
 void AD7195_CS(uint8_t chipNo, bool state);
+void AD7195_calib_offset(uint8_t chipNo, uint8_t channel);
 void AD7195_Init(uint8_t chipNo);
 uint8_t AD7195_WhoIam(uint8_t ChipNo);
 void AD7195_Sync(void);

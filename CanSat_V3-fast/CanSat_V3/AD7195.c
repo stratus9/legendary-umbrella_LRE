@@ -20,23 +20,45 @@ void AD7195_CS(uint8_t chipNo, bool state){
 	if((chipNo == 1) && (state == true))  PORTC.OUTCLR = PIN4_bm;
 }
 
+void AD7195_calib_offset(uint8_t chipNo, uint8_t channel){
+	// Ustawienie Config register
+	AD7195_CS(chipNo, true);
+	SPI_W_Byte(0b00010000);					//Write, config register, no cont. reading
+	SPI_W_Byte(0b10000000);					//CHOP off, AC ex off
+	SPI_W_Byte(0b10000000);					//wybór kana³u
+	//SPI_W_Byte(((1 << channel) << 3));		//wybór kana³u
+	SPI_W_Byte(0b00010100);					//current source off, refdet off, buffer on, unipolar, 128gain
+	AD7195_CS(chipNo, false);
+	_delay_ms(10);
+	// Ustawienie Mode register i kalibracja
+	AD7195_CS(chipNo, true);
+	SPI_W_Byte(0b00001000);					//Write, mode register
+	SPI_W_Byte(0b11000100);					//zero cal, status reg read with data, ext clock
+	SPI_W_Byte(0b00000011);					//sinc4, no parity check, no one cycle,
+	SPI_W_Byte(0b11000000);					//FS=1 -> 4.8 kSps, FS=1024 -> 4.8Sps
+	AD7195_CS(chipNo, false);
+	while(AD7195_RDY(chipNo));				//wait for calibration end
+	_delay_ms(100);
+}
+
 void AD7195_Init(uint8_t chipNo){
-	
 	// Ustawienie Config register
 	AD7195_CS(chipNo, true);
 	SPI_W_Byte(0b00010000);					//Write, config register, no cont. reading ??
 	SPI_W_Byte(0b00000000);					//CHOP off, AC ex off
 	SPI_W_Byte(0b11110000);					//przemiatanie kana³ów 1-4
-	SPI_W_Byte(0b00011110);					//current source off, refdet off, buffer on, unipolar, 128gain
+	SPI_W_Byte(0b00011000);					//current source off, refdet off, buffer on, unipolar, 128gain
 	AD7195_CS(chipNo, false);
+	
 	_delay_ms(10);
 	// Ustawienie Mode register
 	AD7195_CS(chipNo, true);
 	SPI_W_Byte(0b00001000);					//Write, mode register
 	SPI_W_Byte(0b00010100);					//conti conv, status reg read with data, ext clock
-	SPI_W_Byte(0b00000000);					//sinc4, no parity check, no one cycle, 
+	SPI_W_Byte(0b00001000);					//sinc4, no parity check, no one cycle,
 	SPI_W_Byte(0b00001111);					//FS=1 -> 4.8 kSps, FS=1024 -> 4.8Sps
 	AD7195_CS(chipNo, false);
+	_delay_ms(10);
 }
 
 uint8_t AD7195_WhoIam(uint8_t ChipNo){
@@ -56,7 +78,7 @@ void AD7195_Sync(void){
 
 void AD7195_Reset(uint8_t chipNo){
 	AD7195_CS(chipNo, true);
-	SPI_W_Byte(0x01);					
+	SPI_W_Byte(0xFF);					
 	SPI_W_Byte(0xFF);					
 	SPI_W_Byte(0xFF);					
 	SPI_W_Byte(0xFF);					
@@ -93,7 +115,7 @@ void AD7195_ContConvRead(uint8_t * channel1, uint8_t * channel2, uint32_t * valu
 bool AD7195_RDY(uint8_t chipNo){
 	AD7195_CS(chipNo, true);
 	SPI_W_Byte(0b01000000);					//Read, ID register
-	char status = SPI_R_Byte();					//CHOP off, AC ex off
+	char status = SPI_R_Byte();
 	AD7195_CS(chipNo, false);
 	
 	return status & 0x80;
@@ -121,9 +143,9 @@ void AD7195_PressureCalc(AD7195_t * AD7195){
 	AD7195->pressure1 = 0;
 	AD7195->pressure2 = 0;
 	AD7195->pressure3 = 0;
-	AD7195->pressure4 = (AD7195->raw_press4 - 8522432.0)/ 87850.0;
-	AD7195->pressure5 = (AD7195->raw_press5 - 8522432.0)/ 87850.0;
-	AD7195->pressure6 = (AD7195->raw_press6 - 8645000.0)/139500.0;
-	AD7195->pressure7 = (AD7195->raw_press7 - 8522432.0)/ 87850.0;
-	AD7195->pressure8 = (AD7195->raw_press8 - 8645000.0)/139500.0;
+	AD7195->pressure4 = 0;
+	AD7195->pressure5 = 0;
+	AD7195->pressure6 = 0;
+	AD7195->pressure7 = 0;
+	AD7195->pressure8 = 0;
 }

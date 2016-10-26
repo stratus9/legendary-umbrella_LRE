@@ -39,7 +39,7 @@ void prepareFrameDEBUG(allData_t * allData){
 	//=============== Pressure ===================
 	//-------------- Pressure 1 ----------------------------
 	tmp = allData->AD7195->raw_press1;	//bar
-	tmp = abs(tmp);
+	tmp = labs(tmp);
 	allData->frame_b->frameASCII[i++] = (tmp/10000000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/1000000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/100000)%10 + 48;
@@ -52,7 +52,7 @@ void prepareFrameDEBUG(allData_t * allData){
 	
 	//-------------- Pressure 2 ----------------------------
 	tmp = allData->AD7195->raw_press2;	//bar
-	tmp = abs(tmp);
+	tmp = labs(tmp);
 	allData->frame_b->frameASCII[i++] = (tmp/10000000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/1000000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/100000)%10 + 48;
@@ -65,7 +65,7 @@ void prepareFrameDEBUG(allData_t * allData){
 	
 	//-------------- Pressure 3 ----------------------------
 	tmp = allData->AD7195->raw_press3;	//bar
-	tmp = abs(tmp);
+	tmp = labs(tmp);
 	allData->frame_b->frameASCII[i++] = (tmp/10000000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/1000000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/100000)%10 + 48;
@@ -78,7 +78,7 @@ void prepareFrameDEBUG(allData_t * allData){
 	
 	//-------------- Pressure 4 ----------------------------
 	tmp = allData->AD7195->raw_press4;	//bar
-	tmp = abs(tmp);
+	tmp = labs(tmp);
 	allData->frame_b->frameASCII[i++] = (tmp/10000000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/1000000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/100000)%10 + 48;
@@ -91,7 +91,7 @@ void prepareFrameDEBUG(allData_t * allData){
 	
 	//-------------- Pressure 5 ----------------------------
 	tmp = allData->AD7195->raw_press5;	//bar
-	tmp = abs(tmp);
+	tmp = labs(tmp);
 	allData->frame_b->frameASCII[i++] = (tmp/10000000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/1000000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/100000)%10 + 48;
@@ -104,7 +104,7 @@ void prepareFrameDEBUG(allData_t * allData){
 	
 	//-------------- Pressure 6 ----------------------------
 	tmp = allData->AD7195->raw_press6;	//bar
-	tmp = abs(tmp);
+	tmp = labs(tmp);
 	allData->frame_b->frameASCII[i++] = (tmp/10000000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/1000000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/100000)%10 + 48;
@@ -117,7 +117,7 @@ void prepareFrameDEBUG(allData_t * allData){
 	
 	//-------------- Pressure 7 ----------------------------
 	tmp = allData->AD7195->raw_press7;	//bar
-	tmp = abs(tmp);
+	tmp = labs(tmp);
 	allData->frame_b->frameASCII[i++] = (tmp/10000000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/1000000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/100000)%10 + 48;
@@ -130,7 +130,7 @@ void prepareFrameDEBUG(allData_t * allData){
 	
 	//-------------- Pressure 8 ----------------------------
 	tmp = allData->AD7195->raw_press8;	//bar
-	tmp = abs(tmp);
+	tmp = labs(tmp);
 	allData->frame_b->frameASCII[i++] = (tmp/10000000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/1000000)%10 + 48;
 	allData->frame_b->frameASCII[i++] = (tmp/100000)%10 + 48;
