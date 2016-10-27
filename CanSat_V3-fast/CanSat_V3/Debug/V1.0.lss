@@ -15,19 +15,19 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   5 .debug_aranges 000004d0  00000000  00000000  00007008  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   0000d2cf  00000000  00000000  000074d8  2**0
+  6 .debug_info   0000d2d4  00000000  00000000  000074d8  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 00004391  00000000  00000000  000147a7  2**0
+  7 .debug_abbrev 00004391  00000000  00000000  000147ac  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   00004bd3  00000000  00000000  00018b38  2**0
+  8 .debug_line   00004bd3  00000000  00000000  00018b3d  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  00001508  00000000  00000000  0001d70c  2**2
+  9 .debug_frame  00001508  00000000  00000000  0001d710  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    00004893  00000000  00000000  0001ec14  2**0
+ 10 .debug_str    00004893  00000000  00000000  0001ec18  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00008c54  00000000  00000000  000234a7  2**0
+ 11 .debug_loc    00008c54  00000000  00000000  000234ab  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000540  00000000  00000000  0002c0fb  2**0
+ 12 .debug_ranges 00000540  00000000  00000000  0002c0ff  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -615,9 +615,9 @@ void AD7195_ReadStore(allData_t * allData){
      486:	cd bf       	out	0x3d, r28	; 61
      488:	de bf       	out	0x3e, r29	; 62
      48a:	8c 01       	movw	r16, r24
-	uint8_t channel1, channel2;
-	uint32_t value1, value2;
-	AD7195_ContConvRead(&channel1, &channel2, &value1, &value2);
+	volatile uint8_t channel1, channel2;
+	volatile uint32_t value1, value2;
+	AD7195_ContConvRead((uint8_t *) &channel1, (uint8_t *) &channel2, (uint32_t *) &value1, (uint32_t *) &value2);
      48c:	9e 01       	movw	r18, r28
      48e:	29 5f       	subi	r18, 0xF9	; 249
      490:	3f 4f       	sbci	r19, 0xFF	; 255
@@ -8944,10 +8944,10 @@ void I2C_Init(void) {
 }
 
 void SPI_Init(void) {
-    SPI_PORT.DIRSET = PIN4_bm;						//podci¹gniêcie CS
+    SPI_PORT.DIRSET = PIN3_bm | PIN4_bm;						//podci¹gniêcie CS
     3e06:	e0 e4       	ldi	r30, 0x40	; 64
     3e08:	f6 e0       	ldi	r31, 0x06	; 6
-    3e0a:	80 e1       	ldi	r24, 0x10	; 16
+    3e0a:	88 e1       	ldi	r24, 0x18	; 24
     3e0c:	81 83       	std	Z+1, r24	; 0x01
     SPI_PORT.DIRSET = PIN5_bm | PIN7_bm;
     3e0e:	80 ea       	ldi	r24, 0xA0	; 160

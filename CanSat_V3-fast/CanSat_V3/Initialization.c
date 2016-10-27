@@ -174,7 +174,7 @@ void I2C_Init(void) {
 }
 
 void SPI_Init(void) {
-    SPI_PORT.DIRSET = PIN4_bm;						//podci¹gniêcie CS
+    SPI_PORT.DIRSET = PIN3_bm | PIN4_bm;						//podci¹gniêcie CS
     SPI_PORT.DIRSET = PIN5_bm | PIN7_bm;
     SPI_PORT.DIRCLR = PIN6_bm;
     SPI_PORT.OUTSET = PIN5_bm | PIN6_bm | PIN7_bm;	//mo¿e dodaæ PIN6_bm

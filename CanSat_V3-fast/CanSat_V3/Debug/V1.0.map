@@ -1328,16 +1328,16 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0xd2cf
+.debug_info     0x00000000     0xd2d4
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000     0x3409 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avrxmega6/crtatxmega128a3u.o
- .debug_info    0x00003409     0x1010 AD7195.o
- .debug_info    0x00004419     0x1e4d CanSat.o
- .debug_info    0x00006266     0x3a3c FATFS/ff.o
- .debug_info    0x00009ca2     0x14d1 SD.o
- .debug_info    0x0000b173      0x146 SPI.o
- .debug_info    0x0000b2b9     0x112d Initialization.o
- .debug_info    0x0000c3e6      0xee9 util.o
+ .debug_info    0x00003409     0x1015 AD7195.o
+ .debug_info    0x0000441e     0x1e4d CanSat.o
+ .debug_info    0x0000626b     0x3a3c FATFS/ff.o
+ .debug_info    0x00009ca7     0x14d1 SD.o
+ .debug_info    0x0000b178      0x146 SPI.o
+ .debug_info    0x0000b2be     0x112d Initialization.o
+ .debug_info    0x0000c3eb      0xee9 util.o
 
 .debug_abbrev   0x00000000     0x4391
  *(.debug_abbrev)

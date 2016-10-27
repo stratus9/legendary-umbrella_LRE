@@ -71,9 +71,9 @@ uint8_t AD7195_WhoIam(uint8_t ChipNo){
 }
 
 void AD7195_Sync(void){
-	PORTD.OUTCLR = PIN1_bm;						//konfiguracja stanu pinu buzzer
+	PORTD.OUTCLR = PIN1_bm;						//konfiguracja stanu pinu SYNC
 	_delay_ms(100);
-	PORTD.OUTSET = PIN1_bm;						//konfiguracja stanu pinu buzzer
+	PORTD.OUTSET = PIN1_bm;						//konfiguracja stanu pinu SYNC
 }
 
 void AD7195_Reset(uint8_t chipNo){
@@ -122,9 +122,9 @@ bool AD7195_RDY(uint8_t chipNo){
 }
 
 void AD7195_ReadStore(allData_t * allData){
-	uint8_t channel1, channel2;
-	uint32_t value1, value2;
-	AD7195_ContConvRead(&channel1, &channel2, &value1, &value2);
+	volatile uint8_t channel1, channel2;
+	volatile uint32_t value1, value2;
+	AD7195_ContConvRead((uint8_t *) &channel1, (uint8_t *) &channel2, (uint32_t *) &value1, (uint32_t *) &value2);
 	switch(channel1){
 		case 4: allData->AD7195->raw_press1 = value1; break;
 		case 5: allData->AD7195->raw_press2 = value1; break;
