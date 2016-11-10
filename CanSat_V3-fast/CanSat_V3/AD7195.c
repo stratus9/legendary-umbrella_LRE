@@ -47,7 +47,7 @@ void AD7195_Init(uint8_t chipNo){
 	SPI_W_Byte(0b00010000);					//Write, config register, no cont. reading ??
 	SPI_W_Byte(0b00000000);					//CHOP off, AC ex off
 	SPI_W_Byte(0b11110000);					//przemiatanie kana³ów 1-4
-	SPI_W_Byte(0b00011000);					//current source off, refdet off, buffer on, unipolar, 128gain
+	SPI_W_Byte(0b00001110);					//current source off, refdet off, buffer on, unipolar, 128gain
 	AD7195_CS(chipNo, false);
 	
 	_delay_ms(10);
@@ -56,7 +56,7 @@ void AD7195_Init(uint8_t chipNo){
 	SPI_W_Byte(0b00001000);					//Write, mode register
 	SPI_W_Byte(0b00010100);					//conti conv, status reg read with data, ext clock
 	SPI_W_Byte(0b00001000);					//sinc4, no parity check, no one cycle,
-	SPI_W_Byte(0b00001111);					//FS=1 -> 4.8 kSps, FS=1024 -> 4.8Sps
+	SPI_W_Byte(0b00000001);					//FS=1 -> 4.8 kSps, FS=1024 -> 4.8Sps
 	AD7195_CS(chipNo, false);
 	_delay_ms(10);
 }
@@ -140,12 +140,12 @@ void AD7195_ReadStore(allData_t * allData){
 }
 
 void AD7195_PressureCalc(AD7195_t * AD7195){
-	AD7195->pressure1 = 0;
-	AD7195->pressure2 = 0;
-	AD7195->pressure3 = 0;
-	AD7195->pressure4 = 0;
-	AD7195->pressure5 = 0;
-	AD7195->pressure6 = 0;
-	AD7195->pressure7 = 0;
-	AD7195->pressure8 = 0;
+	AD7195->pressure1 = AD7195->raw_press1/64.0/16777216.0*5.0;
+	AD7195->pressure2 = AD7195->raw_press2/64.0/16777216.0*5.0;
+	AD7195->pressure3 = AD7195->raw_press3/64.0/16777216.0*5.0;
+	AD7195->pressure4 = AD7195->raw_press4/64.0/16777216.0*5.0;
+	AD7195->pressure5 = AD7195->raw_press5/64.0/16777216.0*5.0;
+	AD7195->pressure6 = AD7195->raw_press6/64.0/16777216.0*5.0;
+	AD7195->pressure7 = AD7195->raw_press7/64.0/16777216.0*5.0;
+	AD7195->pressure8 = AD7195->raw_press8/64.0/16777216.0*5.0;
 }

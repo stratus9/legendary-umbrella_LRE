@@ -30,7 +30,6 @@ FIL pomiar;
 FATFS fatfs;
 UINT bw;
 
-
 //-----------------------------------Struktury globalne---------------------------------------------
 static Output_t Output_d;
 static allData_t allData_d;
@@ -38,8 +37,8 @@ static AD7195_t AD7195_d;
 static Clock_t Clock_d;
 static stan_t stan_d;
 Analog_t Analog_d;
-static frame_t frame_d;
-static frame_t frame_b;
+frame_t frame_d;
+frame_t frame_b;
 static frameSD_t frame_sd;
 static buzzer_t buzzer_d;
 uint32_t mission_time = 0;
@@ -84,6 +83,7 @@ ISR(USARTD0_RXC_vect) {
 	
 	//------- Reset --------
     else if((tmp == 'R') && stan_d.cmd_mode) {
+		f_close(&pomiar);
         ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
             stan_d.cmd_mode = false;
             CPU_CCP = CCP_IOREG_gc;
@@ -302,7 +302,7 @@ int main(void) {
         _delay_us(1);
 //============================== Sekcja pomiarów ============================================
 		if(!AD7195_RDY(0)){
-			LED_PORT.OUTTGL = LED5;
+			LED_PORT.OUTSET = LED1;
 			ADC_tempCalc(&Analog_d);
 			AD7195_ReadStore(&allData_d);
 			if(counter >= 3){
@@ -325,6 +325,7 @@ int main(void) {
 				LED_PORT.OUTCLR = LED6;
 			}
 			else counter++;
+			LED_PORT.OUTCLR = LED1;
 		}
 
 //=========================== Sekcja maszyny stanów =========================================
@@ -337,12 +338,13 @@ int main(void) {
 			MPV_valve_open();
 			Buzzer_active();
 			Light_Red();
+			stan_d.armed_trigger = false;
 			stan_d.TestConfig = 0;
 			PORTF.OUTSET = PIN0_bm;
 			LED_PORT.OUTCLR = LED3;
 		}
-		else if((stan_d.armed_trigger == true) && (stan_d.run_trigger == false)) FPV_valve_open();	//w³¹czenie doprê¿ania
-        else if((stan_d.armed_trigger == true) && (stan_d.run_trigger == true) && (stan_d.TestConfig != 0)) {
+		else if(stan_d.armed_trigger == true) FPV_valve_open();	//w³¹czenie doprê¿ania
+        if((stan_d.armed_trigger == true) && (stan_d.run_trigger == true) && (stan_d.TestConfig != 0)) {
 			if(timer_buffer <= Clock_d.time){
 				stan_d.State++;
 				switch(stan_d.State){

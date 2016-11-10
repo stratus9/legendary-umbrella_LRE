@@ -33,172 +33,152 @@ void float2char(float number,char * tablica){
 	*(tablica+6) = ((tmp%10)) + 48;
 }
 void prepareFrameDEBUG(allData_t * allData){
-	volatile int32_t i,tmp,tmpf;
-	i=0;
+	uint16_t i=0;
+	char buffer[15];
 	
 	//=============== Pressure ===================
 	//-------------- Pressure 1 ----------------------------
-	tmp = allData->AD7195->raw_press1;	//bar
-	tmp = labs(tmp);
-	allData->frame_b->frameASCII[i++] = (tmp/10000000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/1000000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/100000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/10000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
+	sprintf(buffer, "%08lu", labs(allData->AD7195->raw_press1));
+	allData->frame_b->frameASCII[i++] = buffer[0];
+	allData->frame_b->frameASCII[i++] = buffer[1];
+	allData->frame_b->frameASCII[i++] = buffer[2];
+	allData->frame_b->frameASCII[i++] = buffer[3];
+	allData->frame_b->frameASCII[i++] = buffer[4];
+	allData->frame_b->frameASCII[i++] = buffer[5];
+	allData->frame_b->frameASCII[i++] = buffer[6];
+	allData->frame_b->frameASCII[i++] = buffer[7];
 	allData->frame_b->frameASCII[i++] = ',';
 	
 	//-------------- Pressure 2 ----------------------------
-	tmp = allData->AD7195->raw_press2;	//bar
-	tmp = labs(tmp);
-	allData->frame_b->frameASCII[i++] = (tmp/10000000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/1000000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/100000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/10000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
+	sprintf(buffer, "%08lu", labs(allData->AD7195->raw_press2));
+	allData->frame_b->frameASCII[i++] = buffer[0];
+	allData->frame_b->frameASCII[i++] = buffer[1];
+	allData->frame_b->frameASCII[i++] = buffer[2];
+	allData->frame_b->frameASCII[i++] = buffer[3];
+	allData->frame_b->frameASCII[i++] = buffer[4];
+	allData->frame_b->frameASCII[i++] = buffer[5];
+	allData->frame_b->frameASCII[i++] = buffer[6];
+	allData->frame_b->frameASCII[i++] = buffer[7];
 	allData->frame_b->frameASCII[i++] = ',';
 	
 	//-------------- Pressure 3 ----------------------------
-	tmp = allData->AD7195->raw_press3;	//bar
-	tmp = labs(tmp);
-	allData->frame_b->frameASCII[i++] = (tmp/10000000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/1000000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/100000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/10000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
+	sprintf(buffer, "%08lu", labs(allData->AD7195->raw_press3));
+	allData->frame_b->frameASCII[i++] = buffer[0];
+	allData->frame_b->frameASCII[i++] = buffer[1];
+	allData->frame_b->frameASCII[i++] = buffer[2];
+	allData->frame_b->frameASCII[i++] = buffer[3];
+	allData->frame_b->frameASCII[i++] = buffer[4];
+	allData->frame_b->frameASCII[i++] = buffer[5];
+	allData->frame_b->frameASCII[i++] = buffer[6];
+	allData->frame_b->frameASCII[i++] = buffer[7];
 	allData->frame_b->frameASCII[i++] = ',';
 	
 	//-------------- Pressure 4 ----------------------------
-	tmp = allData->AD7195->raw_press4;	//bar
-	tmp = labs(tmp);
-	allData->frame_b->frameASCII[i++] = (tmp/10000000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/1000000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/100000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/10000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
+	sprintf(buffer, "%08lu", labs(allData->AD7195->raw_press4));
+	allData->frame_b->frameASCII[i++] = buffer[0];
+	allData->frame_b->frameASCII[i++] = buffer[1];
+	allData->frame_b->frameASCII[i++] = buffer[2];
+	allData->frame_b->frameASCII[i++] = buffer[3];
+	allData->frame_b->frameASCII[i++] = buffer[4];
+	allData->frame_b->frameASCII[i++] = buffer[5];
+	allData->frame_b->frameASCII[i++] = buffer[6];
+	allData->frame_b->frameASCII[i++] = buffer[7];
 	allData->frame_b->frameASCII[i++] = ',';
 	
 	//-------------- Pressure 5 ----------------------------
-	tmp = allData->AD7195->raw_press5;	//bar
-	tmp = labs(tmp);
-	allData->frame_b->frameASCII[i++] = (tmp/10000000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/1000000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/100000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/10000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
+	sprintf(buffer, "%08lu", labs(allData->AD7195->raw_press5));
+	allData->frame_b->frameASCII[i++] = buffer[0];
+	allData->frame_b->frameASCII[i++] = buffer[1];
+	allData->frame_b->frameASCII[i++] = buffer[2];
+	allData->frame_b->frameASCII[i++] = buffer[3];
+	allData->frame_b->frameASCII[i++] = buffer[4];
+	allData->frame_b->frameASCII[i++] = buffer[5];
+	allData->frame_b->frameASCII[i++] = buffer[6];
+	allData->frame_b->frameASCII[i++] = buffer[7];
 	allData->frame_b->frameASCII[i++] = ',';
 	
 	//-------------- Pressure 6 ----------------------------
-	tmp = allData->AD7195->raw_press6;	//bar
-	tmp = labs(tmp);
-	allData->frame_b->frameASCII[i++] = (tmp/10000000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/1000000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/100000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/10000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
+	sprintf(buffer, "%08lu", labs(allData->AD7195->raw_press6));
+	allData->frame_b->frameASCII[i++] = buffer[0];
+	allData->frame_b->frameASCII[i++] = buffer[1];
+	allData->frame_b->frameASCII[i++] = buffer[2];
+	allData->frame_b->frameASCII[i++] = buffer[3];
+	allData->frame_b->frameASCII[i++] = buffer[4];
+	allData->frame_b->frameASCII[i++] = buffer[5];
+	allData->frame_b->frameASCII[i++] = buffer[6];
+	allData->frame_b->frameASCII[i++] = buffer[7];
 	allData->frame_b->frameASCII[i++] = ',';
 	
 	//-------------- Pressure 7 ----------------------------
-	tmp = allData->AD7195->raw_press7;	//bar
-	tmp = labs(tmp);
-	allData->frame_b->frameASCII[i++] = (tmp/10000000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/1000000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/100000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/10000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
+	sprintf(buffer, "%08lu", labs(allData->AD7195->raw_press7));
+	allData->frame_b->frameASCII[i++] = buffer[0];
+	allData->frame_b->frameASCII[i++] = buffer[1];
+	allData->frame_b->frameASCII[i++] = buffer[2];
+	allData->frame_b->frameASCII[i++] = buffer[3];
+	allData->frame_b->frameASCII[i++] = buffer[4];
+	allData->frame_b->frameASCII[i++] = buffer[5];
+	allData->frame_b->frameASCII[i++] = buffer[6];
+	allData->frame_b->frameASCII[i++] = buffer[7];
 	allData->frame_b->frameASCII[i++] = ',';
 	
 	//-------------- Pressure 8 ----------------------------
-	tmp = allData->AD7195->raw_press8;	//bar
-	tmp = labs(tmp);
-	allData->frame_b->frameASCII[i++] = (tmp/10000000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/1000000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/100000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/10000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
+	sprintf(buffer, "%08lu", labs(allData->AD7195->raw_press8));
+	allData->frame_b->frameASCII[i++] = buffer[0];
+	allData->frame_b->frameASCII[i++] = buffer[1];
+	allData->frame_b->frameASCII[i++] = buffer[2];
+	allData->frame_b->frameASCII[i++] = buffer[3];
+	allData->frame_b->frameASCII[i++] = buffer[4];
+	allData->frame_b->frameASCII[i++] = buffer[5];
+	allData->frame_b->frameASCII[i++] = buffer[6];
+	allData->frame_b->frameASCII[i++] = buffer[7];
 	allData->frame_b->frameASCII[i++] = ',';
 	
 	//-------------- Temp 1 ----------------------------
-	tmp = allData->Analog->AnalogIn1;
-	if(tmp < 0){
-		tmp = -tmp;
-		allData->frame_b->frameASCII[i++] = '-';
-	}
-	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
+	sprintf(buffer, "%+04ld", labs(allData->Analog->AnalogIn1));
+	allData->frame_b->frameASCII[i++] = buffer[0];
+	allData->frame_b->frameASCII[i++] = buffer[1];
+	allData->frame_b->frameASCII[i++] = buffer[2];
+	allData->frame_b->frameASCII[i++] = buffer[3];
+	allData->frame_b->frameASCII[i++] = buffer[4];
 	allData->frame_b->frameASCII[i++] = ',';
 	
 	//-------------- Temp 2 ----------------------------
-	tmp = allData->Analog->AnalogIn2;
-	if(tmp < 0){
-		tmp = -tmp;
-		allData->frame_b->frameASCII[i++] = '-';
-	}
-	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
+	sprintf(buffer, "%+04ld", labs(allData->Analog->AnalogIn2));
+	allData->frame_b->frameASCII[i++] = buffer[0];
+	allData->frame_b->frameASCII[i++] = buffer[1];
+	allData->frame_b->frameASCII[i++] = buffer[2];
+	allData->frame_b->frameASCII[i++] = buffer[3];
+	allData->frame_b->frameASCII[i++] = buffer[4];
 	allData->frame_b->frameASCII[i++] = ',';
 	
 	//-------------- Temp 3 ----------------------------
-	tmp = allData->Analog->AnalogIn3;
-	if(tmp < 0){
-		tmp = -tmp;
-		allData->frame_b->frameASCII[i++] = '-';
-	}
-	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
+	sprintf(buffer, "%+04ld", labs(allData->Analog->AnalogIn3));
+	allData->frame_b->frameASCII[i++] = buffer[0];
+	allData->frame_b->frameASCII[i++] = buffer[1];
+	allData->frame_b->frameASCII[i++] = buffer[2];
+	allData->frame_b->frameASCII[i++] = buffer[3];
+	allData->frame_b->frameASCII[i++] = buffer[4];
 	allData->frame_b->frameASCII[i++] = ',';
 	
 	//-------------- Temp 4 ----------------------------
-	tmp = allData->Analog->AnalogIn4;
-	if(tmp < 0){
-		tmp = -tmp;
-		allData->frame_b->frameASCII[i++] = '-';
-	}
-	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
+	sprintf(buffer, "%+04ld", labs(allData->Analog->AnalogIn4));
+	allData->frame_b->frameASCII[i++] = buffer[0];
+	allData->frame_b->frameASCII[i++] = buffer[1];
+	allData->frame_b->frameASCII[i++] = buffer[2];
+	allData->frame_b->frameASCII[i++] = buffer[3];
+	allData->frame_b->frameASCII[i++] = buffer[4];
 	allData->frame_b->frameASCII[i++] = ',';
 	
 	//----------------packet count-----------------------
-	tmp = allData->Clock->frameFlashCount;
-	allData->frame_b->frameASCII[i++] = (tmp/10000000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/1000000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/100000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/10000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
-	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
+	sprintf(buffer, "%08lu", allData->Clock->frameFlashCount);
+	allData->frame_b->frameASCII[i++] = buffer[0];
+	allData->frame_b->frameASCII[i++] = buffer[1];
+	allData->frame_b->frameASCII[i++] = buffer[2];
+	allData->frame_b->frameASCII[i++] = buffer[3];
+	allData->frame_b->frameASCII[i++] = buffer[4];
+	allData->frame_b->frameASCII[i++] = buffer[5];
+	allData->frame_b->frameASCII[i++] = buffer[6];
+	allData->frame_b->frameASCII[i++] = buffer[7];
 	
 	//------------ END --------------
 	allData->frame_b->frameASCII[i++] = '\r';
@@ -567,7 +547,7 @@ void ADC_tempCalc(Analog_t * Analog){
 uint8_t FindNextFilename(char * filename){
 	FILINFO fno;
 	uint8_t i = 0;
-	char name[8];
+	char name[9];
 	do{
 		i++;
 		sprintf(name, "%03u.csv",i);

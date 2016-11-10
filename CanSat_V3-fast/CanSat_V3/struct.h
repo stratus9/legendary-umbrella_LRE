@@ -91,8 +91,8 @@ typedef struct ADC_s{
 
 //------------------------FRAME--------------------------------------------------
 typedef struct frame_s{
-	char frameASCII[100];
-	char frameBIN[100];
+	char frameASCII[200];
+	char frameBIN[200];
 	uint16_t iUART;
 	bool mutex;
 	bool terminate;
