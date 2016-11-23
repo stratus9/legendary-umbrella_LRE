@@ -15,11 +15,11 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   5 .debug_aranges 000004c8  00000000  00000000  000070f4  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   00009caa  00000000  00000000  000075bc  2**0
+  6 .debug_info   00009ca9  00000000  00000000  000075bc  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 0000121a  00000000  00000000  00011266  2**0
+  7 .debug_abbrev 0000121a  00000000  00000000  00011265  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   00004a04  00000000  00000000  00012480  2**0
+  8 .debug_line   00004a04  00000000  00000000  0001247f  2**0
                   CONTENTS, READONLY, DEBUGGING
   9 .debug_frame  000014fc  00000000  00000000  00016e84  2**2
                   CONTENTS, READONLY, DEBUGGING
@@ -394,7 +394,7 @@ Disassembly of section .text:
      2b4:	0e 94 d6 1d 	call	0x3bac	; 0x3bac <SPI_W_Byte>
      2b8:	80 e0       	ldi	r24, 0x00	; 0
      2ba:	0e 94 d6 1d 	call	0x3bac	; 0x3bac <SPI_W_Byte>
-     2be:	8f ef       	ldi	r24, 0xFF	; 255
+     2be:	81 e0       	ldi	r24, 0x01	; 1
      2c0:	0e 94 d6 1d 	call	0x3bac	; 0x3bac <SPI_W_Byte>
      2c4:	60 e0       	ldi	r22, 0x00	; 0
      2c6:	8c 2f       	mov	r24, r28

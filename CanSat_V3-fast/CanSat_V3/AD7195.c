@@ -35,7 +35,7 @@ void AD7195_Init(uint8_t chipNo){
 	SPI_W_Byte(0b00001000);					//Write, mode register
 	SPI_W_Byte(0b00010100);					//conti conv, status reg read with data, ext clock
 	SPI_W_Byte(0b00000000);					//sinc4, no parity check, no one cycle, 
-	SPI_W_Byte(0b11111111);					//FS=1 -> 4.8 kSps, FS=1024 -> 4.8Sps
+	SPI_W_Byte(0b00000001);					//FS=1 -> 4.8 kSps, FS=1024 -> 4.8Sps
 	AD7195_CS(chipNo, false);
 }
 
