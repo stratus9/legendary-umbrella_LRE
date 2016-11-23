@@ -33,158 +33,21 @@ void float2char(float number,char * tablica){
 	*(tablica+6) = ((tmp%10)) + 48;
 }
 void prepareFrameDEBUG(allData_t * allData){
-	uint16_t i=0;
-	char buffer[15];
-	
-	//=============== Pressure ===================
-	//-------------- Pressure 1 ----------------------------
-	sprintf(buffer, "%08lu", labs(allData->AD7195->raw_press1));
-	allData->frame_b->frameASCII[i++] = buffer[0];
-	allData->frame_b->frameASCII[i++] = buffer[1];
-	allData->frame_b->frameASCII[i++] = buffer[2];
-	allData->frame_b->frameASCII[i++] = buffer[3];
-	allData->frame_b->frameASCII[i++] = buffer[4];
-	allData->frame_b->frameASCII[i++] = buffer[5];
-	allData->frame_b->frameASCII[i++] = buffer[6];
-	allData->frame_b->frameASCII[i++] = buffer[7];
-	allData->frame_b->frameASCII[i++] = ',';
-	
-	//-------------- Pressure 2 ----------------------------
-	sprintf(buffer, "%08lu", labs(allData->AD7195->raw_press2));
-	allData->frame_b->frameASCII[i++] = buffer[0];
-	allData->frame_b->frameASCII[i++] = buffer[1];
-	allData->frame_b->frameASCII[i++] = buffer[2];
-	allData->frame_b->frameASCII[i++] = buffer[3];
-	allData->frame_b->frameASCII[i++] = buffer[4];
-	allData->frame_b->frameASCII[i++] = buffer[5];
-	allData->frame_b->frameASCII[i++] = buffer[6];
-	allData->frame_b->frameASCII[i++] = buffer[7];
-	allData->frame_b->frameASCII[i++] = ',';
-	
-	//-------------- Pressure 3 ----------------------------
-	sprintf(buffer, "%08lu", labs(allData->AD7195->raw_press3));
-	allData->frame_b->frameASCII[i++] = buffer[0];
-	allData->frame_b->frameASCII[i++] = buffer[1];
-	allData->frame_b->frameASCII[i++] = buffer[2];
-	allData->frame_b->frameASCII[i++] = buffer[3];
-	allData->frame_b->frameASCII[i++] = buffer[4];
-	allData->frame_b->frameASCII[i++] = buffer[5];
-	allData->frame_b->frameASCII[i++] = buffer[6];
-	allData->frame_b->frameASCII[i++] = buffer[7];
-	allData->frame_b->frameASCII[i++] = ',';
-	
-	//-------------- Pressure 4 ----------------------------
-	sprintf(buffer, "%08lu", labs(allData->AD7195->raw_press4));
-	allData->frame_b->frameASCII[i++] = buffer[0];
-	allData->frame_b->frameASCII[i++] = buffer[1];
-	allData->frame_b->frameASCII[i++] = buffer[2];
-	allData->frame_b->frameASCII[i++] = buffer[3];
-	allData->frame_b->frameASCII[i++] = buffer[4];
-	allData->frame_b->frameASCII[i++] = buffer[5];
-	allData->frame_b->frameASCII[i++] = buffer[6];
-	allData->frame_b->frameASCII[i++] = buffer[7];
-	allData->frame_b->frameASCII[i++] = ',';
-	
-	//-------------- Pressure 5 ----------------------------
-	sprintf(buffer, "%08lu", labs(allData->AD7195->raw_press5));
-	allData->frame_b->frameASCII[i++] = buffer[0];
-	allData->frame_b->frameASCII[i++] = buffer[1];
-	allData->frame_b->frameASCII[i++] = buffer[2];
-	allData->frame_b->frameASCII[i++] = buffer[3];
-	allData->frame_b->frameASCII[i++] = buffer[4];
-	allData->frame_b->frameASCII[i++] = buffer[5];
-	allData->frame_b->frameASCII[i++] = buffer[6];
-	allData->frame_b->frameASCII[i++] = buffer[7];
-	allData->frame_b->frameASCII[i++] = ',';
-	
-	//-------------- Pressure 6 ----------------------------
-	sprintf(buffer, "%08lu", labs(allData->AD7195->raw_press6));
-	allData->frame_b->frameASCII[i++] = buffer[0];
-	allData->frame_b->frameASCII[i++] = buffer[1];
-	allData->frame_b->frameASCII[i++] = buffer[2];
-	allData->frame_b->frameASCII[i++] = buffer[3];
-	allData->frame_b->frameASCII[i++] = buffer[4];
-	allData->frame_b->frameASCII[i++] = buffer[5];
-	allData->frame_b->frameASCII[i++] = buffer[6];
-	allData->frame_b->frameASCII[i++] = buffer[7];
-	allData->frame_b->frameASCII[i++] = ',';
-	
-	//-------------- Pressure 7 ----------------------------
-	sprintf(buffer, "%08lu", labs(allData->AD7195->raw_press7));
-	allData->frame_b->frameASCII[i++] = buffer[0];
-	allData->frame_b->frameASCII[i++] = buffer[1];
-	allData->frame_b->frameASCII[i++] = buffer[2];
-	allData->frame_b->frameASCII[i++] = buffer[3];
-	allData->frame_b->frameASCII[i++] = buffer[4];
-	allData->frame_b->frameASCII[i++] = buffer[5];
-	allData->frame_b->frameASCII[i++] = buffer[6];
-	allData->frame_b->frameASCII[i++] = buffer[7];
-	allData->frame_b->frameASCII[i++] = ',';
-	
-	//-------------- Pressure 8 ----------------------------
-	sprintf(buffer, "%08lu", labs(allData->AD7195->raw_press8));
-	allData->frame_b->frameASCII[i++] = buffer[0];
-	allData->frame_b->frameASCII[i++] = buffer[1];
-	allData->frame_b->frameASCII[i++] = buffer[2];
-	allData->frame_b->frameASCII[i++] = buffer[3];
-	allData->frame_b->frameASCII[i++] = buffer[4];
-	allData->frame_b->frameASCII[i++] = buffer[5];
-	allData->frame_b->frameASCII[i++] = buffer[6];
-	allData->frame_b->frameASCII[i++] = buffer[7];
-	allData->frame_b->frameASCII[i++] = ',';
-	
-	//-------------- Temp 1 ----------------------------
-	sprintf(buffer, "%+04ld", labs(allData->Analog->AnalogIn1));
-	allData->frame_b->frameASCII[i++] = buffer[0];
-	allData->frame_b->frameASCII[i++] = buffer[1];
-	allData->frame_b->frameASCII[i++] = buffer[2];
-	allData->frame_b->frameASCII[i++] = buffer[3];
-	allData->frame_b->frameASCII[i++] = buffer[4];
-	allData->frame_b->frameASCII[i++] = ',';
-	
-	//-------------- Temp 2 ----------------------------
-	sprintf(buffer, "%+04ld", labs(allData->Analog->AnalogIn2));
-	allData->frame_b->frameASCII[i++] = buffer[0];
-	allData->frame_b->frameASCII[i++] = buffer[1];
-	allData->frame_b->frameASCII[i++] = buffer[2];
-	allData->frame_b->frameASCII[i++] = buffer[3];
-	allData->frame_b->frameASCII[i++] = buffer[4];
-	allData->frame_b->frameASCII[i++] = ',';
-	
-	//-------------- Temp 3 ----------------------------
-	sprintf(buffer, "%+04ld", labs(allData->Analog->AnalogIn3));
-	allData->frame_b->frameASCII[i++] = buffer[0];
-	allData->frame_b->frameASCII[i++] = buffer[1];
-	allData->frame_b->frameASCII[i++] = buffer[2];
-	allData->frame_b->frameASCII[i++] = buffer[3];
-	allData->frame_b->frameASCII[i++] = buffer[4];
-	allData->frame_b->frameASCII[i++] = ',';
-	
-	//-------------- Temp 4 ----------------------------
-	sprintf(buffer, "%+04ld", labs(allData->Analog->AnalogIn4));
-	allData->frame_b->frameASCII[i++] = buffer[0];
-	allData->frame_b->frameASCII[i++] = buffer[1];
-	allData->frame_b->frameASCII[i++] = buffer[2];
-	allData->frame_b->frameASCII[i++] = buffer[3];
-	allData->frame_b->frameASCII[i++] = buffer[4];
-	allData->frame_b->frameASCII[i++] = ',';
-	
-	//----------------packet count-----------------------
-	sprintf(buffer, "%08lu", allData->Clock->frameFlashCount);
-	allData->frame_b->frameASCII[i++] = buffer[0];
-	allData->frame_b->frameASCII[i++] = buffer[1];
-	allData->frame_b->frameASCII[i++] = buffer[2];
-	allData->frame_b->frameASCII[i++] = buffer[3];
-	allData->frame_b->frameASCII[i++] = buffer[4];
-	allData->frame_b->frameASCII[i++] = buffer[5];
-	allData->frame_b->frameASCII[i++] = buffer[6];
-	allData->frame_b->frameASCII[i++] = buffer[7];
-	
-	//------------ END --------------
-	allData->frame_b->frameASCII[i++] = '\r';
-	allData->frame_b->frameASCII[i++] = '\n';
-	allData->frame_b->frameASCII[i++] = 0;
-	allData->frame_b->frameASCII[i++] = 'X';
+	sprintf(allData->frame_b->frameASCII, 
+			"%08lu,%08lu,%08lu,%08lu,%08lu,%08lu,%08lu,%08lu,%+04ld,%+04ld,%+04ld,%+04ld,%08lu\r\n",
+			labs(allData->AD7195->raw_press1),
+			labs(allData->AD7195->raw_press2),
+			labs(allData->AD7195->raw_press3),
+			labs(allData->AD7195->raw_press4),
+			labs(allData->AD7195->raw_press5),
+			labs(allData->AD7195->raw_press6),
+			labs(allData->AD7195->raw_press7),
+			labs(allData->AD7195->raw_press8),
+			labs(allData->Analog->AnalogIn1),
+			labs(allData->Analog->AnalogIn2),
+			labs(allData->Analog->AnalogIn3),
+			labs(allData->Analog->AnalogIn4),
+			allData->Clock->frameFlashCount);
 }
 
 void prepareFrame(allData_t * allData){
