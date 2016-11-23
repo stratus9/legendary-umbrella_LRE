@@ -152,7 +152,8 @@ ISR(USARTD0_RXC_vect) {
 		char filename[8];
 		FindNextFilename(filename);
 		if (f_open(&pomiar, filename, FA_WRITE | FA_CREATE_ALWAYS) == FR_OK){	//jesli plik "naszplik.txt" nie istnieje, stworz go
-			f_write(&pomiar, "State, Config, Press 1, Press 2, Press 3, Temp 1, Temp 2, Temp3, Press 4, Press 5, Press 6, Temp 4\r", 101, &bw);
+			//f_write(&pomiar, "State, Config, Press 1, Press 2, Press 3, Temp 1, Temp 2, Temp3, Press 4, Press 5, Press 6, Temp 4\r", 101, &bw);
+			f_write(&pomiar, "Press 1, Press 2, Press 3, Press 4, Press 5, Press 6, Press 7, Press 8, Temp 1, Temp 2, Temp3, , Temp 4, Count\r", 111, &bw);
 		}
 	
 	//------ Rozpoczêcie testu --------

@@ -1128,50 +1128,50 @@ END GROUP
  *(.fini0)
                 0x00005014                _etext = .
 
-.data           0x00802000       0xd0 load address 0x00005014
+.data           0x00802000       0xdc load address 0x00005014
                 0x00802000                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
  *(.rodata)
  *(.rodata*)
  .rodata.str1.1
-                0x00802000       0x64 CanSat.o
+                0x00802000       0x70 CanSat.o
  .rodata.str1.1
-                0x00802064        0xf FATFS/ff.o
+                0x00802070        0xf FATFS/ff.o
  .rodata.str1.1
-                0x00802073       0x5d util.o
+                0x0080207f       0x5d util.o
  *(.gnu.linkonce.d*)
-                0x008020d0                . = ALIGN (0x2)
-                0x008020d0                _edata = .
-                0x008020d0                PROVIDE (__data_end, .)
+                0x008020dc                . = ALIGN (0x2)
+                0x008020dc                _edata = .
+                0x008020dc                PROVIDE (__data_end, .)
 
-.bss            0x008020d0      0xa5e
-                0x008020d0                PROVIDE (__bss_start, .)
+.bss            0x008020dc      0xa5e
+                0x008020dc                PROVIDE (__bss_start, .)
  *(.bss)
- .bss           0x008020d0      0x5bd CanSat.o
-                0x008020d0                frame_count
-                0x008020d4                mission_time
- .bss           0x0080268d        0x4 FATFS/ff.o
+ .bss           0x008020dc      0x5bd CanSat.o
+                0x008020dc                frame_count
+                0x008020e0                mission_time
+ .bss           0x00802699        0x4 FATFS/ff.o
  *(.bss*)
  *(COMMON)
- COMMON         0x00802691      0x49b CanSat.o
-                0x00802691                pomiar
-                0x008028b3                bw
-                0x008028b5                Analog_d
-                0x008028f9                fatfs
- COMMON         0x00802b2c        0x2 SD.o
-                0x00802b2c                SD_Status
-                0x00802b2d                SD_Type
-                0x00802b2e                PROVIDE (__bss_end, .)
+ COMMON         0x0080269d      0x49b CanSat.o
+                0x0080269d                pomiar
+                0x008028bf                bw
+                0x008028c1                Analog_d
+                0x00802905                fatfs
+ COMMON         0x00802b38        0x2 SD.o
+                0x00802b38                SD_Status
+                0x00802b39                SD_Type
+                0x00802b3a                PROVIDE (__bss_end, .)
                 0x00005014                __data_load_start = LOADADDR (.data)
-                0x000050e4                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x000050f0                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x00802b2e        0x0
-                0x00802b2e                PROVIDE (__noinit_start, .)
+.noinit         0x00802b3a        0x0
+                0x00802b3a                PROVIDE (__noinit_start, .)
  *(.noinit*)
-                0x00802b2e                PROVIDE (__noinit_end, .)
-                0x00802b2e                _end = .
-                0x00802b2e                PROVIDE (__heap_start, .)
+                0x00802b3a                PROVIDE (__noinit_end, .)
+                0x00802b3a                _end = .
+                0x00802b3a                PROVIDE (__heap_start, .)
 
 .eeprom         0x00810000        0x0
  *(.eeprom*)
