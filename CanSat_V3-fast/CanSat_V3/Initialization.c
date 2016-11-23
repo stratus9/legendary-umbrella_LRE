@@ -159,7 +159,7 @@ void IO_Init(void) {
     PORTD.OUTCLR = PIN4_bm | PIN5_bm;					//konfiguracja stanu pinów SERVO
     //ADC sync
     PORTD.DIRSET = PIN1_bm;						//konfiguracja kierunku pinu synchronizacja ADC
-    PORTD.OUTCLR = PIN1_bm;						//konfiguracja stanu pinu synchronizacji ADC
+    PORTD.OUTSET = PIN1_bm;						//konfiguracja stanu pinu synchronizacji ADC
     //podœwietlenie LCD
     PORTC.DIRSET = PIN2_bm;
     PORTC.OUTCLR = PIN2_bm;
@@ -174,12 +174,12 @@ void I2C_Init(void) {
 }
 
 void SPI_Init(void) {
-    SPI_PORT.DIRSET = PIN4_bm;						//podci¹gniêcie CS
+    SPI_PORT.DIRSET = PIN3_bm | PIN4_bm;						//podci¹gniêcie CS
     SPI_PORT.DIRSET = PIN5_bm | PIN7_bm;
     SPI_PORT.DIRCLR = PIN6_bm;
     SPI_PORT.OUTSET = PIN5_bm | PIN6_bm | PIN7_bm;	//mo¿e dodaæ PIN6_bm
     //-----------Clk = 4 MHz-------------------------
-    ADC_SPI.CTRL = SPI_ENABLE_bm | SPI_MODE_0_gc | SPI_PRESCALER_DIV16_gc | SPI_CLK2X_bm | SPI_MASTER_bm;
+    ADC_SPI.CTRL = SPI_ENABLE_bm | SPI_MODE_0_gc | SPI_PRESCALER_DIV64_gc | SPI_CLK2X_bm | SPI_MASTER_bm;
     //FLASH_SPI.INTCTRL = SPI_INTLVL_LO_gc;
 }
 

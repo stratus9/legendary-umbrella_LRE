@@ -15,6 +15,7 @@ Global
 		{52086D25-5878-442E-BF80-EE0F421B03EF}.Debug|AVR.Build.0 = Release|AVR
 		{52086D25-5878-442E-BF80-EE0F421B03EF}.Release|AVR.ActiveCfg = Debug|AVR
 		{52086D25-5878-442E-BF80-EE0F421B03EF}.Release|AVR.Build.0 = Debug|AVR
+		{52086D25-5878-442E-BF80-EE0F421B03EF}.Release|AVR.Deploy.0 = Debug|AVR
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
