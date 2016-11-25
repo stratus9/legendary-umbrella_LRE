@@ -20,7 +20,7 @@ util.d util.o: .././util.c \
  e:\atmel\as7\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay.h \
  e:\atmel\as7\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay_basic.h \
  .././struct.h .././util.h .././CanSat.h .././FATFS/ff.h \
- .././FATFS/integer.h .././FATFS/ffconf.h
+ .././FATFS/integer.h .././FATFS/ffconf.h .././RealTime.h
 
 e:\atmel\as7\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\io.h:
 
@@ -73,3 +73,5 @@ e:\atmel\as7\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay_basic.
 .././FATFS/integer.h:
 
 .././FATFS/ffconf.h:
+
+.././RealTime.h:

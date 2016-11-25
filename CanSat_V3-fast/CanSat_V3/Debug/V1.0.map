@@ -139,6 +139,31 @@ Discarded input sections
  .debug_str     0x00000000      0x303 I2C.o
  .comment       0x00000000       0x31 I2C.o
  .debug_frame   0x00000000       0x60 I2C.o
+ .text          0x00000000        0x0 RealTime.o
+ .data          0x00000000        0x0 RealTime.o
+ .bss           0x00000000        0x0 RealTime.o
+ .text.resetRTC
+                0x00000000        0x2 RealTime.o
+ .text.setRTC   0x00000000        0x2 RealTime.o
+ .text.getRTC_ms
+                0x00000000        0x6 RealTime.o
+ .text.getRTC_us
+                0x00000000       0x3e RealTime.o
+ .text.initRTC  0x00000000       0x2a RealTime.o
+ .text.waitRTC_ms
+                0x00000000        0x2 RealTime.o
+ .text.checkRTC_ms
+                0x00000000        0x4 RealTime.o
+ .debug_info    0x00000000      0xaff RealTime.o
+ .debug_abbrev  0x00000000      0x165 RealTime.o
+ .debug_loc     0x00000000       0x55 RealTime.o
+ .debug_aranges
+                0x00000000       0x50 RealTime.o
+ .debug_ranges  0x00000000       0x40 RealTime.o
+ .debug_line    0x00000000      0x180 RealTime.o
+ .debug_str     0x00000000     0x1409 RealTime.o
+ .comment       0x00000000       0x31 RealTime.o
+ .debug_frame   0x00000000       0x90 RealTime.o
  .text          0x00000000        0x0 SD.o
  .data          0x00000000        0x0 SD.o
  .bss           0x00000000        0x0 SD.o
@@ -447,6 +472,7 @@ LOAD AD7195.o
 LOAD CanSat.o
 LOAD FATFS/ff.o
 LOAD I2C.o
+LOAD RealTime.o
 LOAD SD.o
 LOAD SPI.o
 LOAD Initialization.o

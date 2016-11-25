@@ -14,6 +14,7 @@
 #include "util.h"
 #include "CanSat.h"
 #include "FATFS/ff.h"
+#include "RealTime.h"
 
 void float2char(float number,char * tablica){
 	uint16_t tmp;

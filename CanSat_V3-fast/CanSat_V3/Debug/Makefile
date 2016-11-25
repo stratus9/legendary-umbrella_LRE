@@ -42,6 +42,7 @@ C_SRCS +=  \
 ../CanSat.c \
 ../FATFS/ff.c \
 ../I2C.c \
+../RealTime.c \
 ../SD.c \
 ../SPI.c \
 ../Initialization.c \
@@ -59,6 +60,7 @@ AD7195.o \
 CanSat.o \
 FATFS/ff.o \
 I2C.o \
+RealTime.o \
 SD.o \
 SPI.o \
 Initialization.o \
@@ -69,6 +71,7 @@ AD7195.o \
 CanSat.o \
 FATFS/ff.o \
 I2C.o \
+RealTime.o \
 SD.o \
 SPI.o \
 Initialization.o \
@@ -79,6 +82,7 @@ AD7195.d \
 CanSat.d \
 FATFS/ff.d \
 I2C.d \
+RealTime.d \
 SD.d \
 SPI.d \
 Initialization.d \
@@ -89,6 +93,7 @@ AD7195.d \
 CanSat.d \
 FATFS/ff.d \
 I2C.d \
+RealTime.d \
 SD.d \
 SPI.d \
 Initialization.d \
@@ -108,6 +113,8 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
+
+
 
 
 

@@ -13,6 +13,7 @@
 #include "Initialization.h"
 #include "CanSat.h"
 #include "util.h"
+#include "RealTime.h"
 
 void CPU_clk(uint8_t val) {
     Osc2MHz((uint8_t)(val / 2));

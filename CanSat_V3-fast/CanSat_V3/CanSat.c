@@ -21,6 +21,7 @@
 #include "SPI.h"
 #include "I2C.h"
 #include "AD7195.h"
+#include "RealTime.h"
 
 //----- do karty SD -----
 #include <string.h>
