@@ -139,6 +139,16 @@ ISR(USARTD0_RXC_vect) {
 		stan_d.TestConfig = 650;		
 		stan_d.cmd_mode = false;
 		
+	//------Konfiguracja sekwencji +--------- dzia³a?
+	} else if((tmp == '+') && stan_d.cmd_mode) {
+	if(stan_d.TestConfig <= 500) stan_d.TestConfig += 50;
+	stan_d.cmd_mode = false;
+	
+	//------Konfiguracja sekwencji ---------- dzia³a?
+	} else if((tmp == '-') && stan_d.cmd_mode) {
+	if(stan_d.TestConfig >= 50) stan_d.TestConfig -= 50;
+	stan_d.cmd_mode = false;
+	
 	//------Przerwanie testu----------------- dzia³a
     } else if((tmp == 'A') && stan_d.cmd_mode) {
         stan_d.Abort = true;						//ABORT!!!! ABORT!!! ABORT!!!
@@ -364,31 +374,37 @@ int main(void) {
 					case 2:
 					Buzzer_inactive();
 					Ignition_active();
-					timer_buffer = Clock_d.time+200;  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 5s
+					timer_buffer = Clock_d.time+100;  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 5s
 					break;
-					//-----Step 3----------------- otwarcie paliwa i n2o
+					//----- Step 3---------------- zapalnik off
 					case 3:
+					Ignition_inactive();
+					timer_buffer = Clock_d.time+stan_d.TestConfig;  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 5s
+					break;
+					//-----Step 4----------------- otwarcie paliwa i n2o
+					case 4:
 					Ignition_inactive();
 					MFV_valve_open();
 					MOV_valve_open();
 					SERVO_open();
-					timer_buffer = Clock_d.time+stan_d.TestConfig;
+					//timer_buffer = Clock_d.time+stan_d.TestConfig;
+					timer_buffer = Clock_d.time+300;
 					break;
-					//-----Step 4a---------------- zamkniêcie n2o
-					case 4:
+					//-----Step 5---------------- zamkniêcie n2o
+					case 5:
 					MOV_valve_close();
 					timer_buffer = Clock_d.time+10;
 					break;
-					//-----Step 4b---------------- zamkniêcie paliwa
-					case 5:
+					//-----Step 6---------------- zamkniêcie paliwa
+					case 6:
 					MFV_valve_close();
 					FPV_valve_close();
 					SERVO_close();
 					MPV_valve_open();	//gaszenie
 					timer_buffer = Clock_d.time+1000;
 					break;
-					//-----Step 5------------------
-					case 6:
+					//-----Step 7------------------
+					case 7:
 					default:
 					MPV_valve_close();
 					Light_Green();
