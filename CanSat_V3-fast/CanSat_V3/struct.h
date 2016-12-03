@@ -133,6 +133,8 @@ typedef struct AD7195_s{
 	uint32_t raw_press6;
 	uint32_t raw_press7;
 	uint32_t raw_press8;
+	uint32_t raw_tenso1;
+	uint32_t raw_tenso2;
 } AD7195_t;
 		
 typedef struct allData_s{

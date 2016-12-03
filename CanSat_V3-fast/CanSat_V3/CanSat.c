@@ -271,7 +271,7 @@ void Initialization(void) {
 	SPI_Init();
     //--------AD7195 (1) Init-----------
 	AD7195_Reset(0);
-	AD7195_Init(0);
+	AD7195_Init_Tenso(0);
 	//volatile char id1 = AD7195_WhoIam(0);
 	//--------AD7195 (2) Init-----------
 	AD7195_Reset(1);

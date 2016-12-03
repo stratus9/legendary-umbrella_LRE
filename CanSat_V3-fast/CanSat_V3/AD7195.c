@@ -27,7 +27,7 @@ void AD7195_Init(uint8_t chipNo){
 	SPI_W_Byte(0b00010000);					//Write, config register, no cont. reading ??
 	SPI_W_Byte(0b00000000);					//CHOP off, AC ex off
 	SPI_W_Byte(0b11110000);					//przemiatanie kana³ów 1-4
-	SPI_W_Byte(0b00011110);					//current source off, refdet off, buffer on, unipolar, 128gain
+	SPI_W_Byte(0b00001110);					//current source off, refdet off, buffer off, unipolar, 128gain
 	AD7195_CS(chipNo, false);
 	_delay_ms(10);
 	// Ustawienie Mode register
@@ -36,6 +36,25 @@ void AD7195_Init(uint8_t chipNo){
 	SPI_W_Byte(0b00010100);					//conti conv, status reg read with data, ext clock
 	SPI_W_Byte(0b00000000);					//sinc4, no parity check, no one cycle, 
 	SPI_W_Byte(0b00000001);					//FS=1 -> 4.8 kSps, FS=1024 -> 4.8Sps
+	AD7195_CS(chipNo, false);
+}
+
+void AD7195_Init_Tenso(uint8_t chipNo){
+	
+	// Ustawienie Config register
+	AD7195_CS(chipNo, true);
+	SPI_W_Byte(0b00010000);					//Write, config register, no cont. reading ??
+	SPI_W_Byte(0b00000000);					//CHOP off, AC ex off
+	SPI_W_Byte(0b00000001);					//przemiatanie kana³ów 1-4
+	SPI_W_Byte(0b00011110);					//current source off, refdet off, buffer on, unipolar, 128gain
+	AD7195_CS(chipNo, false);
+	_delay_ms(10);
+	// Ustawienie Mode register
+	AD7195_CS(chipNo, true);
+	SPI_W_Byte(0b00001000);					//Write, mode register
+	SPI_W_Byte(0b00010100);					//conti conv, status reg read with data, ext clock
+	SPI_W_Byte(0b00000000);					//sinc4, no parity check, no one cycle,
+	SPI_W_Byte(0b00001000);					
 	AD7195_CS(chipNo, false);
 }
 
@@ -104,12 +123,16 @@ void AD7195_ReadStore(allData_t * allData){
 	uint32_t value1, value2;
 	AD7195_ContConvRead(&channel1, &channel2, &value1, &value2);
 	switch(channel1){
+		case 0: allData->AD7195->raw_tenso1 = value1; break;
+		case 1: allData->AD7195->raw_tenso2 = value1; break;
 		case 4: allData->AD7195->raw_press1 = value1; break;
 		case 5: allData->AD7195->raw_press2 = value1; break;
 		case 6: allData->AD7195->raw_press3 = value1; break;
 		case 7: allData->AD7195->raw_press4 = value1; break;
 	}
 	switch(channel2){
+		case 0: allData->AD7195->raw_tenso1 = value2; break;
+		case 1: allData->AD7195->raw_tenso2 = value2; break;
 		case 4: allData->AD7195->raw_press5 = value2; break;
 		case 5: allData->AD7195->raw_press6 = value2; break;
 		case 6: allData->AD7195->raw_press7 = value2; break;
