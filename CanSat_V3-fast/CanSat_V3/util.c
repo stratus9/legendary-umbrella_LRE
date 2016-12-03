@@ -35,9 +35,11 @@ void float2char(float number,char * tablica){
 }
 void prepareFrameDEBUG(allData_t * allData){
 	sprintf(allData->frame_b->frameASCII, 
-			"%04lu,%08lu,%08lu,%08lu,%+04ld,%+04ld,%08lu\r\n",
-			allData->stan->TestConfig,
-			labs(allData->AD7195->raw_press4),
+			"%04lu,%1i,%1i,%+08li,%08lu,%08lu,%+04ld,%+04ld,%08lu\r\n",
+			allData->stan->TestConfig*10,
+			allData->stan->IGN,
+			allData->stan->MFV,
+			allData->AD7195->raw_tenso1,
 			labs(allData->AD7195->raw_press5),
 			labs(allData->AD7195->raw_press6),
 			labs(allData->Analog->AnalogIn1),

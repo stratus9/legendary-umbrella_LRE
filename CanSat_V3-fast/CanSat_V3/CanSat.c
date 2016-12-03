@@ -141,12 +141,12 @@ ISR(USARTD0_RXC_vect) {
 		
 	//------Konfiguracja sekwencji +--------- dzia³a?
 	} else if((tmp == '+') && stan_d.cmd_mode) {
-	if(stan_d.TestConfig <= 500) stan_d.TestConfig += 50;
+	if(stan_d.TestConfig < 600) stan_d.TestConfig += 50;
 	stan_d.cmd_mode = false;
 	
 	//------Konfiguracja sekwencji ---------- dzia³a?
 	} else if((tmp == '-') && stan_d.cmd_mode) {
-	if(stan_d.TestConfig >= 50) stan_d.TestConfig -= 50;
+	if(stan_d.TestConfig >= 150) stan_d.TestConfig -= 50;
 	stan_d.cmd_mode = false;
 	
 	//------Przerwanie testu----------------- dzia³a
@@ -164,7 +164,7 @@ ISR(USARTD0_RXC_vect) {
 		FindNextFilename(filename);
 		if (f_open(&pomiar, filename, FA_WRITE | FA_CREATE_ALWAYS) == FR_OK){	//jesli plik "naszplik.txt" nie istnieje, stworz go
 			//f_write(&pomiar, "State, Config, Press 1, Press 2, Press 3, Temp 1, Temp 2, Temp3, Press 4, Press 5, Press 6, Temp 4\r", 101, &bw);
-			f_write(&pomiar, "Press 1, Press 2, Press 3, Press 4, Press 5, Press 6, Press 7, Press 8, Temp 1, Temp 2, Temp3, , Temp 4, Count\r", 111, &bw);
+			f_write(&pomiar, "Ign [s], IGN, FPV, Thrust 1, Press 5, Press 6, Temp 1, Temp 2, Count\r", 69, &bw);
 		}
 	
 	//------ Rozpoczêcie testu --------
@@ -305,22 +305,22 @@ int main(void) {
     Initialization();
     sei();
     WarmUp();					//odmiganie startu
-    
+    stan_d.TestConfig = 100;
 	uint32_t timer_buffer = 0;
 	uint8_t counter = 0;
-	
-	f_mount(&fatfs,0,1);  //Dostêp do systemu plików
+	f_mount(&fatfs,"0",1);  //Dostêp do systemu plików
+	volatile uint32_t tmp_timer;
 	Light_Green();
     while(1){
         _delay_us(1);
 //============================== Sekcja pomiarów ============================================
-		if(!AD7195_RDY(0)){
-			LED_PORT.OUTTGL = LED5;
+		if(!AD7195_RDY(1)){
 			ADC_tempCalc(&Analog_d);
 			AD7195_ReadStore(&allData_d);
-			if(counter >= 3){
+			counter++;
+			if (counter >= 2){
 				counter = 0;
-				AD7195_PressureCalc(&AD7195_d);
+				LED_PORT.OUTTGL = LED5;
 				prepareFrameDEBUG(&allData_d);
 				if(!frame_d.mutex) frame_d = frame_b;
 				LED_PORT.OUTSET = LED6;
@@ -335,9 +335,9 @@ int main(void) {
 					}
 				}
 				else f_close(&pomiar);
-				LED_PORT.OUTCLR = LED6;
 			}
-			else counter++;
+			LED_PORT.OUTCLR = LED6;
+			tmp_timer = getRTC_us();
 		}
 
 //=========================== Sekcja maszyny stanów =========================================
@@ -350,6 +350,7 @@ int main(void) {
 			MPV_valve_open();
 			Buzzer_active();
 			Light_Red();
+			f_close(&pomiar);
 			stan_d.TestConfig = 0;
 			PORTF.OUTSET = PIN0_bm;
 			LED_PORT.OUTCLR = LED3;
@@ -379,7 +380,7 @@ int main(void) {
 					//----- Step 3---------------- zapalnik off
 					case 3:
 					Ignition_inactive();
-					timer_buffer = Clock_d.time+stan_d.TestConfig;  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 5s
+					timer_buffer = Clock_d.time+stan_d.TestConfig-100;  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 5s
 					break;
 					//-----Step 4----------------- otwarcie paliwa i n2o
 					case 4:
@@ -401,7 +402,7 @@ int main(void) {
 					FPV_valve_close();
 					SERVO_close();
 					MPV_valve_open();	//gaszenie
-					timer_buffer = Clock_d.time+1000;
+					timer_buffer = Clock_d.time+200;
 					break;
 					//-----Step 7------------------
 					case 7:
@@ -410,7 +411,6 @@ int main(void) {
 					Light_Green();
 					stan_d.run_trigger = false;
 					stan_d.armed_trigger = false;
-					stan_d.TestConfig = 0;
 					stan_d.State = 0;
 					LED_PORT.OUTCLR = LED3;
 					break;
