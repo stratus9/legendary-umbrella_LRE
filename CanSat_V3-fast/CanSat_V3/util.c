@@ -35,19 +35,13 @@ void float2char(float number,char * tablica){
 }
 void prepareFrameDEBUG(allData_t * allData){
 	sprintf(allData->frame_b->frameASCII, 
-			"%08lu,%08lu,%08lu,%08lu,%08lu,%08lu,%08lu,%08lu,%+04ld,%+04ld,%+04ld,%+04ld,%08lu\r\n",
-			labs(allData->AD7195->raw_press1),
-			labs(allData->AD7195->raw_press2),
-			labs(allData->AD7195->raw_press3),
+			"%04lu,%08lu,%08lu,%08lu,%+04ld,%+04ld,%08lu\r\n",
+			allData->stan->TestConfig,
 			labs(allData->AD7195->raw_press4),
 			labs(allData->AD7195->raw_press5),
 			labs(allData->AD7195->raw_press6),
-			labs(allData->AD7195->raw_press7),
-			labs(allData->AD7195->raw_press8),
 			labs(allData->Analog->AnalogIn1),
 			labs(allData->Analog->AnalogIn2),
-			labs(allData->Analog->AnalogIn3),
-			labs(allData->Analog->AnalogIn4),
 			allData->Clock->frameFlashCount);
 }
 
