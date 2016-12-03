@@ -26,15 +26,19 @@ uint32_t getRTC_us(void) {
 }
 
 void initRTC(void) {
+	//------------------ Okres timera wynosi 1.19 h z rozdzielczoœci¹ 2us ---------------------------------------
 	EVSYS_CH0MUX=EVSYS_CHMUX_TCC1_OVF_gc;
 	EVSYS_CH1MUX=EVSYS_CHMUX_OFF_gc; //¿adne zdarzenie nie jest zwi¹zane z kana³em 1
-	TCD1.CTRLA=TC_CLKSEL_EVCH0_gc;
-	TCD1.CTRLB=TC_WGMODE_NORMAL_gc | TC1_CCAEN_bm;
-	TCD1.CTRLD=TC0_EVDLY_bm | TC_EVACT_CAPT_gc | TC_EVSEL_CH1_gc;       //OpóŸnij zdarzenie o 1 takt CLKper, przechwytywanie
+	TCD1.CTRLA=TC_CLKSEL_EVCH0_gc;									//wybór Ÿród³a taktowania
+	TCD1.CTRLB=TC_WGMODE_NORMAL_gc | TC1_CCAEN_bm;					//tryb normalny i w³¹czenie przechwytywania kana³u A timera
+	TCD1.CTRLD=TC0_EVDLY_bm | TC_EVACT_CAPT_gc | TC_EVSEL_CH1_gc;	//OpóŸnij zdarzenie o 1 takt CLKper, przechwytywanie
+	TCD1.CNT = 0;
+	TCD1.PER = 0x7FFF;												//ograniczenie zakresu do 2^15							
 	
-	TCC1.CTRLB=TC_WGMODE_NORMAL_gc | TC0_CCAEN_bm;
-	TCC1.CTRLD=TC_EVACT_CAPT_gc | TC_EVSEL_CH1_gc;
-	TCC1.CTRLA=TC_CLKSEL_DIV2_gc;
+	TCC1.CNT = 0;	
+	TCC1.CTRLB=TC_WGMODE_NORMAL_gc | TC0_CCAEN_bm;					//tryb normalny i w³¹czenie przechwytywania kana³u A timera
+	TCC1.CTRLD=TC_EVACT_CAPT_gc | TC_EVSEL_CH1_gc;					//przechwytywanie
+	TCC1.CTRLA=TC_CLKSEL_DIV64_gc;									//wybór Ÿród³a taktowania DIV64=>2us
 }
 
 void waitRTC_ms(uint16_t value) {

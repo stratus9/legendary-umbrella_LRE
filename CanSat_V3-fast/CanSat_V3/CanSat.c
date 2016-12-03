@@ -255,6 +255,7 @@ void Initialization(void) {
     TimerDInit(250);			//buzzer handling
     TimerEInit(10);				//Obs³uga RTC
     TimerFInit(telemetry_time);	//frame send
+	initRTC();
     structInit();
     I2C_Init();
 	SPI_Init();
