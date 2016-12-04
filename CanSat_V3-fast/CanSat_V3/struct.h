@@ -23,7 +23,8 @@ typedef struct stan_s{
 	bool run_trigger;
 	bool Abort;
 	uint8_t State;
-	uint32_t TestConfig;
+	uint32_t IgnTime;
+	uint32_t FireTime;
 	bool MFV;
 	bool MOV;
 	bool FPV;
@@ -110,7 +111,8 @@ typedef struct buzzer_s{
 } buzzer_t;
 
 typedef struct Clock_s{
-	uint32_t time;				//jest w sekundach -> zmieni? na ms
+	uint32_t time;				//jest w 10 ms
+	uint32_t RealTime;				//jest w 2 us
 	uint32_t frameTeleCount;
 	uint32_t frameFlashCount;
 } Clock_t;

@@ -68,10 +68,9 @@ ISR(RTC_OVF_vect){
 
 //----------------------Send to Xbee--------------------------------
 ISR(USARTD0_TXC_vect) {
-    if((frame_d.frameASCII[frame_d.iUART]) && (frame_d.frameASCII[frame_d.iUART] != '#')) {
+    if(frame_d.frameASCII[frame_d.iUART]) {
         frame_d.mutex = true;
-        if(frame_d.frameASCII[frame_d.iUART] == '%') USARTD0.DATA = '\n';
-        else USARTD0.DATA = frame_d.frameASCII[frame_d.iUART];
+        USARTD0.DATA = frame_d.frameASCII[frame_d.iUART];
         if(frame_d.iUART < 151) frame_d.iUART++;
         else frame_d.frameASCII[frame_d.iUART] = 0;
     } else frame_d.mutex = false;
@@ -119,34 +118,24 @@ ISR(USARTD0_RXC_vect) {
 		FPV_valve_close();
         stan_d.cmd_mode = false;
 		
-	//------Konfiguracja sekwencji 1------ dzia³a
-    } else if((tmp == '6') && stan_d.cmd_mode) {
-		stan_d.TestConfig = 150;		
-		stan_d.cmd_mode = false;
-		
-	//------Konfiguracja sekwencji 2-------- dzia³a
-    } else if((tmp == '7') && stan_d.cmd_mode) {
-		stan_d.TestConfig = 200;		
-		stan_d.cmd_mode = false;
-		
-	//------Konfiguracja sekwencji 3--------- dzia³a
-    } else if((tmp == '8') && stan_d.cmd_mode) {
-		stan_d.TestConfig = 350;		
-		stan_d.cmd_mode = false;
-		
-	//------Konfiguracja sekwencji 4--------- dzia³a
-    } else if((tmp == '9') && stan_d.cmd_mode) {
-		stan_d.TestConfig = 650;		
-		stan_d.cmd_mode = false;
-		
-	//------Konfiguracja sekwencji +--------- dzia³a?
+	//------Konfiguracja sekwencji +--------- dzia³a
 	} else if((tmp == '+') && stan_d.cmd_mode) {
-	if(stan_d.TestConfig < 600) stan_d.TestConfig += 50;
+	if(stan_d.IgnTime < 600) stan_d.IgnTime += 50;
 	stan_d.cmd_mode = false;
 	
-	//------Konfiguracja sekwencji ---------- dzia³a?
+	//------Konfiguracja sekwencji ---------- dzia³a
 	} else if((tmp == '-') && stan_d.cmd_mode) {
-	if(stan_d.TestConfig >= 150) stan_d.TestConfig -= 50;
+	if(stan_d.IgnTime >= 150) stan_d.IgnTime -= 50;
+	stan_d.cmd_mode = false;
+	
+	//------Konfiguracja czasu palenia +  --------- dzia³a
+	} else if((tmp == '/') && stan_d.cmd_mode) {
+	if(stan_d.FireTime < 1000) stan_d.FireTime += 50;
+	stan_d.cmd_mode = false;
+	
+	//------Konfiguracja czasu palenia -  ---------- dzia³a
+	} else if((tmp == '*') && stan_d.cmd_mode) {
+	if(stan_d.FireTime >= 100) stan_d.FireTime -= 50;
 	stan_d.cmd_mode = false;
 	
 	//------Przerwanie testu----------------- dzia³a
@@ -164,11 +153,11 @@ ISR(USARTD0_RXC_vect) {
 		FindNextFilename(filename);
 		if (f_open(&pomiar, filename, FA_WRITE | FA_CREATE_ALWAYS) == FR_OK){	//jesli plik "naszplik.txt" nie istnieje, stworz go
 			//f_write(&pomiar, "State, Config, Press 1, Press 2, Press 3, Temp 1, Temp 2, Temp3, Press 4, Press 5, Press 6, Temp 4\r", 101, &bw);
-			f_write(&pomiar, "Ign [s], IGN, FPV, Thrust 1, Press 5, Press 6, Temp 1, Temp 2, Count\r", 69, &bw);
+			f_write(&pomiar, "Ign [s], Fire [s], IGN, FPV, Thrust 1, Press 5, Press 6, Temp 1, Temp 2, Count\r", 79, &bw);
 		}
 	
 	//------ Rozpoczêcie testu --------
-	} else if((tmp == 'S') && (stan_d.TestConfig != 0) && stan_d.cmd_mode) {
+	} else if((tmp == 'S') && (stan_d.FireTime != 0) && stan_d.cmd_mode) {
 	stan_d.run_trigger = true;
 	stan_d.cmd_mode = false;
 	
@@ -261,7 +250,7 @@ void Initialization(void) {
     ADC_Init();			//inicjalizacja ADC
     USART_Init();		//inicjalizacja Xbee
     IO_Init();
-    TimerCInit(sampling_time);	//sensor update
+    //TimerCInit(sampling_time);	//sensor update
     TimerDInit(250);			//buzzer handling
     TimerEInit(10);				//Obs³uga RTC
     TimerFInit(telemetry_time);	//frame send
@@ -305,7 +294,8 @@ int main(void) {
     Initialization();
     sei();
     WarmUp();					//odmiganie startu
-    stan_d.TestConfig = 100;
+    stan_d.IgnTime = 100;
+	stan_d.FireTime = 0;
 	uint32_t timer_buffer = 0;
 	uint8_t counter = 0;
 	f_mount(&fatfs,"0",1);  //Dostêp do systemu plików
@@ -320,6 +310,7 @@ int main(void) {
 			counter++;
 			if (counter >= 2){
 				counter = 0;
+				Clock_d.RealTime = getRTC_us();
 				LED_PORT.OUTTGL = LED5;
 				prepareFrameDEBUG(&allData_d);
 				if(!frame_d.mutex) frame_d = frame_b;
@@ -337,7 +328,6 @@ int main(void) {
 				else f_close(&pomiar);
 			}
 			LED_PORT.OUTCLR = LED6;
-			tmp_timer = getRTC_us();
 		}
 
 //=========================== Sekcja maszyny stanów =========================================
@@ -351,12 +341,13 @@ int main(void) {
 			Buzzer_active();
 			Light_Red();
 			f_close(&pomiar);
-			stan_d.TestConfig = 0;
+			stan_d.IgnTime = 0;
+			stan_d.FireTime = 0;
 			PORTF.OUTSET = PIN0_bm;
 			LED_PORT.OUTCLR = LED3;
 		}
 		else if((stan_d.armed_trigger == true) && (stan_d.run_trigger == false)) FPV_valve_open();	//w³¹czenie doprê¿ania
-        else if((stan_d.armed_trigger == true) && (stan_d.run_trigger == true) && (stan_d.TestConfig != 0)) {
+        else if((stan_d.armed_trigger == true) && (stan_d.run_trigger == true) && (stan_d.IgnTime != 0)) {
 			if(timer_buffer <= Clock_d.time){
 				stan_d.State++;
 				switch(stan_d.State){
@@ -380,7 +371,7 @@ int main(void) {
 					//----- Step 3---------------- zapalnik off
 					case 3:
 					Ignition_inactive();
-					timer_buffer = Clock_d.time+stan_d.TestConfig-100;  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 5s
+					timer_buffer = Clock_d.time+stan_d.IgnTime-100;  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 5s
 					break;
 					//-----Step 4----------------- otwarcie paliwa i n2o
 					case 4:
@@ -388,8 +379,8 @@ int main(void) {
 					MFV_valve_open();
 					MOV_valve_open();
 					SERVO_open();
-					//timer_buffer = Clock_d.time+stan_d.TestConfig;
-					timer_buffer = Clock_d.time+300;
+					//timer_buffer = Clock_d.time+stan_d.IgnTime;
+					timer_buffer = Clock_d.time+stan_d.FireTime;
 					break;
 					//-----Step 5---------------- zamkniêcie n2o
 					case 5:

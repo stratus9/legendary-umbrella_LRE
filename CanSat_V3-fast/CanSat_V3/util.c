@@ -35,8 +35,9 @@ void float2char(float number,char * tablica){
 }
 void prepareFrameDEBUG(allData_t * allData){
 	sprintf(allData->frame_b->frameASCII, 
-			"%04lu,%1i,%1i,%+08li,%08lu,%08lu,%+04ld,%+04ld,%08lu\r\n",
-			allData->stan->TestConfig*10,
+			"%03lu,%03lu,%1i,%1i,%+08li,%08lu,%08lu,%+04ld,%+04ld,%010lu\r\n",
+			allData->stan->IgnTime/10,
+			allData->stan->FireTime/10,
 			allData->stan->IGN,
 			allData->stan->MFV,
 			allData->AD7195->raw_tenso1,
@@ -44,7 +45,7 @@ void prepareFrameDEBUG(allData_t * allData){
 			labs(allData->AD7195->raw_press6),
 			labs(allData->Analog->AnalogIn1),
 			labs(allData->Analog->AnalogIn2),
-			allData->Clock->frameFlashCount);
+			allData->Clock->RealTime);
 }
 
 void prepareFrame(allData_t * allData){
@@ -63,10 +64,10 @@ void prepareFrame(allData_t * allData){
 	/* 11 */	allData->frame_b->frameASCII[i++] = allData->stan->SERVO1+48;		//8
 	/* 12 */	allData->frame_b->frameASCII[i++] = allData->stan->SERVO2+48;		//9
 	/* 13 */	allData->frame_b->frameASCII[i++] = ',';
-	/* 14 */	allData->frame_b->frameASCII[i++] = (allData->stan->TestConfig/1000)%10+48;	//konfiguracja testu
-	/* 15 */	allData->frame_b->frameASCII[i++] = (allData->stan->TestConfig/100)%10+48;	//konfiguracja testu
-	/* 16 */	allData->frame_b->frameASCII[i++] = (allData->stan->TestConfig/10)%10+48;	//konfiguracja testu
-	/* 17 */	allData->frame_b->frameASCII[i++] = (allData->stan->TestConfig)%10+48;		//konfiguracja testu
+	/* 14 */	allData->frame_b->frameASCII[i++] = (allData->stan->IgnTime/1000)%10+48;	//konfiguracja testu
+	/* 15 */	allData->frame_b->frameASCII[i++] = (allData->stan->IgnTime/100)%10+48;	//konfiguracja testu
+	/* 16 */	allData->frame_b->frameASCII[i++] = (allData->stan->IgnTime/10)%10+48;	//konfiguracja testu
+	/* 17 */	allData->frame_b->frameASCII[i++] = (allData->stan->IgnTime)%10+48;		//konfiguracja testu
 	/* 18 */	allData->frame_b->frameASCII[i++] = ',';
 	
 	//=============== Pressure ===================
@@ -210,7 +211,7 @@ void prepareFrameBIN(allData_t * allData){
 				tmpint = (allData->stan->run_trigger)<<7 | (allData->stan->FPV)<<6 | (allData->stan->MPV)<<5 | (allData->stan->MOV)<<4 | (allData->stan->MPV)<<3 | (allData->stan->IGN)<<2 | (allData->stan->SERVO1)<<1 | (allData->stan->SERVO2)<<0;
 	/* 1  */	allData->frame_b->frameASCII[i++] = tmpint;
 	//------------ Test config ------------------
-				tmp2.uintNumber = allData->stan->TestConfig;
+				tmp2.uintNumber = allData->stan->IgnTime;
 	/* 2  */	allData->frame_b->frameASCII[i++] = tmp2.arrayNumber[0];
 	/* 3  */	allData->frame_b->frameASCII[i++] = tmp2.arrayNumber[0];
 	/* 4  */	allData->frame_b->frameASCII[i++] = tmp2.arrayNumber[0];
