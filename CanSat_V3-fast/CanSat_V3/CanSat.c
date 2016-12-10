@@ -311,7 +311,7 @@ int main(void) {
 				counter = 0;
 				Clock_d.RealTime = getRTC_us();
 				LED_PORT.OUTTGL = LED5;
-				prepareFrameDEBUG(&allData_d);
+				prepareFrame(&allData_d);
 				if(!frame_d.mutex) frame_d = frame_b;
 				LED_PORT.OUTSET = LED6;
 				if(stan_d.armed_trigger){

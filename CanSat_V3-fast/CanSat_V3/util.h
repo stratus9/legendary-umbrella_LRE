@@ -9,7 +9,7 @@
 #define UTIL_H_
 
 void float2char(float, char *);
-void prepareFrameDEBUG(allData_t *);
+void prepareFrameFlash(allData_t *);
 void prepareFrame(allData_t *);
 void prepareFrameBIN(allData_t * allData);
 void Ignition_active(void);

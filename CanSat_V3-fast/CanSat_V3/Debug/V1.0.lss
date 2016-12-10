@@ -1882,7 +1882,7 @@ void WarmUp() {
 				counter = 0;
 				Clock_d.RealTime = getRTC_us();
 				LED_PORT.OUTTGL = LED5;
-				prepareFrameDEBUG(&allData_d);
+				prepareFrame(&allData_d);
 				if(!frame_d.mutex) frame_d = frame_b;
      dfe:	04 e9       	ldi	r16, 0x94	; 148
      e00:	11 e0       	ldi	r17, 0x01	; 1
@@ -2016,10 +2016,10 @@ void WarmUp() {
      ebe:	90 93 0d 26 	sts	0x260D, r25
 				LED_PORT.OUTTGL = LED5;
      ec2:	a0 92 a7 06 	sts	0x06A7, r10
-				prepareFrameDEBUG(&allData_d);
+				prepareFrame(&allData_d);
      ec6:	8e e5       	ldi	r24, 0x5E	; 94
      ec8:	96 e2       	ldi	r25, 0x26	; 38
-     eca:	0e 94 d0 3c 	call	0x79a0	; 0x79a0 <prepareFrameDEBUG>
+     eca:	0e 94 d0 3c 	call	0x79a0	; 0x79a0 <prepareFrame>
 				if(!frame_d.mutex) frame_d = frame_b;
      ece:	80 91 ec 25 	lds	r24, 0x25EC
      ed2:	81 11       	cpse	r24, r1
@@ -16546,7 +16546,7 @@ void SPI_Init(void) {
     799a:	80 93 c0 08 	sts	0x08C0, r24
     799e:	08 95       	ret
 
-000079a0 <prepareFrameDEBUG>:
+000079a0 <prepareFrame>:
 	stan->SERVO1 = PORTD.IN & PIN5_bm;
 	stan->SERVO2 = PORTD.IN & PIN4_bm;
 }
@@ -16595,7 +16595,7 @@ void TempConvPT100(Analog_t * Analog){
     79ee:	aa 0b       	sbc	r26, r26
     79f0:	bb 0b       	sbc	r27, r27
     79f2:	b7 fd       	sbrc	r27, 7
-    79f4:	6d c0       	rjmp	.+218    	; 0x7ad0 <prepareFrameDEBUG+0x130>
+    79f4:	6d c0       	rjmp	.+218    	; 0x7ad0 <prepareFrame+0x130>
     79f6:	bf 93       	push	r27
     79f8:	af 93       	push	r26
     79fa:	9f 93       	push	r25
@@ -16610,7 +16610,7 @@ void TempConvPT100(Analog_t * Analog){
     7a0c:	aa 0b       	sbc	r26, r26
     7a0e:	bb 0b       	sbc	r27, r27
     7a10:	b7 fd       	sbrc	r27, 7
-    7a12:	76 c0       	rjmp	.+236    	; 0x7b00 <prepareFrameDEBUG+0x160>
+    7a12:	76 c0       	rjmp	.+236    	; 0x7b00 <prepareFrame+0x160>
     7a14:	bf 93       	push	r27
     7a16:	af 93       	push	r26
     7a18:	9f 93       	push	r25
@@ -16620,7 +16620,7 @@ void TempConvPT100(Analog_t * Analog){
     7a20:	a6 a9       	ldd	r26, Z+54	; 0x36
     7a22:	b7 a9       	ldd	r27, Z+55	; 0x37
     7a24:	b7 fd       	sbrc	r27, 7
-    7a26:	64 c0       	rjmp	.+200    	; 0x7af0 <prepareFrameDEBUG+0x150>
+    7a26:	64 c0       	rjmp	.+200    	; 0x7af0 <prepareFrame+0x150>
     7a28:	bf 93       	push	r27
     7a2a:	af 93       	push	r26
     7a2c:	9f 93       	push	r25
@@ -16630,7 +16630,7 @@ void TempConvPT100(Analog_t * Analog){
     7a34:	a2 a9       	ldd	r26, Z+50	; 0x32
     7a36:	b3 a9       	ldd	r27, Z+51	; 0x33
     7a38:	b7 fd       	sbrc	r27, 7
-    7a3a:	52 c0       	rjmp	.+164    	; 0x7ae0 <prepareFrameDEBUG+0x140>
+    7a3a:	52 c0       	rjmp	.+164    	; 0x7ae0 <prepareFrame+0x140>
     7a3c:	bf 93       	push	r27
     7a3e:	af 93       	push	r26
     7a40:	9f 93       	push	r25
@@ -16712,7 +16712,7 @@ void TempConvPT100(Analog_t * Analog){
     7ad8:	9f 4f       	sbci	r25, 0xFF	; 255
     7ada:	af 4f       	sbci	r26, 0xFF	; 255
     7adc:	bf 4f       	sbci	r27, 0xFF	; 255
-    7ade:	8b cf       	rjmp	.-234    	; 0x79f6 <prepareFrameDEBUG+0x56>
+    7ade:	8b cf       	rjmp	.-234    	; 0x79f6 <prepareFrame+0x56>
     7ae0:	b0 95       	com	r27
     7ae2:	a0 95       	com	r26
     7ae4:	90 95       	com	r25
@@ -16720,7 +16720,7 @@ void TempConvPT100(Analog_t * Analog){
     7ae8:	9f 4f       	sbci	r25, 0xFF	; 255
     7aea:	af 4f       	sbci	r26, 0xFF	; 255
     7aec:	bf 4f       	sbci	r27, 0xFF	; 255
-    7aee:	a6 cf       	rjmp	.-180    	; 0x7a3c <prepareFrameDEBUG+0x9c>
+    7aee:	a6 cf       	rjmp	.-180    	; 0x7a3c <prepareFrame+0x9c>
     7af0:	b0 95       	com	r27
     7af2:	a0 95       	com	r26
     7af4:	90 95       	com	r25
@@ -16728,7 +16728,7 @@ void TempConvPT100(Analog_t * Analog){
     7af8:	9f 4f       	sbci	r25, 0xFF	; 255
     7afa:	af 4f       	sbci	r26, 0xFF	; 255
     7afc:	bf 4f       	sbci	r27, 0xFF	; 255
-    7afe:	94 cf       	rjmp	.-216    	; 0x7a28 <prepareFrameDEBUG+0x88>
+    7afe:	94 cf       	rjmp	.-216    	; 0x7a28 <prepareFrame+0x88>
     7b00:	b0 95       	com	r27
     7b02:	a0 95       	com	r26
     7b04:	90 95       	com	r25
@@ -16736,7 +16736,7 @@ void TempConvPT100(Analog_t * Analog){
     7b08:	9f 4f       	sbci	r25, 0xFF	; 255
     7b0a:	af 4f       	sbci	r26, 0xFF	; 255
     7b0c:	bf 4f       	sbci	r27, 0xFF	; 255
-    7b0e:	82 cf       	rjmp	.-252    	; 0x7a14 <prepareFrameDEBUG+0x74>
+    7b0e:	82 cf       	rjmp	.-252    	; 0x7a14 <prepareFrame+0x74>
 
 00007b10 <Ignition_active>:
     7b10:	84 e0       	ldi	r24, 0x04	; 4

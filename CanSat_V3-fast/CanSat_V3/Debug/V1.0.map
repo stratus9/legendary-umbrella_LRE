@@ -215,7 +215,7 @@ Discarded input sections
  .bss           0x00000000        0x0 util.o
  .text.float2char
                 0x00000000      0x1ba util.o
- .text.prepareFrame
+ .text.prepareFrameFlash
                 0x00000000     0x120c util.o
  .text.prepareFrameBIN
                 0x00000000      0x382 util.o
@@ -994,9 +994,9 @@ END GROUP
  .text.SPI_Init
                 0x00007984       0x1c Initialization.o
                 0x00007984                SPI_Init
- .text.prepareFrameDEBUG
+ .text.prepareFrame
                 0x000079a0      0x170 util.o
-                0x000079a0                prepareFrameDEBUG
+                0x000079a0                prepareFrame
  .text.Ignition_active
                 0x00007b10        0x8 util.o
                 0x00007b10                Ignition_active
@@ -1372,19 +1372,19 @@ END GROUP
  *(.debug_str)
  .debug_str     0x00000000      0x66f AD7195.o
                                 0x6d0 (size before relaxing)
- .debug_str     0x0000066f      0x7ee CanSat.o
-                                0xe78 (size before relaxing)
- .debug_str     0x00000e5d      0x312 FATFS/ff.o
+ .debug_str     0x0000066f      0x7e9 CanSat.o
+                                0xe73 (size before relaxing)
+ .debug_str     0x00000e58      0x312 FATFS/ff.o
                                 0x704 (size before relaxing)
- .debug_str     0x0000116f     0x119d RealTime.o
+ .debug_str     0x0000116a     0x119d RealTime.o
                                0x1409 (size before relaxing)
- .debug_str     0x0000230c      0x369 SD.o
+ .debug_str     0x00002307      0x369 SD.o
                                 0x73b (size before relaxing)
- .debug_str     0x00002675        0xb SPI.o
+ .debug_str     0x00002670        0xb SPI.o
                                 0x1f2 (size before relaxing)
- .debug_str     0x00002680      0xf71 Initialization.o
+ .debug_str     0x0000267b      0xf71 Initialization.o
                                0x1669 (size before relaxing)
- .debug_str     0x000035f1       0xf6 util.o
+ .debug_str     0x000035ec       0xfb util.o
                                 0x99f (size before relaxing)
 
 .debug_loc      0x00000000    0x1a304

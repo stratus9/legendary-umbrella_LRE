@@ -160,4 +160,10 @@ typedef union int32_2array_u{
 	char arrayNumber[4];
 } int32_2array_t;
 
+typedef union int16_2array_u{
+	uint16_t uintNumber;
+	int16_t intNumber;
+	char arrayNumber[2];
+} int16_2array_t;
+
 #endif /* STRUCT_H_ */
