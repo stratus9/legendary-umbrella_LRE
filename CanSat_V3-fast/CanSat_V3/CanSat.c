@@ -149,7 +149,7 @@ ISR(USARTD0_RXC_vect) {
     } else if((tmp == 'P') && stan_d.cmd_mode) {
         stan_d.armed_trigger = true;				
         stan_d.cmd_mode = false;
-		char filename[8];
+		char filename[9];
 		FindNextFilename(filename);
 		if (f_open(&pomiar, filename, FA_WRITE | FA_CREATE_ALWAYS) == FR_OK){	//jesli plik "naszplik.txt" nie istnieje, stworz go
 			//f_write(&pomiar, "State, Config, Press 1, Press 2, Press 3, Temp 1, Temp 2, Temp3, Press 4, Press 5, Press 6, Temp 4\r", 101, &bw);
@@ -299,7 +299,6 @@ int main(void) {
 	uint32_t timer_buffer = 0;
 	uint8_t counter = 0;
 	f_mount(&fatfs,"0",1);  //Dostêp do systemu plików
-	volatile uint32_t tmp_timer;
 	Light_Green();
     while(1){
         _delay_us(1);
