@@ -26,7 +26,7 @@ void AD7195_Init(uint8_t chipNo){
 	AD7195_CS(chipNo, true);
 	SPI_W_Byte(0b00010000);					//Write, config register, no cont. reading ??
 	SPI_W_Byte(0b00000000);					//CHOP off, AC ex off
-	SPI_W_Byte(0b00110000);					//przemiatanie kana³ów 1-4
+	SPI_W_Byte(0b11110000);					//przemiatanie kana³ów 1-4
 	SPI_W_Byte(0b00001110);					//current source off, refdet off, buffer off, unipolar, 128gain
 	AD7195_CS(chipNo, false);
 	_delay_ms(10);
@@ -123,7 +123,7 @@ void AD7195_ReadStore(allData_t * allData){
 	uint32_t value1, value2;
 	AD7195_ContConvRead(&channel1, &channel2, &value1, &value2);
 	switch(channel1){
-		case 0: allData->AD7195->raw_tenso1 = value1-8389879; break;
+		case 0: allData->AD7195->raw_tenso1 = value1; break;
 		case 1: allData->AD7195->raw_tenso2 = value1; break;
 		case 4: allData->AD7195->raw_press1 = value1; break;
 		case 5: allData->AD7195->raw_press2 = value1; break;

@@ -21,8 +21,8 @@ uint16_t getRTC_ms(void) {
 }
 
 uint32_t getRTC_us(void) {
-	EVSYS_STROBE=(1<<1);				//Wygeneruj zdarzenie w kanale 1
-	return (uint32_t)TCD1_CCA;			//Zwróæ wartoœæ CNT
+//	EVSYS_STROBE=(1<<1);				//Wygeneruj zdarzenie w kanale 1
+	return (uint32_t)TCD1_CNT;			//Zwróæ wartoœæ CNT
 }
 
 void initRTC(void) {

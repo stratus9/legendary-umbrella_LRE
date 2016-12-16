@@ -260,7 +260,7 @@ void Initialization(void) {
 	SPI_Init();
     //--------AD7195 (1) Init-----------
 	AD7195_Reset(0);
-	AD7195_Init_Tenso(0);
+	AD7195_Init(0);
 	//volatile char id1 = AD7195_WhoIam(0);
 	//--------AD7195 (2) Init-----------
 	AD7195_Reset(1);
@@ -307,7 +307,7 @@ int main(void) {
 			ADC_tempCalc(&Analog_d);
 			AD7195_ReadStore(&allData_d);
 			counter++;
-			if (counter >= 2){
+			if (counter >= 4){
 				counter = 0;
 				Clock_d.RealTime = getRTC_us();
 				LED_PORT.OUTTGL = LED5;
@@ -378,7 +378,6 @@ int main(void) {
 					MFV_valve_open();
 					MOV_valve_open();
 					SERVO_open();
-					//timer_buffer = Clock_d.time+stan_d.IgnTime;
 					timer_buffer = Clock_d.time+stan_d.FireTime;
 					break;
 					//-----Step 5---------------- zamkniêcie n2o
@@ -392,7 +391,7 @@ int main(void) {
 					FPV_valve_close();
 					SERVO_close();
 					MPV_valve_open();	//gaszenie
-					timer_buffer = Clock_d.time+200;
+					timer_buffer = Clock_d.time+500;
 					break;
 					//-----Step 7------------------
 					case 7:
