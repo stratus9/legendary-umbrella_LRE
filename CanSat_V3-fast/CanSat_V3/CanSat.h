@@ -54,18 +54,7 @@
 //#define SW2
 
 //---------------------------Definicja parametrów filtrów exp--------------
-#define LPS25H_alti_alpha 0.2
-#define LPS25H_velo_alpha 0.1
-#define MPU_acc_alpha 0.3
-#define MPU_velo_alpha 0.3
-#define MPU_alti_alpha 0.3
-#define MPU_gyro_alpha 0.3
-#define MPU_angle_alpha 0.3
 #define BAT_voltage_alpha 0.05
-
-//-------------------------Definicje parametrów filtrów komplementarnych----
-#define altitude_acc_press_beta	0.1
-#define velocity_acc_press_beta	0.1
 
 
 void USART_SendCache(void);

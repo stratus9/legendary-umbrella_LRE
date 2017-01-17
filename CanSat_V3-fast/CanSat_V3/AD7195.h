@@ -12,6 +12,7 @@
 #include "SPI.h"
 void AD7195_CS(uint8_t chipNo, bool state);
 void AD7195_Init(uint8_t chipNo);
+void AD7195_Init_Tenso(uint8_t chipNo);
 uint8_t AD7195_WhoIam(uint8_t ChipNo);
 void AD7195_Sync(void);
 void AD7195_Reset(uint8_t chipNo);

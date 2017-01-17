@@ -23,7 +23,8 @@ typedef struct stan_s{
 	bool run_trigger;
 	bool Abort;
 	uint8_t State;
-	uint32_t TestConfig;
+	uint32_t IgnTime;
+	uint32_t FireTime;
 	bool MFV;
 	bool MOV;
 	bool FPV;
@@ -110,7 +111,8 @@ typedef struct buzzer_s{
 } buzzer_t;
 
 typedef struct Clock_s{
-	uint32_t time;				//jest w sekundach -> zmieni? na ms
+	uint32_t time;				//jest w 10 ms
+	uint32_t RealTime;				//jest w 2 us
 	uint32_t frameTeleCount;
 	uint32_t frameFlashCount;
 } Clock_t;
@@ -133,6 +135,8 @@ typedef struct AD7195_s{
 	uint32_t raw_press6;
 	uint32_t raw_press7;
 	uint32_t raw_press8;
+	int32_t raw_tenso1;
+	int32_t raw_tenso2;
 } AD7195_t;
 		
 typedef struct allData_s{
@@ -155,5 +159,11 @@ typedef union int32_2array_u{
 	int32_t intNumber;
 	char arrayNumber[4];
 } int32_2array_t;
+
+typedef union int16_2array_u{
+	uint16_t uintNumber;
+	int16_t intNumber;
+	char arrayNumber[2];
+} int16_2array_t;
 
 #endif /* STRUCT_H_ */
