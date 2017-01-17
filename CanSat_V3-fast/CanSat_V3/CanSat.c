@@ -298,6 +298,16 @@ int main(void) {
 	stan_d.FireTime = 0;
 	uint32_t timer_buffer = 0;
 	uint8_t counter = 0;
+	
+	
+	volatile uint16_t  flashID = 0;
+	
+	
+	while(1){
+		//
+		//SPI_RW_Byte(0xAA);
+		//FLASH_ReadByte(0x020304);
+	}
 	f_mount(&fatfs,"0",1);  //Dostêp do systemu plików
 	Light_Green();
     while(1){
