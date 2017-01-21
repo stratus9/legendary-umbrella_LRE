@@ -166,4 +166,33 @@ typedef union int16_2array_u{
 	char arrayNumber[2];
 } int16_2array_t;
 
+typedef union {
+	uint8_t array[64];
+	struct{
+		uint32_t press1;
+		uint32_t press2;
+		uint32_t press3;
+		uint32_t press4;
+		uint32_t press5;
+		uint32_t press6;
+		uint32_t press7;
+		uint32_t press8;
+		uint16_t temp1;
+		uint16_t temp2;
+		uint16_t temp3;
+		uint16_t temp4;
+		uint8_t IGN : 1;
+		uint8_t MFV : 1;
+		uint8_t MOV : 1;
+		uint8_t WPV : 1;
+		uint8_t FPV : 1;
+		uint8_t servo1 :1;
+		uint8_t servo2 :1;
+		uint8_t redu :1;
+		uint8_t : 0;	//wyrównanie
+		uint32_t Clock;
+		
+		};
+} FLASH_struct_t;
+
 #endif /* STRUCT_H_ */

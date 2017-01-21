@@ -301,12 +301,16 @@ int main(void) {
 	uint32_t timer_buffer = 0;
 	uint8_t counter = 0;
 	
+	volatile FLASH_struct_t struktura;
+	struktura.IGN = 1;
+	struktura.servo1 = 1;
+	struktura.temp3 = 34;
+	
 	//FLASH_chipErase();
 	uint8_t array[512];
 	uint8_t array2[512];
 	for (uint16_t i=0; i<512; i++) array[i] = i;
 	volatile uint16_t  flashID = FLASH_ReadID();
-	FLASH_pageWrite(2, array, 512);
 	FLASH_pageRead(2, array2, 512);
 	flashID = FLASH_ReadID();
 	
