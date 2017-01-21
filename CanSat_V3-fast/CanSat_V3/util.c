@@ -36,7 +36,7 @@ void float2char(float number,char * tablica){
 
 void prepareFrameFlash(FLASH_dataStruct_t * FLASH_dataStruct, char * string){
 	sprintf(string, 
-			"%1i,%1i,%1i,%1i,%1i,%08lu,%08lu,%08lu,%08lu,%08lu,%08lu,%+04ld,%+04ld,%+04ld,%+04ld,%010lu\r\n",
+			"%1i,%1i,%1i,%1i,%1i,%08lu,%08lu,%08lu,%08lu,%08lu,%08lu,%+05ld,%+05ld,%+05ld,%+05ld\r\n",
 			FLASH_dataStruct->IGN,
 			FLASH_dataStruct->MFV,
 			FLASH_dataStruct->MOV,
@@ -51,34 +51,20 @@ void prepareFrameFlash(FLASH_dataStruct_t * FLASH_dataStruct, char * string){
 			labs(FLASH_dataStruct->temp1),
 			labs(FLASH_dataStruct->temp2),
 			labs(FLASH_dataStruct->temp3),
-			labs(FLASH_dataStruct->temp4),
-			FLASH_dataStruct->Clock);
+			labs(FLASH_dataStruct->temp4));
 }
 
 
 
 void prepareFrame(allData_t * allData){
-	void prepareFrame(allData_t * allData){
-		sprintf(allData->frame_b->frameASCII,
-		"%03lu,%03lu,%1i,%1i,%08lu,%08lu,%08lu,%08lu,%08lu,%08lu,%+05ld,%+05ld,%+05ld,%+05ld,%010lu,%010lu,%016u\r\n",
-		allData->stan->IgnTime/10,
-		allData->stan->FireTime/10,
-		allData->stan->IGN,
-		allData->stan->MFV,
-		labs(allData->AD7195->raw_press3),
-		labs(allData->AD7195->raw_press4),
-		labs(allData->AD7195->raw_press5),
-		labs(allData->AD7195->raw_press6),
-		labs(allData->AD7195->raw_press7),
-		labs(allData->AD7195->raw_press8),
-		labs(allData->Analog->AnalogIn1),
-		labs(allData->Analog->AnalogIn2),
-		labs(allData->Analog->AnalogIn3),
-		labs(allData->Analog->AnalogIn4),
-		allData->Clock->RealTime,
-		allData->Clock->time/10,
-		0);
-	}
+	sprintf(allData->frame->frameASCII,
+	"%03lu,%03lu,%1i,%1i,%1i,%1i,0,0,0,0,0,0,0,0,0,0,0\r\n",
+	allData->stan->IgnTime,
+	allData->stan->FireTime,
+	allData->stan->IGN,
+	allData->stan->MFV,
+	allData->stan->MOV,
+	allData->stan->FPV);
 }
 
 void prepareFrameBIN(allData_t * allData){

@@ -44,12 +44,12 @@ void FLASH_2byteCommand(uint16_t value);
 void FLASH_WriteEnable(uint8_t value);
 uint8_t FLASH_ReadByte(uint32_t address);
 void FLASH_arrayRead(uint32_t address, uint8_t * array, uint32_t length);
-void FLASH_pageRead(uint16_t page, uint8_t * array, uint16_t length);
+void FLASH_pageRead(uint32_t page, uint8_t * array, uint16_t length);
 void FLASH_chipErase(void);
 void FLASH_sectorErase(uint32_t address);
 void FLASH_setup(void);
 uint8_t FLASH_status(void);
 void FLASH_waitForReady(void);
 void FLASH_byteWrite(uint32_t address, uint8_t value);
-void FLASH_pageWrite(uint16_t page, uint8_t * array, uint16_t length);
+void FLASH_pageWrite(uint32_t page, uint8_t * array, uint16_t length);
 #endif /* SPI_H_ */

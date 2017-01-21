@@ -40,7 +40,6 @@ static Clock_t Clock_d;
 static stan_t stan_d;
 Analog_t Analog_d;
 static frame_t frame_d;
-static frame_t frame_b;
 static buzzer_t buzzer_d;
 static FLASH_pageStruct_t FLASH_pageStruct_d;
 uint32_t mission_time = 0;
@@ -165,14 +164,29 @@ ISR(USARTD0_RXC_vect) {
 		stan_d.cmd_mode = false;
 		
 		//------ Rozpoczêcie testu --------
-		} else if((tmp == 'S') && (stan_d.FireTime != 0) && stan_d.cmd_mode) {
+		} else if((tmp == 'S') && (stan_d.FireTime != 0) && (stan_d.armed_trigger != 0) && stan_d.cmd_mode) {
 		stan_d.run_trigger = true;
 		stan_d.cmd_mode = false;
 		
 		//------ Kasowanie pamiêci FLASH --------
 		} else if((tmp == 'X') && stan_d.cmd_mode) {
+		Buzzer_active();
+		_delay_ms(100);
+		Buzzer_inactive();
 		FLASH_chipErase();
+		Buzzer_active();
+		_delay_ms(500);
+		Buzzer_inactive();
 		stan_d.cmd_mode = false;
+		
+		} else if((tmp == 'M') && stan_d.cmd_mode) {
+		FLASH_move2SD();
+		Light_Green();
+		Buzzer_active();
+		_delay_ms(100);
+		Buzzer_inactive();
+		stan_d.cmd_mode = false;
+		
 		
 	} else stan_d.cmd_mode = false;
 }
@@ -225,11 +239,9 @@ ISR(TCE0_OVF_vect) {
 //----------------------Frame send-------------------------------------
 ISR(TCF0_OVF_vect) {
 	LED_PORT.OUTTGL = LED4;
-	frame_d.terminate = false;
 	if(stan_d.telemetry_trigger) {
-		if(Clock_d.frameTeleCount< 99999) Clock_d.frameTeleCount++;
-		else Clock_d.frameTeleCount = 0;
-		frame_b.iUART = 0;
+		prepareFrame(&allData_d);
+		frame_d.iUART = 0;
 		USARTD0_TXC_vect();
 	}
 }
@@ -243,7 +255,6 @@ void structInit(void) {
 	allData_d.Analog = &Analog_d;
 	allData_d.stan = &stan_d;
 	allData_d.frame = &frame_d;
-	allData_d.frame_b = &frame_b;
 	allData_d.Clock = &Clock_d;
 	allData_d.Output = &Output_d;
 	allData_d.AD7195 = &AD7195_d;
@@ -264,7 +275,7 @@ void FLASH_saveData(allData_t * allData_d){
 	FLASH_struct_d.IGN = allData_d->stan->IGN;
 	FLASH_struct_d.MFV = allData_d->stan->MFV;
 	FLASH_struct_d.MOV = allData_d->stan->MOV;
-	FLASH_struct_d.WPV = allData_d->stan->MFV;
+	FLASH_struct_d.WPV = allData_d->stan->MPV;
 	FLASH_struct_d.FPV = allData_d->stan->FPV;
 	
 	FLASH_struct_d.press1 = allData_d->AD7195->raw_press1;
@@ -298,22 +309,23 @@ void FLASH_saveData(allData_t * allData_d){
 void FLASH_move2SD(void){
 	char filename[9];
 	FindNextFilename(filename);
-	if (f_open(&pomiar, filename, FA_WRITE | FA_CREATE_ALWAYS) == FR_OK){
-		f_write(&pomiar, "IGN, MFV, MOV, WPV, FPV, Press3, Press4, Press 5, Press 6, Temp 1, Temp 2, Temp3, Temp4, Count\r", 95, &bw);
-	}
+	f_open(&pomiar, filename, FA_WRITE | FA_CREATE_ALWAYS);
+	f_write(&pomiar, "IGN, MFV, MOV, WPV, FPV, Press3, Press4, Press 5, Press 6, Press 7, Press 8, Temp 1, Temp 2, Temp3, Temp4, Count\r\n", 114, &bw);
 	
 	FLASH_dataStruct_t FLASH_dataStruct;
-	char string[105];
+	char string[110];
 	uint32_t position = 0;
+	FLASH_dataStruct.array[0] = 0xAA;
 	do{
 		FLASH_arrayRead(position, FLASH_dataStruct.array, 64);
 		if(FLASH_dataStruct.array[0] != 0xAA) break;	//jeœli brak zapisanych danych, zakoñcz przepisywanie
 		position += 64;
 		prepareFrameFlash(&FLASH_dataStruct, string);
-		f_write(&pomiar, string, 98, &bw);
+		f_write(&pomiar, string, 93, &bw);
 		
-	} while(FLASH_dataStruct.array[0] == 0xAA);			//na wszelki wypadek powtórzone; mo¿na wywaliæ w przysz³oœci
+	} while((position < 0x4FFFFF) );			//na wszelki wypadek powtórzone; mo¿na wywaliæ w przysz³oœci
 	f_close(&pomiar);
+	
 }
 
 void Initialization(void) {
@@ -466,17 +478,23 @@ int main(void) {
 					break;
 					//-----Step 8------------------
 					case 8:
-					default:
+					LED_PORT.OUTCLR = LED3;
 					MPV_valve_close();
-					Light_Green();
+					timer_buffer = Clock_d.time+50;
+					break;
+					//-----Step 9----------------- //przeniesienie zapisu z FLASH do SD
+					case 9:
 					stan_d.run_trigger = false;
 					stan_d.armed_trigger = false;
 					stan_d.State = 0;
-					LED_PORT.OUTCLR = LED3;
-					break;
-					//-----Step 8----------------- //przeniesienie zapisu z FLASH do SD
-					case 9:
 					FLASH_move2SD();
+					Light_Green();
+					Buzzer_active();
+					_delay_ms(100);
+					Buzzer_inactive();
+					break;
+					//------domyœlne----
+					default:
 					break;
 				}
 			}
