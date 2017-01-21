@@ -76,14 +76,10 @@ typedef struct ADC_s{
 	int16_t AnalogIn6;
 	int16_t AnalogIn7;
 	int16_t AnalogIn8;
-	float Temp1;
-	float Temp2;
-	float Temp3;
-	float Temp4;
-	float Temp5;
-	float Temp6;
-	float Temp7;
-	float Temp8;
+	uint16_t Temp1;
+	uint16_t Temp2;
+	uint16_t Temp3;
+	uint16_t Temp4;
 	float R1;
 	float R2;
 	float R3;
@@ -193,6 +189,15 @@ typedef union {
 		uint32_t Clock;
 		
 		};
-} FLASH_struct_t;
+} FLASH_dataStruct_t;
+
+typedef struct{
+	uint8_t position;
+	union{
+		FLASH_dataStruct_t FLASH_dataStruct[8];
+		uint8_t data[512];
+		};
+}FLASH_pageStruct_t;
+
 
 #endif /* STRUCT_H_ */

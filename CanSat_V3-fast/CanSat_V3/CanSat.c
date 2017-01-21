@@ -243,6 +243,32 @@ void SensorUpdate(allData_t * allData) {
 	
 }
 
+void FLASH_saveData(allData_t * allData_d){
+	FLASH_dataStruct_t FLASH_struct_d;
+	FLASH_struct_d.IGN = allData_d->stan->IGN;
+	FLASH_struct_d.MFV = allData_d->stan->MFV;
+	FLASH_struct_d.MOV = allData_d->stan->MOV;
+	FLASH_struct_d.WPV = allData_d->stan->MFV;
+	FLASH_struct_d.FPV = allData_d->stan->FPV;
+	
+	FLASH_struct_d.press1 = allData_d->AD7195->raw_press1;
+	FLASH_struct_d.press2 = allData_d->AD7195->raw_press2;
+	FLASH_struct_d.press3 = allData_d->AD7195->raw_press3;
+	FLASH_struct_d.press4 = allData_d->AD7195->raw_press4;
+	FLASH_struct_d.press5 = allData_d->AD7195->raw_press5;
+	FLASH_struct_d.press6 = allData_d->AD7195->raw_press6;
+	FLASH_struct_d.press7 = allData_d->AD7195->raw_press7;
+	FLASH_struct_d.press8 = allData_d->AD7195->raw_press8;
+	
+	FLASH_struct_d.temp1 = allData_d->Analog->Temp1;
+	FLASH_struct_d.temp2 = allData_d->Analog->Temp2;
+	FLASH_struct_d.temp3 = allData_d->Analog->Temp3;
+	FLASH_struct_d.temp4 = allData_d->Analog->Temp4;
+	
+	FLASH_struct_d.Clock = allData_d->Clock->RealTime;
+	
+}
+
 void Initialization(void) {
 	CPU_clk(CPU_clock);	//zegar CPU
 	OscRTC();			//zegar RTC
@@ -301,7 +327,7 @@ int main(void) {
 	uint32_t timer_buffer = 0;
 	uint8_t counter = 0;
 	
-	volatile FLASH_struct_t struktura;
+	volatile FLASH_dataStruct_t struktura;
 	struktura.IGN = 1;
 	struktura.servo1 = 1;
 	struktura.temp3 = 34;
