@@ -62,5 +62,6 @@ void structInit(void);
 void Initialization(void);
 void UpdateFW(void);
 void SensorUpdate(allData_t *);
+void FLASH_saveData(allData_t * allData_d);
 void FLASHerase(void);
 #endif /* CANSAT_H_ */

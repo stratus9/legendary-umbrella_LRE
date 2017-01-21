@@ -155,6 +155,7 @@ typedef union int16_2array_u{
 typedef union {
 	uint8_t array[64];
 	struct{
+		uint8_t marker;
 		uint32_t press1;
 		uint32_t press2;
 		uint32_t press3;

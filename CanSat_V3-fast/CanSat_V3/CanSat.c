@@ -41,7 +41,6 @@ static stan_t stan_d;
 Analog_t Analog_d;
 static frame_t frame_d;
 static frame_t frame_b;
-static frameSD_t frame_sd;
 static buzzer_t buzzer_d;
 static FLASH_pageStruct_t FLASH_pageStruct_d;
 uint32_t mission_time = 0;
@@ -150,12 +149,6 @@ ISR(USARTD0_RXC_vect) {
 		} else if((tmp == 'P') && stan_d.cmd_mode) {
 		stan_d.armed_trigger = true;
 		stan_d.cmd_mode = false;
-		char filename[9];
-		FindNextFilename(filename);
-		if (f_open(&pomiar, filename, FA_WRITE | FA_CREATE_ALWAYS) == FR_OK){	//jesli plik "naszplik.txt" nie istnieje, stworz go
-			//f_write(&pomiar, "State, Config, Press 1, Press 2, Press 3, Temp 1, Temp 2, Temp3, Press 4, Press 5, Press 6, Temp 4\r", 101, &bw);
-			f_write(&pomiar, "Ign [s], Fire [s], IGN, FPV, Thrust 1, Press 5, Press 6, Temp 1, Temp 2, Count\r", 79, &bw);
-		}
 		
 		//------ Rozpoczêcie testu --------
 		} else if((tmp == 'S') && (stan_d.FireTime != 0) && stan_d.cmd_mode) {
@@ -247,6 +240,8 @@ void SensorUpdate(allData_t * allData) {
 
 void FLASH_saveData(allData_t * allData_d){
 	FLASH_dataStruct_t FLASH_struct_d;
+	FLASH_struct_d.marker = 0xAA;
+	
 	FLASH_struct_d.IGN = allData_d->stan->IGN;
 	FLASH_struct_d.MFV = allData_d->stan->MFV;
 	FLASH_struct_d.MOV = allData_d->stan->MOV;
@@ -281,6 +276,27 @@ void FLASH_saveData(allData_t * allData_d){
 	}
 }
 
+void FLASH_move2SD(void){
+	char filename[9];
+	FindNextFilename(filename);
+	if (f_open(&pomiar, filename, FA_WRITE | FA_CREATE_ALWAYS) == FR_OK){
+		f_write(&pomiar, "IGN, MFV, MOV, WPV, FPV, Press3, Press4, Press 5, Press 6, Temp 1, Temp 2, Temp3, Temp4, Count\r", 95, &bw);
+	}
+	
+	FLASH_dataStruct_t FLASH_dataStruct;
+	char string[100];
+	uint32_t position = 0;
+	do{
+		FLASH_arrayRead(position, FLASH_dataStruct.array, 64);
+		if(FLASH_dataStruct.array[0] != 0xAA) break;	//jeœli brak zapisanych danych, zakoñcz przepisywanie
+		position += 64;
+		prepareFrameFlash(&FLASH_dataStruct, string);
+		f_write(&pomiar, string, 94, &bw);
+		
+	} while(FLASH_dataStruct.array[0] == 0xAA);			//na wszelki wypadek powtórzone; mo¿na wywaliæ w przysz³oœci
+	f_close(&pomiar);
+}
+
 void Initialization(void) {
 	CPU_clk(CPU_clock);	//zegar CPU
 	OscRTC();			//zegar RTC
@@ -308,7 +324,7 @@ void Initialization(void) {
 	AD7195_Sync();
 	//-------SPI Memory Init--------
 	MemorySPIInit();
-	//SD_CardInit();
+	SD_CardInit();
 	//-------FLASH Memory Init--------
 	FLASH_setup();
 	//-------w³¹czenie przerwañ----
@@ -328,9 +344,7 @@ void WarmUp() {
 }
 
 int main(void) {
-	stan_d.flash_trigger = STARTUP_flash;
 	stan_d.telemetry_trigger = STARTUP_tele;
-	frame_d.terminate = false;
 	Initialization();
 	sei();
 	WarmUp();					//odmiganie startu
@@ -339,27 +353,26 @@ int main(void) {
 	uint32_t timer_buffer = 0;
 	uint8_t counter = 0;
 	
-	while(1){
-		//
-		//SPI_RW_Byte(0xAA);
-		//FLASH_ReadByte(0x020304);
-	}
 	f_mount(&fatfs,"0",1);  //Dostêp do systemu plików
 	Light_Green();
 	while(1){
 		_delay_us(1);
 		//============================== Sekcja pomiarów ============================================
 		if(!AD7195_RDY(1)){
+			LED_PORT.OUTSET = LED5;
 			ADC_tempCalc(&Analog_d);
 			AD7195_ReadStore(&allData_d);
+			LED_PORT.OUTCLR = LED6;
 			counter++;
 			if (counter >= 4){
 				counter = 0;
-				Clock_d.RealTime = getRTC_us();
-				LED_PORT.OUTTGL = LED5;
-				FLASH_saveData(&allData_d);
+				if(stan_d.armed_trigger){
+					Clock_d.RealTime = getRTC_us();
+					LED_PORT.OUTSET = LED6;
+					FLASH_saveData(&allData_d);
+					LED_PORT.OUTCLR = LED6;
+				}
 			}
-			LED_PORT.OUTCLR = LED6;
 		}
 
 		//=========================== Sekcja maszyny stanów =========================================
@@ -405,29 +418,35 @@ int main(void) {
 					Ignition_inactive();
 					timer_buffer = Clock_d.time+stan_d.IgnTime-100;  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 5s
 					break;
-					//-----Step 4----------------- otwarcie paliwa i n2o
+					//-----Step 4----------------- otwarcie n2o
 					case 4:
 					Ignition_inactive();
-					MFV_valve_open();
 					MOV_valve_open();
+					SERVO_open();
+					timer_buffer = Clock_d.time+50;	//500ms opóŸnienia
+					break;
+					//-----Step 5---------------- otwarcie paliwa
+					case 5:
+					Ignition_inactive();
+					MFV_valve_open();
 					SERVO_open();
 					timer_buffer = Clock_d.time+stan_d.FireTime;
 					break;
-					//-----Step 5---------------- zamkniêcie n2o
-					case 5:
+					//-----Step 6---------------- zamkniêcie n2o
+					case 6:
 					MOV_valve_close();
 					timer_buffer = Clock_d.time+10;
 					break;
-					//-----Step 6---------------- zamkniêcie paliwa
-					case 6:
+					//-----Step 7---------------- zamkniêcie paliwa
+					case 7:
 					MFV_valve_close();
 					FPV_valve_close();
 					SERVO_close();
 					MPV_valve_open();	//gaszenie
 					timer_buffer = Clock_d.time+500;
 					break;
-					//-----Step 7------------------
-					case 7:
+					//-----Step 8------------------
+					case 8:
 					default:
 					MPV_valve_close();
 					Light_Green();
@@ -435,6 +454,10 @@ int main(void) {
 					stan_d.armed_trigger = false;
 					stan_d.State = 0;
 					LED_PORT.OUTCLR = LED3;
+					break;
+					//-----Step 8----------------- //przeniesienie zapisu z FLASH do SD
+					case 9:
+					FLASH_move2SD();
 					break;
 				}
 			}

@@ -34,270 +34,51 @@ void float2char(float number,char * tablica){
 	*(tablica+6) = ((tmp%10)) + 48;
 }
 
-void prepareFrame(allData_t * allData){
-	sprintf(allData->frame_b->frameASCII, 
-			"%03lu,%03lu,%1i,%1i,%08lu,%08lu,%08lu,%08lu,%08lu,%08lu,%+04ld,%+04ld,%+04ld,%+04ld,%010lu,%010lu,%016u\r\n",
-			allData->stan->IgnTime/10,
-			allData->stan->FireTime/10,
-			allData->stan->IGN,
-			allData->stan->MFV,
-			labs(allData->AD7195->raw_press3),
-			labs(allData->AD7195->raw_press4),
-			labs(allData->AD7195->raw_press5),
-			labs(allData->AD7195->raw_press6),
-			labs(allData->AD7195->raw_press7),
-			labs(allData->AD7195->raw_press8),
-			labs(allData->Analog->AnalogIn1),
-			labs(allData->Analog->AnalogIn2),
-			labs(allData->Analog->AnalogIn3),
-			labs(allData->Analog->AnalogIn4),
-			allData->Clock->RealTime,
-			allData->Clock->time/10,
-			0);
+void prepareFrameFlash(FLASH_dataStruct_t * FLASH_dataStruct, char * string){
+	sprintf(string, 
+			"%1i,%1i,%1i,%1i,%1i,%08lu,%08lu,%08lu,%08lu,%08lu,%08lu,%+04ld,%+04ld,%+04ld,%+04ld,%010lu\r\n",
+			FLASH_dataStruct->IGN,
+			FLASH_dataStruct->MFV,
+			FLASH_dataStruct->MOV,
+			FLASH_dataStruct->WPV,
+			FLASH_dataStruct->FPV,
+			labs(FLASH_dataStruct->press3),
+			labs(FLASH_dataStruct->press4),
+			labs(FLASH_dataStruct->press5),
+			labs(FLASH_dataStruct->press6),
+			labs(FLASH_dataStruct->press7),
+			labs(FLASH_dataStruct->press8),
+			labs(FLASH_dataStruct->temp1),
+			labs(FLASH_dataStruct->temp2),
+			labs(FLASH_dataStruct->temp3),
+			labs(FLASH_dataStruct->temp4),
+			FLASH_dataStruct->Clock);
 }
 
-void prepareFrameFlash(allData_t * allData){
-	volatile int16_t i;
-	i=0;
-	int32_2array_t tmp32;
-	int16_2array_t tmp16;
-	
-	/* 2  */	//------------ state-------------------------
-	/* 3  */	allData->frame_b->frameASCII[i++] = 0xFF;							//rozpoczêcie ramki
-	/* 4  */	allData->frame_b->frameASCII[i++] = 32;								//d³ugoœæ ramki
-	/* 5  */	allData->frame_b->frameASCII[i++] = 0x01;							//typ ramki
-	
-	tmp32.uintNumber = allData->AD7195->raw_press1;
-	/* 6  */	allData->frame_b->frameASCII[i++] = 3;								//d³ugoœæ pola 3+3+1=7
-	/* 7  */	allData->frame_b->frameASCII[i++] = tmp32.arrayNumber[0];				//4
-	/* 8  */	allData->frame_b->frameASCII[i++] = tmp32.arrayNumber[1];				//5	
-	/* 9  */	allData->frame_b->frameASCII[i++] = tmp32.arrayNumber[2];				//6
-	
-	tmp32.uintNumber = allData->AD7195->raw_press2;
-	/* 6  */	allData->frame_b->frameASCII[i++] = 3;								//d³ugoœæ pola 7+3+1=11
-	/* 7  */	allData->frame_b->frameASCII[i++] = tmp32.arrayNumber[0];				//4
-	/* 8  */	allData->frame_b->frameASCII[i++] = tmp32.arrayNumber[1];				//5
-	/* 9  */	allData->frame_b->frameASCII[i++] = tmp32.arrayNumber[2];				//6
-	
-	tmp32.uintNumber = allData->AD7195->raw_press3;
-	/* 6  */	allData->frame_b->frameASCII[i++] = 3;								//d³ugoœæ pola 11+3+1=15
-	/* 7  */	allData->frame_b->frameASCII[i++] = tmp32.arrayNumber[0];				//4
-	/* 8  */	allData->frame_b->frameASCII[i++] = tmp32.arrayNumber[1];				//5
-	/* 9  */	allData->frame_b->frameASCII[i++] = tmp32.arrayNumber[2];				//6
-	
-	tmp32.uintNumber = allData->AD7195->raw_press4;
-	/* 6  */	allData->frame_b->frameASCII[i++] = 3;								//d³ugoœæ pola 15+3+1=19
-	/* 7  */	allData->frame_b->frameASCII[i++] = tmp32.arrayNumber[0];				//4
-	/* 8  */	allData->frame_b->frameASCII[i++] = tmp32.arrayNumber[1];				//5
-	/* 9  */	allData->frame_b->frameASCII[i++] = tmp32.arrayNumber[2];				//6
-	
-	tmp32.uintNumber = allData->AD7195->raw_press5;
-	/* 6  */	allData->frame_b->frameASCII[i++] = 3;								//d³ugoœæ pola 19+3+1=23
-	/* 7  */	allData->frame_b->frameASCII[i++] = tmp32.arrayNumber[0];				//4
-	/* 8  */	allData->frame_b->frameASCII[i++] = tmp32.arrayNumber[1];				//5
-	/* 9  */	allData->frame_b->frameASCII[i++] = tmp32.arrayNumber[2];				//6
-	
-	tmp32.uintNumber = allData->AD7195->raw_press6;
-	/* 6  */	allData->frame_b->frameASCII[i++] = 3;								//d³ugoœæ pola 23+3+1=27
-	/* 7  */	allData->frame_b->frameASCII[i++] = tmp32.arrayNumber[0];				//4
-	/* 8  */	allData->frame_b->frameASCII[i++] = tmp32.arrayNumber[1];				//5
-	/* 9  */	allData->frame_b->frameASCII[i++] = tmp32.arrayNumber[2];				//6
-	
-	tmp32.uintNumber = allData->AD7195->raw_press7;
-	/* 6  */	allData->frame_b->frameASCII[i++] = 3;								//d³ugoœæ pola 27+3+1=31
-	/* 7  */	allData->frame_b->frameASCII[i++] = tmp32.arrayNumber[0];				//4
-	/* 8  */	allData->frame_b->frameASCII[i++] = tmp32.arrayNumber[1];				//5
-	/* 9  */	allData->frame_b->frameASCII[i++] = tmp32.arrayNumber[2];				//6
-	
-	tmp32.uintNumber = allData->AD7195->raw_press8;
-	/* 6  */	allData->frame_b->frameASCII[i++] = 3;								//d³ugoœæ pola 31+3+1=35
-	/* 7  */	allData->frame_b->frameASCII[i++] = tmp32.arrayNumber[0];				//4
-	/* 8  */	allData->frame_b->frameASCII[i++] = tmp32.arrayNumber[1];				//5
-	/* 9  */	allData->frame_b->frameASCII[i++] = tmp32.arrayNumber[2];				//6
-	
-	tmp32.uintNumber = allData->AD7195->raw_tenso1;
-	/* 6  */	allData->frame_b->frameASCII[i++] = 3;								//d³ugoœæ pola 35+3+1=39
-	/* 7  */	allData->frame_b->frameASCII[i++] = tmp32.arrayNumber[0];				//4
-	/* 8  */	allData->frame_b->frameASCII[i++] = tmp32.arrayNumber[1];				//5
-	/* 9  */	allData->frame_b->frameASCII[i++] = tmp32.arrayNumber[2];				//6
-	
-	tmp32.uintNumber = allData->AD7195->raw_tenso2;
-	/* 6  */	allData->frame_b->frameASCII[i++] = 3;								//d³ugoœæ pola 39+3+1=43
-	/* 7  */	allData->frame_b->frameASCII[i++] = tmp32.arrayNumber[0];				//4
-	/* 8  */	allData->frame_b->frameASCII[i++] = tmp32.arrayNumber[1];				//5
-	/* 9  */	allData->frame_b->frameASCII[i++] = tmp32.arrayNumber[2];				//6
-	
-	tmp16.uintNumber = allData->Analog->AnalogIn1;
-	/* 6  */	allData->frame_b->frameASCII[i++] = 2;								//d³ugoœæ pola 43+2+1=46
-	/* 7  */	allData->frame_b->frameASCII[i++] = tmp16.arrayNumber[0];				//4
-	/* 8  */	allData->frame_b->frameASCII[i++] = tmp16.arrayNumber[1];				//5
 
-	tmp16.uintNumber = allData->Analog->AnalogIn2;
-	/* 6  */	allData->frame_b->frameASCII[i++] = 2;								//d³ugoœæ pola 46+2+1=49
-	/* 7  */	allData->frame_b->frameASCII[i++] = tmp16.arrayNumber[0];				//4
-	/* 8  */	allData->frame_b->frameASCII[i++] = tmp16.arrayNumber[1];				//5
-	
-	tmp16.uintNumber = allData->Analog->AnalogIn3;
-	/* 6  */	allData->frame_b->frameASCII[i++] = 2;								//d³ugoœæ pola 49+2+1=42
-	/* 7  */	allData->frame_b->frameASCII[i++] = tmp16.arrayNumber[0];				//4
-	/* 8  */	allData->frame_b->frameASCII[i++] = tmp16.arrayNumber[1];				//5
-	
-	tmp16.uintNumber = allData->Analog->AnalogIn4;
-	/* 6  */	allData->frame_b->frameASCII[i++] = 2;								//d³ugoœæ pola 42+2+1=45
-	/* 7  */	allData->frame_b->frameASCII[i++] = tmp16.arrayNumber[0];				//4
-	/* 8  */	allData->frame_b->frameASCII[i++] = tmp16.arrayNumber[1];				//5
-	
-	/* 10  */	allData->frame_b->frameASCII[i++] = 6;							//d³ugoœæ pola	45+6+1=52
-	/* 10  */	allData->frame_b->frameASCII[i++] = allData->stan->IGN;			//Zapalnik w³¹czony
-	/* 10  */	allData->frame_b->frameASCII[i++] = allData->stan->MFV;			//G³ówny zawór paliwa
-	/* 10  */	allData->frame_b->frameASCII[i++] = allData->stan->MOV;			//G³ówny zawór utleniacza
-	/* 10  */	allData->frame_b->frameASCII[i++] = allData->stan->MPV;			//Gaszenie
-	/* 11 */	allData->frame_b->frameASCII[i++] = allData->stan->SERVO1;		//Sygna³ serwa 1
-	/* 12 */	allData->frame_b->frameASCII[i++] = allData->stan->SERVO2;		//Sygna³ serwa 2
-	
-	tmp32.uintNumber = allData->stan->IgnTime;
-	/* 13 */	allData->frame_b->frameASCII[i++] = 4;						//D³ugoœæ pola	52+4+1=57
-	/* 14 */	allData->frame_b->frameASCII[i++] = tmp32.arrayNumber[0];	//konfiguracja testu
-	/* 15 */	allData->frame_b->frameASCII[i++] = tmp32.arrayNumber[1];	//konfiguracja testu
-	/* 16 */	allData->frame_b->frameASCII[i++] = tmp32.arrayNumber[2];	//konfiguracja testu
-	/* 17 */	allData->frame_b->frameASCII[i++] = tmp32.arrayNumber[3];	//konfiguracja testu
-	
-	tmp32.uintNumber = allData->stan->FireTime;
-	/* 13 */	allData->frame_b->frameASCII[i++] = 4;						//D³ugoœæ pola	57+4+1=62
-	/* 14 */	allData->frame_b->frameASCII[i++] = tmp32.arrayNumber[0];	//konfiguracja testu
-	/* 15 */	allData->frame_b->frameASCII[i++] = tmp32.arrayNumber[1];	//konfiguracja testu
-	/* 16 */	allData->frame_b->frameASCII[i++] = tmp32.arrayNumber[2];	//konfiguracja testu
-	/* 17 */	allData->frame_b->frameASCII[i++] = tmp32.arrayNumber[3];	//konfiguracja testu
-// 	
-// 	//=============== Pressure ===================
-// 	//-------------- Pressure 4 ----------------------------
-// 	tmp = allData->AD7195->pressure4*1000;	//bar
-// 	if(tmp < 0) tmp = -tmp;
-// 	/* 19 */	allData->frame_b->frameASCII[i++] = (tmp/10000)%10 + 48;
-// 	/* 20 */	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
-// 	/* 21 */	allData->frame_b->frameASCII[i++] = '.';
-// 	/* 22 */	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
-// 	/* 23 */	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
-// 	/* 24 */	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
-// 	/* 25 */	allData->frame_b->frameASCII[i++] = ',';
-// 	
-// 	//-------------- Pressure 5 ----------------------------
-// 	tmp = allData->AD7195->pressure5*1000;	//bar
-// 	if(tmp < 0) tmp = -tmp;
-// 	/* 26 */	allData->frame_b->frameASCII[i++] = (tmp/10000)%10 + 48;
-// 	/* 27 */	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
-// 	/* 28 */	allData->frame_b->frameASCII[i++] = '.';
-// 	/* 29 */	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
-// 	/* 30 */	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
-// 	/* 31 */	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
-// 	/* 32 */	allData->frame_b->frameASCII[i++] = ',';
-// 	
-// 	//-------------- Pressure 6 ----------------------------
-// 	tmp = allData->AD7195->pressure6*1000;	//bar
-// 	if((tmp < 0) || (tmpf <0)) tmp = -tmp;
-// 	/* 33 */	allData->frame_b->frameASCII[i++] = (tmp/10000)%10 + 48;
-// 	/* 34 */	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
-// 	/* 35 */	allData->frame_b->frameASCII[i++] = '.';
-// 	/* 36 */	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
-// 	/* 37 */	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
-// 	/* 38 */	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
-// 	/* 39 */	allData->frame_b->frameASCII[i++] = ',';
-// 	
-// 	//-------------- Temp 1 ----------------------------
-// 	tmp = allData->Analog->Temp1*10;
-// 	if(tmp < 0){
-// 		tmp = -tmp;
-// 		tmpf = -tmpf;
-// 		allData->frame_b->frameASCII[i++] = '-';
-// 	}
-// 	/* 41 */	else allData->frame_b->frameASCII[i++] = '+';
-// 	/* 42 */	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
-// 	/* 43 */	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
-// 	/* 44 */	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
-// 	/* 45 */	allData->frame_b->frameASCII[i++] = '.';
-// 	/* 46 */	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
-// 	/* 47 */	allData->frame_b->frameASCII[i++] = ',';
-// 	
-// 	//-------------- Temp 2 ----------------------------
-// 	tmp = allData->Analog->Temp2*10;
-// 	if(tmp < 0){
-// 		tmp = -tmp;
-// 		tmpf = -tmpf;
-// 		allData->frame_b->frameASCII[i++] = '-';
-// 	}
-// 	/* 48 */	else allData->frame_b->frameASCII[i++] = '+';
-// 	/* 49 */	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
-// 	/* 50 */	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
-// 	/* 51 */	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
-// 	/* 52 */	allData->frame_b->frameASCII[i++] = '.';
-// 	/* 53 */	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
-// 	/* 54 */	allData->frame_b->frameASCII[i++] = ',';
-// 	
-// 	//-------------- Temp 3 ----------------------------
-// 	tmp = allData->Analog->Temp3*10;
-// 	if(tmp < 0){
-// 		tmp = -tmp;
-// 		tmpf = -tmpf;
-// 		allData->frame_b->frameASCII[i++] = '-';
-// 	}
-// 	/* 55 */	else allData->frame_b->frameASCII[i++] = '+';
-// 	/* 56 */	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
-// 	/* 57 */	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
-// 	/* 58 */	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
-// 	/* 59 */	allData->frame_b->frameASCII[i++] = '.';
-// 	/* 60 */	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
-// 	/* 61 */	allData->frame_b->frameASCII[i++] = ',';
-// 	
-// 	//-------------- Temp 4 ----------------------------
-// 	tmp = allData->Analog->Temp4*10;
-// 	if(tmp < 0){
-// 		tmp = -tmp;
-// 		tmpf = -tmpf;
-// 		allData->frame_b->frameASCII[i++] = '-';
-// 	}
-// 	/* 62 */	else allData->frame_b->frameASCII[i++] = '+';
-// 	/* 63 */	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
-// 	/* 64 */	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
-// 	/* 65 */	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
-// 	/* 66 */	allData->frame_b->frameASCII[i++] = '.';
-// 	/* 67 */	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
-// 	/* 68 */	allData->frame_b->frameASCII[i++] = ',';
-// 	
-// 	//-------------- Pressure 7 ----------------------------
-// 	tmp = allData->AD7195->pressure7*1000;	//bar
-// 	if(tmp < 0) tmp = -tmp;
-// 	/* 69 */	allData->frame_b->frameASCII[i++] = (tmp/10000)%10 + 48;
-// 	/* 70 */	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
-// 	/* 71 */	allData->frame_b->frameASCII[i++] = '.';
-// 	/* 72 */	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
-// 	/* 73 */	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
-// 	/* 74 */	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
-// 	/* 75 */	allData->frame_b->frameASCII[i++] = ',';
-// 	
-// 	//-------------- Pressure 8 ----------------------------
-// 	tmp = allData->AD7195->pressure8*1000;	//bar
-// 	if(tmp < 0) tmp = -tmp;
-// 	/* 76 */	allData->frame_b->frameASCII[i++] = (tmp/10000)%10 + 48;
-// 	/* 77 */	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
-// 	/* 78 */	allData->frame_b->frameASCII[i++] = '.';
-// 	/* 79 */	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
-// 	/* 80 */	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
-// 	/* 81 */	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
-// 	/* 82 */	allData->frame_b->frameASCII[i++] = ',';
-// 	
-// 	//----------------packet count-----------------------
-// 	tmp = allData->Clock->frameFlashCount;
-// 	/* 83 */	allData->frame_b->frameASCII[i++] = (tmp/10000)%10 + 48;
-// 	/* 84 */	allData->frame_b->frameASCII[i++] = (tmp/1000)%10 + 48;
-// 	/* 85 */	allData->frame_b->frameASCII[i++] = (tmp/100)%10 + 48;
-// 	/* 86 */	allData->frame_b->frameASCII[i++] = (tmp/10)%10 + 48;
-// 	/* 87 */	allData->frame_b->frameASCII[i++] = (tmp)%10 + 48;
-// 	
-// 	//------------ END --------------
-// 	/* 88 */	allData->frame_b->frameASCII[i++] = '\r';
-// 	/* 89 */	allData->frame_b->frameASCII[i++] = '\n';		
-// 	allData->frame_b->frameASCII[i++] = 0;
-// 	allData->frame_b->frameASCII[i++] = 'X';
+
+void prepareFrame(allData_t * allData){
+	void prepareFrame(allData_t * allData){
+		sprintf(allData->frame_b->frameASCII,
+		"%03lu,%03lu,%1i,%1i,%08lu,%08lu,%08lu,%08lu,%08lu,%08lu,%+04ld,%+04ld,%+04ld,%+04ld,%010lu,%010lu,%016u\r\n",
+		allData->stan->IgnTime/10,
+		allData->stan->FireTime/10,
+		allData->stan->IGN,
+		allData->stan->MFV,
+		labs(allData->AD7195->raw_press3),
+		labs(allData->AD7195->raw_press4),
+		labs(allData->AD7195->raw_press5),
+		labs(allData->AD7195->raw_press6),
+		labs(allData->AD7195->raw_press7),
+		labs(allData->AD7195->raw_press8),
+		labs(allData->Analog->AnalogIn1),
+		labs(allData->Analog->AnalogIn2),
+		labs(allData->Analog->AnalogIn3),
+		labs(allData->Analog->AnalogIn4),
+		allData->Clock->RealTime,
+		allData->Clock->time/10,
+		0);
+	}
 }
 
 void prepareFrameBIN(allData_t * allData){
