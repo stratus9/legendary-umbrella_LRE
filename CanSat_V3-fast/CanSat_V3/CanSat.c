@@ -43,6 +43,7 @@ static frame_t frame_d;
 static frame_t frame_b;
 static frameSD_t frame_sd;
 static buzzer_t buzzer_d;
+static FLASH_pageStruct_t FLASH_pageStruct_d;
 uint32_t mission_time = 0;
 uint32_t frame_count = 0;
 
@@ -234,6 +235,7 @@ void structInit(void) {
 	allData_d.Clock = &Clock_d;
 	allData_d.Output = &Output_d;
 	allData_d.AD7195 = &AD7195_d;
+	allData_d.FLASH_pageStruct = &FLASH_pageStruct_d;
 }
 
 void SensorUpdate(allData_t * allData) {
@@ -267,6 +269,16 @@ void FLASH_saveData(allData_t * allData_d){
 	
 	FLASH_struct_d.Clock = allData_d->Clock->RealTime;
 	
+	uint8_t pagePosition = allData_d->FLASH_pageStruct->position;
+	if (pagePosition < 8){
+		allData_d->FLASH_pageStruct->FLASH_dataStruct[pagePosition] = FLASH_struct_d;
+		allData_d->FLASH_pageStruct->position++;
+	}
+	if(pagePosition >=8){
+		FLASH_pageWrite(allData_d->FLASH_pageStruct->pageNo, allData_d->FLASH_pageStruct->data, 512);
+		allData_d->FLASH_pageStruct->pageNo++;
+		allData_d->FLASH_pageStruct->position = 0;
+	}
 }
 
 void Initialization(void) {
@@ -327,19 +339,6 @@ int main(void) {
 	uint32_t timer_buffer = 0;
 	uint8_t counter = 0;
 	
-	volatile FLASH_dataStruct_t struktura;
-	struktura.IGN = 1;
-	struktura.servo1 = 1;
-	struktura.temp3 = 34;
-	
-	//FLASH_chipErase();
-	uint8_t array[512];
-	uint8_t array2[512];
-	for (uint16_t i=0; i<512; i++) array[i] = i;
-	volatile uint16_t  flashID = FLASH_ReadID();
-	FLASH_pageRead(2, array2, 512);
-	flashID = FLASH_ReadID();
-	
 	while(1){
 		//
 		//SPI_RW_Byte(0xAA);
@@ -358,20 +357,7 @@ int main(void) {
 				counter = 0;
 				Clock_d.RealTime = getRTC_us();
 				LED_PORT.OUTTGL = LED5;
-				prepareFrame(&allData_d);
-				if(!frame_d.mutex) frame_d = frame_b;
-				LED_PORT.OUTSET = LED6;
-				if(stan_d.armed_trigger){
-					Clock_d.frameFlashCount++;
-					if(Add2Buffer(&frame_b, &frame_sd) >= 450){
-						LED_PORT.OUTSET = LED2;
-						f_write(&pomiar, &frame_sd, 512, &bw);
-						//f_write(&pomiar, &frame_sd, 500, &bw);
-						frame_sd.frameASCII[0] = 0;
-						LED_PORT.OUTCLR = LED2;
-					}
-				}
-				else f_close(&pomiar);
+				FLASH_saveData(&allData_d);
 			}
 			LED_PORT.OUTCLR = LED6;
 		}

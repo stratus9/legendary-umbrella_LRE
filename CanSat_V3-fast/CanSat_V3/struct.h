@@ -134,16 +134,6 @@ typedef struct AD7195_s{
 	int32_t raw_tenso1;
 	int32_t raw_tenso2;
 } AD7195_t;
-		
-typedef struct allData_s{
-	Analog_t * Analog;
-	stan_t * stan;
-	frame_t * frame;
-	frame_t * frame_b;
-	Clock_t * Clock;
-	Output_t * Output;
-	AD7195_t * AD7195;
-} allData_t;
 
 typedef union float2array_u{
 	float floatNumber;
@@ -192,6 +182,7 @@ typedef union {
 } FLASH_dataStruct_t;
 
 typedef struct{
+	uint16_t pageNo;
 	uint8_t position;
 	union{
 		FLASH_dataStruct_t FLASH_dataStruct[8];
@@ -199,5 +190,19 @@ typedef struct{
 		};
 }FLASH_pageStruct_t;
 
+
+
+
+
+typedef struct allData_s{
+	Analog_t * Analog;
+	stan_t * stan;
+	frame_t * frame;
+	frame_t * frame_b;
+	Clock_t * Clock;
+	Output_t * Output;
+	AD7195_t * AD7195;
+	FLASH_pageStruct_t * FLASH_pageStruct;
+} allData_t;
 
 #endif /* STRUCT_H_ */
