@@ -169,6 +169,11 @@ ISR(USARTD0_RXC_vect) {
 		stan_d.run_trigger = true;
 		stan_d.cmd_mode = false;
 		
+		//------ Kasowanie pamiêci FLASH --------
+		} else if((tmp == 'X') && stan_d.cmd_mode) {
+		FLASH_chipErase();
+		stan_d.cmd_mode = false;
+		
 	} else stan_d.cmd_mode = false;
 }
 
