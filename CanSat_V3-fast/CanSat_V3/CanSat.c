@@ -1,9 +1,9 @@
 /*
- * CanSat_V3.c
- *
- * Created: 2015-03-22 16:38:24
- *  Author: stratus
- */
+* CanSat_V3.c
+*
+* Created: 2015-03-22 16:38:24
+*  Author: stratus
+*/
 
 
 #include <avr/io.h>
@@ -48,7 +48,7 @@ uint32_t frame_count = 0;
 
 //----------------------Bad ISR handling------------------------
 ISR(BADISR_vect) {
-    LED_PORT.OUTTGL = LED1;
+	LED_PORT.OUTTGL = LED1;
 }
 
 ISR(ADCB_CH3_vect){
@@ -61,170 +61,170 @@ ISR(ADCB_CH3_vect){
 //----------------------RTC ISR handling------------------------
 /*
 ISR(RTC_OVF_vect){
-	frame_b.sec++;
-	mission_time = frame_b.sec;
+frame_b.sec++;
+mission_time = frame_b.sec;
 }*/
 
 
 //----------------------Send to Xbee--------------------------------
 ISR(USARTD0_TXC_vect) {
-    if(frame_d.frameASCII[frame_d.iUART]) {
-        frame_d.mutex = true;
-        USARTD0.DATA = frame_d.frameASCII[frame_d.iUART];
-        if(frame_d.iUART < 151) frame_d.iUART++;
-        else frame_d.frameASCII[frame_d.iUART] = 0;
-    } else frame_d.mutex = false;
+	if(frame_d.frameASCII[frame_d.iUART]) {
+		frame_d.mutex = true;
+		USARTD0.DATA = frame_d.frameASCII[frame_d.iUART];
+		if(frame_d.iUART < 151) frame_d.iUART++;
+		else frame_d.frameASCII[frame_d.iUART] = 0;
+	} else frame_d.mutex = false;
 }
 
 //----------------------Receive from Xbee----------------------------
 ISR(USARTD0_RXC_vect) {
-    //LED_PORT.OUTSET = LED3;
-    char volatile tmp = USARTD0.DATA;
-    if(tmp == '$') stan_d.cmd_mode = true;	//enter command mode
+	//LED_PORT.OUTSET = LED3;
+	char volatile tmp = USARTD0.DATA;
+	if(tmp == '$') stan_d.cmd_mode = true;	//enter command mode
 	
 	//------- Reset --------
-    else if((tmp == 'R') && stan_d.cmd_mode) {
-        ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-            stan_d.cmd_mode = false;
-            CPU_CCP = CCP_IOREG_gc;
-            RST.CTRL = RST_SWRST_bm;		//zdalny restart systemu
-        }
-	
-	//-----Test MOV------
-    } else if((tmp == '1') && stan_d.cmd_mode) {
-        MOV_valve_open();
-		_delay_ms(1000);
-		MOV_valve_close();						
-        stan_d.cmd_mode = false;
+	else if((tmp == 'R') && stan_d.cmd_mode) {
+		ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+			stan_d.cmd_mode = false;
+			CPU_CCP = CCP_IOREG_gc;
+			RST.CTRL = RST_SWRST_bm;		//zdalny restart systemu
+		}
 		
-	//-----Test MFV------
-    } else if((tmp == '2') && stan_d.cmd_mode) {
-        MFV_valve_open();
+		//-----Test MOV------
+		} else if((tmp == '1') && stan_d.cmd_mode) {
+		MOV_valve_open();
 		_delay_ms(1000);
-		MFV_valve_close();				
-        stan_d.cmd_mode = false;
+		MOV_valve_close();
+		stan_d.cmd_mode = false;
 		
-	//-----Test MPV------
-    } else if((tmp == '3') && stan_d.cmd_mode) {
-        MPV_valve_open();
+		//-----Test MFV------
+		} else if((tmp == '2') && stan_d.cmd_mode) {
+		MFV_valve_open();
 		_delay_ms(1000);
-		MPV_valve_close();			
-        stan_d.cmd_mode = false;
+		MFV_valve_close();
+		stan_d.cmd_mode = false;
 		
-	//-----Test FPV------
-    } else if((tmp == '4') && stan_d.cmd_mode) {
-        FPV_valve_open();
+		//-----Test MPV------
+		} else if((tmp == '3') && stan_d.cmd_mode) {
+		MPV_valve_open();
+		_delay_ms(1000);
+		MPV_valve_close();
+		stan_d.cmd_mode = false;
+		
+		//-----Test FPV------
+		} else if((tmp == '4') && stan_d.cmd_mode) {
+		FPV_valve_open();
 		_delay_ms(1000);
 		FPV_valve_close();
-        stan_d.cmd_mode = false;
+		stan_d.cmd_mode = false;
 		
-	//------Konfiguracja sekwencji +--------- dzia³a
-	} else if((tmp == '+') && stan_d.cmd_mode) {
-	if(stan_d.IgnTime < 600) stan_d.IgnTime += 50;
-	stan_d.cmd_mode = false;
-	
-	//------Konfiguracja sekwencji ---------- dzia³a
-	} else if((tmp == '-') && stan_d.cmd_mode) {
-	if(stan_d.IgnTime >= 150) stan_d.IgnTime -= 50;
-	stan_d.cmd_mode = false;
-	
-	//------Konfiguracja czasu palenia +  --------- dzia³a
-	} else if((tmp == '/') && stan_d.cmd_mode) {
-	if(stan_d.FireTime < 1000) stan_d.FireTime += 50;
-	stan_d.cmd_mode = false;
-	
-	//------Konfiguracja czasu palenia -  ---------- dzia³a
-	} else if((tmp == '*') && stan_d.cmd_mode) {
-	if(stan_d.FireTime >= 100) stan_d.FireTime -= 50;
-	stan_d.cmd_mode = false;
-	
-	//------Przerwanie testu----------------- dzia³a
-    } else if((tmp == 'A') && stan_d.cmd_mode) {
-        stan_d.Abort = true;						//ABORT!!!! ABORT!!! ABORT!!!
+		//------Konfiguracja sekwencji +--------- dzia³a
+		} else if((tmp == '+') && stan_d.cmd_mode) {
+		if(stan_d.IgnTime < 600) stan_d.IgnTime += 50;
+		stan_d.cmd_mode = false;
+		
+		//------Konfiguracja sekwencji ---------- dzia³a
+		} else if((tmp == '-') && stan_d.cmd_mode) {
+		if(stan_d.IgnTime >= 150) stan_d.IgnTime -= 50;
+		stan_d.cmd_mode = false;
+		
+		//------Konfiguracja czasu palenia +  --------- dzia³a
+		} else if((tmp == '/') && stan_d.cmd_mode) {
+		if(stan_d.FireTime < 1000) stan_d.FireTime += 50;
+		stan_d.cmd_mode = false;
+		
+		//------Konfiguracja czasu palenia -  ---------- dzia³a
+		} else if((tmp == '*') && stan_d.cmd_mode) {
+		if(stan_d.FireTime >= 100) stan_d.FireTime -= 50;
+		stan_d.cmd_mode = false;
+		
+		//------Przerwanie testu----------------- dzia³a
+		} else if((tmp == 'A') && stan_d.cmd_mode) {
+		stan_d.Abort = true;						//ABORT!!!! ABORT!!! ABORT!!!
 		stan_d.run_trigger = false;
 		stan_d.armed_trigger = false;
-        stan_d.cmd_mode = false;
+		stan_d.cmd_mode = false;
 		
-	//------Doprê¿anie ---------------- 
-    } else if((tmp == 'P') && stan_d.cmd_mode) {
-        stan_d.armed_trigger = true;				
-        stan_d.cmd_mode = false;
+		//------Doprê¿anie ----------------
+		} else if((tmp == 'P') && stan_d.cmd_mode) {
+		stan_d.armed_trigger = true;
+		stan_d.cmd_mode = false;
 		char filename[9];
 		FindNextFilename(filename);
 		if (f_open(&pomiar, filename, FA_WRITE | FA_CREATE_ALWAYS) == FR_OK){	//jesli plik "naszplik.txt" nie istnieje, stworz go
 			//f_write(&pomiar, "State, Config, Press 1, Press 2, Press 3, Temp 1, Temp 2, Temp3, Press 4, Press 5, Press 6, Temp 4\r", 101, &bw);
 			f_write(&pomiar, "Ign [s], Fire [s], IGN, FPV, Thrust 1, Press 5, Press 6, Temp 1, Temp 2, Count\r", 79, &bw);
 		}
-	
-	//------ Rozpoczêcie testu --------
-	} else if((tmp == 'S') && (stan_d.FireTime != 0) && stan_d.cmd_mode) {
-	stan_d.run_trigger = true;
-	stan_d.cmd_mode = false;
-	
-    } else stan_d.cmd_mode = false;
+		
+		//------ Rozpoczêcie testu --------
+		} else if((tmp == 'S') && (stan_d.FireTime != 0) && stan_d.cmd_mode) {
+		stan_d.run_trigger = true;
+		stan_d.cmd_mode = false;
+		
+	} else stan_d.cmd_mode = false;
 }
 
 //----------------------Sensors update-------------------------------
 ISR(TCC0_OVF_vect) {
-     
+	
 }
 
 //----------------------Buzzer---------------------------------------
 ISR(TCD0_OVF_vect) {
-    if(buzzer_d.trigger && BUZZER_ONOFF) {
-        switch(buzzer_d.mode) {
-        case 0:
-            buzzer_d.trigger = false;
-            buzzer_d.count = 0;
-            buzzer_d.i = 0;
-            PORTF.OUTCLR = PIN6_bm;
-            break;
-        case 1:
-            if(buzzer_d.count > 6) buzzer_d.mode = 0;	//wy³¹czenie po 2 sygna³ach
-            else if(buzzer_d.count <= 6) {
-                PORTF.OUTTGL = PIN6_bm;
-                buzzer_d.count++;
-            }
-            break;
-        //-----------2Hz signal------------
-        case 2:
-            PORTF.OUTTGL = PIN6_bm;
-            break;
-        //----------cont signal------------
-        case 3:
-            PORTF.OUTSET = PIN6_bm;
-            break;
-        }
-    } else {
-        buzzer_d.mode = 0;
-        PORTF.OUTCLR = PIN6_bm;
-    }
+	if(buzzer_d.trigger && BUZZER_ONOFF) {
+		switch(buzzer_d.mode) {
+			case 0:
+			buzzer_d.trigger = false;
+			buzzer_d.count = 0;
+			buzzer_d.i = 0;
+			PORTF.OUTCLR = PIN6_bm;
+			break;
+			case 1:
+			if(buzzer_d.count > 6) buzzer_d.mode = 0;	//wy³¹czenie po 2 sygna³ach
+			else if(buzzer_d.count <= 6) {
+				PORTF.OUTTGL = PIN6_bm;
+				buzzer_d.count++;
+			}
+			break;
+			//-----------2Hz signal------------
+			case 2:
+			PORTF.OUTTGL = PIN6_bm;
+			break;
+			//----------cont signal------------
+			case 3:
+			PORTF.OUTSET = PIN6_bm;
+			break;
+		}
+		} else {
+		buzzer_d.mode = 0;
+		PORTF.OUTCLR = PIN6_bm;
+	}
 }
 
 //----------------------IO update-------------------------------------
 ISR(TCE0_OVF_vect) {
-    //-------------Blokada komend zdalnych----------------------------
-    //LED_PORT.OUTCLR = LED3;
-    stan_d.cmd_mode = false;
+	//-------------Blokada komend zdalnych----------------------------
+	//LED_PORT.OUTCLR = LED3;
+	stan_d.cmd_mode = false;
 	Clock_d.time++;
 }
 
 //----------------------Frame send-------------------------------------
 ISR(TCF0_OVF_vect) {
-    LED_PORT.OUTTGL = LED4;
-    frame_d.terminate = false;
-    if(stan_d.telemetry_trigger) {
-        if(Clock_d.frameTeleCount< 99999) Clock_d.frameTeleCount++;
-        else Clock_d.frameTeleCount = 0;
-        frame_b.iUART = 0;
-        USARTD0_TXC_vect();
-    }
+	LED_PORT.OUTTGL = LED4;
+	frame_d.terminate = false;
+	if(stan_d.telemetry_trigger) {
+		if(Clock_d.frameTeleCount< 99999) Clock_d.frameTeleCount++;
+		else Clock_d.frameTeleCount = 0;
+		frame_b.iUART = 0;
+		USARTD0_TXC_vect();
+	}
 }
 
 void structInit(void) {
-    frame_d.iUART = 0;
-    stan_d.new_data = false;
-    stan_d.new_frame = false;
+	frame_d.iUART = 0;
+	stan_d.new_data = false;
+	stan_d.new_frame = false;
 	
 	//----------------------Initialize allData_d--------------------
 	allData_d.Analog = &Analog_d;
@@ -237,28 +237,28 @@ void structInit(void) {
 }
 
 void SensorUpdate(allData_t * allData) {
-    //-----------------AD7195 (1)--------------
+	//-----------------AD7195 (1)--------------
 	
 	//-----------------AD7195 (2)--------------
-    
+	
 }
 
 void Initialization(void) {
 	CPU_clk(CPU_clock);	//zegar CPU
-    OscRTC();			//zegar RTC
-    RTC_Init();			//konfiguracja i uruchomienie RTC
-    ADC_Init();			//inicjalizacja ADC
-    USART_Init();		//inicjalizacja Xbee
-    IO_Init();
-    //TimerCInit(sampling_time);	//sensor update
-    TimerDInit(250);			//buzzer handling
-    TimerEInit(10);				//Obs³uga RTC
-    TimerFInit(telemetry_time);	//frame send
+	OscRTC();			//zegar RTC
+	RTC_Init();			//konfiguracja i uruchomienie RTC
+	ADC_Init();			//inicjalizacja ADC
+	USART_Init();		//inicjalizacja Xbee
+	IO_Init();
+	//TimerCInit(sampling_time);	//sensor update
+	TimerDInit(250);			//buzzer handling
+	TimerEInit(10);				//Obs³uga RTC
+	TimerFInit(telemetry_time);	//frame send
 	initRTC();
-    structInit();
-    I2C_Init();
+	structInit();
+	I2C_Init();
 	SPI_Init();
-    //--------AD7195 (1) Init-----------
+	//--------AD7195 (1) Init-----------
 	AD7195_Reset(0);
 	AD7195_Init(0);
 	//volatile char id1 = AD7195_WhoIam(0);
@@ -268,40 +268,47 @@ void Initialization(void) {
 	//volatile char id2 = AD7195_WhoIam(1);
 	//------- AD7195 Sync ------------
 	AD7195_Sync();
-    //-------SPI Memory Init--------
+	//-------SPI Memory Init--------
 	MemorySPIInit();
-	SD_CardInit();
-    //-------w³¹czenie przerwañ----
-    PMIC.CTRL = PMIC_LOLVLEN_bm | PMIC_MEDLVLEN_bm | PMIC_HILVLEN_bm;
+	//SD_CardInit();
+	//-------FLASH Memory Init--------
+	FLASH_setup();
+	//-------w³¹czenie przerwañ----
+	PMIC.CTRL = PMIC_LOLVLEN_bm | PMIC_MEDLVLEN_bm | PMIC_HILVLEN_bm;
 }
 
 void WarmUp() {
-    //------Hello blink
-    LED_PORT.OUTSET = LED3;
-    _delay_ms(200);
-    LED_PORT.OUTCLR = LED3;
-    _delay_ms(100);
-    LED_PORT.OUTSET = LED3;
-    _delay_ms(200);
-    LED_PORT.OUTCLR = LED3;
-    _delay_ms(100);
+	//------Hello blink
+	LED_PORT.OUTSET = LED3;
+	_delay_ms(200);
+	LED_PORT.OUTCLR = LED3;
+	_delay_ms(100);
+	LED_PORT.OUTSET = LED3;
+	_delay_ms(200);
+	LED_PORT.OUTCLR = LED3;
+	_delay_ms(100);
 }
 
 int main(void) {
-    stan_d.flash_trigger = STARTUP_flash;
-    stan_d.telemetry_trigger = STARTUP_tele;
-    frame_d.terminate = false;
-    Initialization();
-    sei();
-    WarmUp();					//odmiganie startu
-    stan_d.IgnTime = 100;
+	stan_d.flash_trigger = STARTUP_flash;
+	stan_d.telemetry_trigger = STARTUP_tele;
+	frame_d.terminate = false;
+	Initialization();
+	sei();
+	WarmUp();					//odmiganie startu
+	stan_d.IgnTime = 100;
 	stan_d.FireTime = 0;
 	uint32_t timer_buffer = 0;
 	uint8_t counter = 0;
 	
-	
-	volatile uint16_t  flashID = 0;
-	
+	//FLASH_chipErase();
+	uint8_t array[512];
+	uint8_t array2[512];
+	for (uint16_t i=0; i<512; i++) array[i] = i;
+	volatile uint16_t  flashID = FLASH_ReadID();
+	FLASH_pageWrite(2, array, 512);
+	FLASH_pageRead(2, array2, 512);
+	flashID = FLASH_ReadID();
 	
 	while(1){
 		//
@@ -310,9 +317,9 @@ int main(void) {
 	}
 	f_mount(&fatfs,"0",1);  //Dostêp do systemu plików
 	Light_Green();
-    while(1){
-        _delay_us(1);
-//============================== Sekcja pomiarów ============================================
+	while(1){
+		_delay_us(1);
+		//============================== Sekcja pomiarów ============================================
 		if(!AD7195_RDY(1)){
 			ADC_tempCalc(&Analog_d);
 			AD7195_ReadStore(&allData_d);
@@ -328,7 +335,7 @@ int main(void) {
 					Clock_d.frameFlashCount++;
 					if(Add2Buffer(&frame_b, &frame_sd) >= 450){
 						LED_PORT.OUTSET = LED2;
-						f_write(&pomiar, &frame_sd, FindTableLength(frame_sd.frameASCII), &bw);
+						f_write(&pomiar, &frame_sd, 512, &bw);
 						//f_write(&pomiar, &frame_sd, 500, &bw);
 						frame_sd.frameASCII[0] = 0;
 						LED_PORT.OUTCLR = LED2;
@@ -339,7 +346,7 @@ int main(void) {
 			LED_PORT.OUTCLR = LED6;
 		}
 
-//=========================== Sekcja maszyny stanów =========================================
+		//=========================== Sekcja maszyny stanów =========================================
 		CheckOutputState(&stan_d);
 		if(stan_d.Abort == true){
 			SERVO_close();
@@ -356,7 +363,7 @@ int main(void) {
 			LED_PORT.OUTCLR = LED3;
 		}
 		else if((stan_d.armed_trigger == true) && (stan_d.run_trigger == false)) FPV_valve_open();	//w³¹czenie doprê¿ania
-        else if((stan_d.armed_trigger == true) && (stan_d.run_trigger == true) && (stan_d.IgnTime != 0)) {
+		else if((stan_d.armed_trigger == true) && (stan_d.run_trigger == true) && (stan_d.IgnTime != 0)) {
 			if(timer_buffer <= Clock_d.time){
 				stan_d.State++;
 				switch(stan_d.State){
@@ -415,6 +422,6 @@ int main(void) {
 					break;
 				}
 			}
-        }
-    }
+		}
+	}
 }

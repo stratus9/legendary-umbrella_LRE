@@ -78,13 +78,108 @@ void FLASH_WriteEnable(uint8_t value){
 
 uint8_t FLASH_ReadByte(uint32_t address){
 	FLASH_SetMaxBaudrate();
+	FLASH_waitForReady();
 	FLASH_CS(1);
-	FLASH_RW_Byte(0x03);	//READ
-	//FLASH_RW_Byte(address>>3);
+	FLASH_RW_Byte(READ4);	//READ
+	FLASH_RW_Byte((address>>24) & 0xFF);
 	FLASH_RW_Byte((address>>16) & 0xFF);
 	FLASH_RW_Byte((address>>8) & 0xFF);
 	FLASH_RW_Byte(address & 0xFF);
-	uint16_t tmp = FLASH_RW_Byte(0);
+	uint8_t tmp = FLASH_RW_Byte(0);
 	FLASH_CS(0);
 	return tmp;
+}
+
+void FLASH_arrayRead(uint32_t address, uint8_t * array, uint32_t length){
+	FLASH_waitForReady();
+	FLASH_SetMaxBaudrate();
+	FLASH_CS(1);
+	FLASH_RW_Byte(READ4);	//READ
+	FLASH_RW_Byte(address>>24);
+	FLASH_RW_Byte((address>>16) & 0xFF);
+	FLASH_RW_Byte((address>>8) & 0xFF);
+	FLASH_RW_Byte(address & 0xFF);
+	for (uint32_t i=0; i<length++; i++){
+		array[i] = FLASH_RW_Byte(0);
+	}
+	FLASH_CS(0);
+}
+
+void FLASH_pageRead(uint16_t page, uint8_t * array, uint16_t length){
+	uint32_t address = page<<9;
+	FLASH_waitForReady();
+	FLASH_SetMaxBaudrate();
+	FLASH_CS(1);
+	FLASH_RW_Byte(READ4);	//READ
+	FLASH_RW_Byte(address>>24);
+	FLASH_RW_Byte((address>>16) & 0xFF);
+	FLASH_RW_Byte((address>>8) & 0xFF);
+	FLASH_RW_Byte(address & 0xFF);
+	for (uint32_t i=0; i<length; i++){
+		array[i] = FLASH_RW_Byte(0);
+	}
+	FLASH_CS(0);
+}
+
+void FLASH_chipErase(void){
+	FLASH_waitForReady();
+	FLASH_WriteEnable(1);
+
+	FLASH_CS(1);
+	FLASH_RW_Byte(CE);
+	FLASH_CS(0);
+	FLASH_waitForReady();
+}
+
+void FLASH_sectorErase(uint32_t address){
+	
+}
+
+
+void FLASH_setup(void){
+	
+}
+
+uint8_t FLASH_status(void){
+	FLASH_SetMaxBaudrate();
+	FLASH_CS(1);
+	FLASH_RW_Byte(RDSR);	//READ
+	uint8_t stat = FLASH_RW_Byte(0);
+	FLASH_CS(0);
+	return stat;
+}
+
+void FLASH_waitForReady(void){
+	while(FLASH_status() & 0x01) _delay_us(10);
+}
+
+void FLASH_byteWrite(uint32_t address, uint8_t value){
+	FLASH_waitForReady();
+	FLASH_WriteEnable(1);
+	FLASH_SetMaxBaudrate();
+	FLASH_CS(1);
+	FLASH_RW_Byte(PP4);	//Page program
+	FLASH_RW_Byte((address>>24) & 0xFF);
+	FLASH_RW_Byte((address>>16) & 0xFF);
+	FLASH_RW_Byte((address>>8) & 0xFF);
+	FLASH_RW_Byte(address & 0xFF);
+	FLASH_RW_Byte(value);
+	FLASH_CS(0);
+}
+
+void FLASH_pageWrite(uint16_t page, uint8_t * array, uint16_t length){
+	uint32_t address = page<<9;
+	FLASH_waitForReady();
+	FLASH_WriteEnable(1);
+	FLASH_SetMaxBaudrate();
+	FLASH_CS(1);
+	FLASH_RW_Byte(PP4);	//Page program
+	FLASH_RW_Byte((address>>24) & 0xFF);
+	FLASH_RW_Byte((address>>16) & 0xFF);
+	FLASH_RW_Byte((address>>8) & 0xFF);
+	FLASH_RW_Byte(address & 0xFF);
+	for(uint16_t i = 0; i < length; i++){
+		FLASH_RW_Byte(*array++);
+	}
+	FLASH_CS(0);
 }
