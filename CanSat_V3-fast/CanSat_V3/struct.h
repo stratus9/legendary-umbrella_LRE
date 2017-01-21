@@ -68,14 +68,14 @@ typedef struct USART_s{
 typedef struct ADC_s{
 	uint16_t ADC16u;
 	int16_t ADC16s;
-	int16_t AnalogIn1;
-	int16_t AnalogIn2;
-	int16_t AnalogIn3;
-	int16_t AnalogIn4;
-	int16_t AnalogIn5;
-	int16_t AnalogIn6;
-	int16_t AnalogIn7;
-	int16_t AnalogIn8;
+	uint32_t AnalogIn1;
+	uint32_t AnalogIn2;
+	uint32_t AnalogIn3;
+	uint32_t AnalogIn4;
+	uint32_t AnalogIn5;
+	uint32_t AnalogIn6;
+	uint32_t AnalogIn7;
+	uint32_t AnalogIn8;
 	uint16_t Temp1;
 	uint16_t Temp2;
 	uint16_t Temp3;
@@ -84,6 +84,7 @@ typedef struct ADC_s{
 	float R2;
 	float R3;
 	float R4;
+	uint8_t count;
 	} Analog_t;
 
 //------------------------FRAME--------------------------------------------------

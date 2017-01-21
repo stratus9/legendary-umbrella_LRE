@@ -52,10 +52,24 @@ ISR(BADISR_vect) {
 }
 
 ISR(ADCB_CH3_vect){
-	Analog_d.AnalogIn1 = ADCB.CH0RES;	//dodaæ przeliczenie na temp lub zrobiæ to w frame_prepare
-	Analog_d.AnalogIn2 = ADCB.CH1RES;
-	Analog_d.AnalogIn3 = ADCB.CH2RES;
-	Analog_d.AnalogIn4 = ADCB.CH3RES;
+	if(Analog_d.count < 256){
+		Analog_d.AnalogIn1 += ADCB.CH0RES;	//dodaæ przeliczenie na temp lub zrobiæ to w frame_prepare
+		Analog_d.AnalogIn2 += ADCB.CH1RES;
+		Analog_d.AnalogIn3 += ADCB.CH2RES;
+		Analog_d.AnalogIn4 += ADCB.CH3RES;
+		Analog_d.count++;
+	}
+	if(Analog_d.count >= 256){
+		Analog_d.Temp1 = (uint16_t)(Analog_d.AnalogIn1>>4);	//decymacja
+		Analog_d.Temp2 = (uint16_t)(Analog_d.AnalogIn2>>4);
+		Analog_d.Temp3 = (uint16_t)(Analog_d.AnalogIn3>>4);
+		Analog_d.Temp4 = (uint16_t)(Analog_d.AnalogIn4>>4);
+		Analog_d.AnalogIn1 = 0;
+		Analog_d.AnalogIn2 = 0;
+		Analog_d.AnalogIn3 = 0;
+		Analog_d.AnalogIn4 = 0;
+		Analog_d.count = 0;
+	}
 }
 
 //----------------------RTC ISR handling------------------------
@@ -284,14 +298,14 @@ void FLASH_move2SD(void){
 	}
 	
 	FLASH_dataStruct_t FLASH_dataStruct;
-	char string[100];
+	char string[105];
 	uint32_t position = 0;
 	do{
 		FLASH_arrayRead(position, FLASH_dataStruct.array, 64);
 		if(FLASH_dataStruct.array[0] != 0xAA) break;	//jeœli brak zapisanych danych, zakoñcz przepisywanie
 		position += 64;
 		prepareFrameFlash(&FLASH_dataStruct, string);
-		f_write(&pomiar, string, 94, &bw);
+		f_write(&pomiar, string, 98, &bw);
 		
 	} while(FLASH_dataStruct.array[0] == 0xAA);			//na wszelki wypadek powtórzone; mo¿na wywaliæ w przysz³oœci
 	f_close(&pomiar);

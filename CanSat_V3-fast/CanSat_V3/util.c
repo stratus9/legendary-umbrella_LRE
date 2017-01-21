@@ -60,7 +60,7 @@ void prepareFrameFlash(FLASH_dataStruct_t * FLASH_dataStruct, char * string){
 void prepareFrame(allData_t * allData){
 	void prepareFrame(allData_t * allData){
 		sprintf(allData->frame_b->frameASCII,
-		"%03lu,%03lu,%1i,%1i,%08lu,%08lu,%08lu,%08lu,%08lu,%08lu,%+04ld,%+04ld,%+04ld,%+04ld,%010lu,%010lu,%016u\r\n",
+		"%03lu,%03lu,%1i,%1i,%08lu,%08lu,%08lu,%08lu,%08lu,%08lu,%+05ld,%+05ld,%+05ld,%+05ld,%010lu,%010lu,%016u\r\n",
 		allData->stan->IgnTime/10,
 		allData->stan->FireTime/10,
 		allData->stan->IGN,
@@ -319,3 +319,4 @@ void ClockReset(allData_t * allData){
 void ClockGet(allData_t * allData){
 	allData->Clock->time = 0; //wstawiæ odczyt z timera
 }
+
